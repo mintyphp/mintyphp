@@ -10,7 +10,7 @@
 │   └── register.php                Authorization example: registration
 ├── lib                             
 │   ├── authenticate.php            Authentication functions
-│   ├── db_mysqli.php               Database abstraction layer ($db)
+│   ├── database.php                Database abstraction layer ($db)
 │   ├── functions.php               Helper functions
 │   └── router.php                  Default routing engine ($router)
 ├── templates                       Folder containing HTML templates

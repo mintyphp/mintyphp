@@ -28,8 +28,8 @@
 
 <h2>Presentation/logic separation</h2>
 
-<p>The "views" folder holds all HTML for dynamic pages, while the "actions" folder is supposed
-to hold the PHP part of these pages. The "web" and the "templates" folder hold the static files
+<p>The "views" folder holds all HTML for dynamic pages, while the "actions" folder is should
+hold the PHP part of these pages. The "web" and the "templates" folder hold the static files
 and the templates that are used by the views. Note that every pages must have a "view" file and
 can optionally have an "action" file that holds its logic.</p>
 

@@ -1,8 +1,8 @@
 <?php parameterless() ?>
 <h1>API</h1>
-<p>This is an reference of all global variables and functions:</p>
+<p>This is a reference of all global variables and functions:</p>
 <pre>
-Type    Variable                      File  
+Type    Variable/Function             File  
 ==========================================================
 bool    $debug                        web/index.php
 object  $router                       web/index.php

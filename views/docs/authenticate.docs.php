@@ -21,7 +21,7 @@ redirect("/login");
 </pre>
 <h2>Register</h2>
 <pre>register($username,$password)</pre>
-<p>Call this function to register a new user.</p>
+<p>Call this function to register a new user, example:</p>
 <pre>
 if (register($username, $password)) {
   login($username, $password);

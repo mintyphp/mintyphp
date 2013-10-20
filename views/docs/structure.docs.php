@@ -9,8 +9,9 @@
 │   ├── login.php                   Authorization example: logging in
 │   └── register.php                Authorization example: registration
 ├── lib                             
+│   ├── authenticate.php            Authentication functions
 │   ├── db_mysqli.php               Database abstraction layer ($db)
-│   ├── functions.php               All helper functions
+│   ├── functions.php               Helper functions
 │   └── router.php                  Default routing engine ($router)
 ├── templates                       Folder containing templates
 │   ├── default.php
@@ -24,6 +25,7 @@
 │   ├── admin
 │   │   └── index.default.php       Authorization example: protected page
 │   ├── docs
+│   │   ├── authenticate.docs.php
 │   │   ├── database.docs.php
 │   │   ├── functions.docs.php
 │   │   ├── overview.docs.php

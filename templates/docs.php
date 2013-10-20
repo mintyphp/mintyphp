@@ -14,6 +14,7 @@
                 <a href="/docs/router">Router</a><br/>
                 <a href="/docs/database">Database</a><br/>
                 <a href="/docs/functions">Functions</a><br/>
+                <a href="/docs/authenticate">Authenticate</a><br/>
                 <a href="/docs/reference">Reference</a><br/>
             </p>
         </div>

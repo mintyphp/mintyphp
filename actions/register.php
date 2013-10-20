@@ -1,4 +1,7 @@
 <?php
+// Load the authenticate functions
+require '../lib/authenticate.php';
+
 $error = false;
 if (isset($_POST['username']))
 { $username = $_POST['username'];
@@ -11,7 +14,7 @@ if (isset($_POST['username']))
   { $error = "User can not be registered";
   }
   else
-  { authenticate($username, $password);
+  { login($username, $password);
     redirect("/admin");
   }
 }

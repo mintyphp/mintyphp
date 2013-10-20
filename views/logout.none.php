@@ -1,3 +1,6 @@
 <?php 
-unset($_SESSION['user']);
+// Load the authenticate functions
+require '../lib/authenticate.php';
+
+logout();
 redirect('/login');

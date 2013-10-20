@@ -3,6 +3,7 @@
 <p>This is the documentation of the MindaPHP framework.</p>
 <ul>
   <li>Philosophy</li>
+  <li>Separate logic from presentation</li>
   <li>Front controller</li>
   <li>Default routing</li>
   <li>PHP templating</li>
@@ -17,13 +18,21 @@
   <li>Secure by design</li>
   <li>Light-weight</li>
 </ol>
-<p>By design, it does NOT:</p>
+<p>By design, it does:</p>
 <ol>
-  <li>Separate logic from views</li>
-  <li>Have ORM (Object Relational Mapping)</li>
-  <li>Use a templating language</li>
+  <li>Have one big variable scope everywhere</li>
+  <li>NOT support ORM (Object Relational Mapping)</li>
+  <li>Use PHP as a templating language</li>
 </ol>
 <p>Mainly to make it easy to learn for PHP developers.</p>
+
+<h2>Separate logic from presentation</h2>
+
+<p>The "views" folder holds all HTML for dynamic pages, while the "actions" folder is supposed
+to hold the PHP part of these pages. The "web" and the "templates" folder hold the static files
+and the templates that are used by the views. Note that every pages must have a "view" file and
+can optionally have an "action" file that holds its logic.</p>
+
 <h2>Front controller</h2>
   
 <p>All URL's hit the "web/index.php" file. This is achieved using URL rewriting (with 
@@ -33,10 +42,10 @@ file you will edit.</p>
 
 <h2>Default routing</h2>
   
-<p>The "actions" folder holds all dynamic pages, while the "web" folder holds all static files.
-The dynamic files have an URL on which they can be reached, but the filenames are formed using
-the following pattern: "{name}.{template}.php". Only the "name" segment is part of the URL.
-Files with the name "index" can be used to serve the directory URL.</p>
+<p>The view files (in the "views" folder) have an URL on which they can be reached. They may
+reside in a sub-folder and their filename is constructed like this: "{name}.{template}.php".
+Both the folder path and the "name" segment are part of the URL. Files with the name "index" 
+can be used to serve the directory URL.</p>
 
 <p>The variable "$parameters" can be used to get access to anything provided after the URL. This
 means that when you access the URL "/customers/23", the router will match the "customers" page

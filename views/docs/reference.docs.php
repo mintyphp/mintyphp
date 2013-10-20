@@ -8,14 +8,15 @@ $router-&gt;redirect($url,$location);
 $router-&gt;getParameters();
 $router-&gt;getTemplate()
 $router-&gt;getAction();
+$router-&gt;getView();
 $router-&gt;getUrl();
 
 $body
 
 $parameters
 
-$db-&gt;q($sql);
-$db-&gt;q1($sql);
+$db-&gt;q($sql,&hellip;);
+$db-&gt;q1($sql,&hellip;);
 $db-&gt;id();
 $db-&gt;handle();
 

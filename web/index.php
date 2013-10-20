@@ -16,7 +16,7 @@ $db = new Database($debug, 'localhost', 'mindaphp', 'mindaphp', 'mindaphp');
 session_start('mindaphp');
 
 // Load the front controller
-$router = new Router($debug, $_SERVER['REQUEST_URI'], '../actions', '../templates');
+$router = new Router($debug, $_SERVER['REQUEST_URI'], '../actions', '../views', '../templates');
 
 // Set up redirects
 $router->redirect('/','/hello/world');
@@ -26,11 +26,16 @@ $router->redirect('/docs','/docs/overview');
 $parameters = $router->getParameters();
 
 // Handle the 'none' template case 
-if ($router->getTemplate()=='none') die(require $router->getAction());
+if ($router->getTemplate()=='none') {
+    @include $router->getAction();
+    require $router->getView();
+    die();
+}
 
 // Load the action into body
 ob_start();
-require $router->getAction();
+@include $router->getAction();
+require $router->getView();
 $body = ob_get_contents();
 ob_end_clean();
   

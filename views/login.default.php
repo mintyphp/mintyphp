@@ -1,12 +1,3 @@
-<?php
-$error = '';
-if (isset($_POST['username']))
-{ if (authenticate($_POST['username'],$_POST['password'])) {
-    redirect("/admin");
-  }
-  else $error = "Username/password not valid";
-}
-?>
 <h1>Login</h1>
 <form method="post">
 Username<br/>

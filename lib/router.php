@@ -9,6 +9,7 @@ class Router
     protected $templateRoot;
     
     protected $url = null;
+    protected $view = null;
     protected $action = null;
     protected $template = null;
     protected $parameters = null;
@@ -22,10 +23,11 @@ class Router
         return $string;
     }
     
-    function __construct($debug, $request, $actionRoot, $templateRoot)
+    function __construct($debug, $request, $actionRoot, $viewRoot, $templateRoot)
     {
         
         $this->request = $request;
+        $this->viewRoot = $viewRoot;
         $this->actionRoot = $actionRoot;
         $this->templateRoot = $templateRoot;
         
@@ -46,7 +48,7 @@ class Router
     
     protected function route()
     {            
-        $root = $this->actionRoot;
+        $root = $this->viewRoot;
         $dir = '/';
         
         $request = $this->removePrefix($this->request,'/');
@@ -65,7 +67,8 @@ class Router
             if (count($matches)==0) $matches = glob($root.'/404.*.php');
             if (count($matches)==0) $this->error('Could not find 404');
             if (count($matches)>1) $this->error('Mutiple actions matched: '.implode(', ',$matches));
-            $this->action = $matches[0];
+            $this->view = $matches[0];
+            $this->action = $this->extractAction($matches[0],$root,$dir);
             $this->template = $this->extractTemplate($matches[0],$root,$dir);
             $this->parameters = array();
             for ($p=$i;$p<count($parts);$p++) {
@@ -96,9 +99,26 @@ class Router
     
     public function getAction()
     {
-        return $this->action;
+      return $this->action;
+    } 
+       
+    protected function extractAction($match,$root,$dir)
+    {
+      $match = $this->removePrefix($match,$root);
+      if (!preg_match('/(.*)\.[^\.]+\.php$/', $match, $matches)) $this->error('Could not action from filename: '.$match);
+      $root = $this->actionRoot;
+      
+      $matches = glob($root.$matches[1].'.php');
+      if (count($matches)==0) return false;
+      if (count($matches)>1) $this->error('Mutiple actions matched: '.implode(', ',$matches));
+      return $matches[0];
     }
     
+    public function getView()
+    {
+      return $this->view;
+    }
+        
     protected function extractTemplate($match,$root,$dir)
     {
         $match = $this->removePrefix($match,$root.$dir);

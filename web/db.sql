@@ -10,5 +10,6 @@ CREATE TABLE `users` (
   `password` varchar(255) COLLATE utf8_bin NOT NULL,
   `salt` varchar(255) COLLATE utf8_bin NOT NULL,
   `created` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

@@ -3,6 +3,8 @@
 <pre>
 .
 ├── actions                         Folder containing PHP for dynamic pages
+│   ├── admin
+│   │   └── index.php
 │   ├── hello
 │   │   ├── form.php                Advanced "hello world" example (form)
 │   │   └── index.php               Advanced "hello world" example (output)
@@ -37,7 +39,7 @@
 │   │   ├── index.default.php       Advanced "hello world" example (output)
 │   │   └── world.default.php       Simple "hello world" example
 │   ├── login.default.php           Authorization example: logging in
-│   ├── logout.default.php          Authorization example: logging out
+│   ├── logout.none.php             Authorization example: logging out
 │   └── register.default.php        Authorization example: registration
 └── web                             Folder containing static files
     ├── css

@@ -13,7 +13,7 @@
 │   ├── db_mysqli.php               Database abstraction layer ($db)
 │   ├── functions.php               Helper functions
 │   └── router.php                  Default routing engine ($router)
-├── templates                       Folder containing templates
+├── templates                       Folder containing HTML templates
 │   ├── default.php
 │   ├── docs.php                    Template used by the page you look at
 │   ├── error.php
@@ -25,11 +25,11 @@
 │   ├── admin
 │   │   └── index.default.php       Authorization example: protected page
 │   ├── docs
+│   │   ├── api.docs.php
 │   │   ├── authenticate.docs.php
 │   │   ├── database.docs.php
 │   │   ├── functions.docs.php
 │   │   ├── overview.docs.php
-│   │   ├── reference.docs.php
 │   │   ├── router.docs.php
 │   │   └── structure.docs.php      This is the page you are looking at
 │   ├── hello

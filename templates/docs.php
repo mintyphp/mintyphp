@@ -15,7 +15,7 @@
                 <a href="/docs/database">Database</a><br/>
                 <a href="/docs/functions">Functions</a><br/>
                 <a href="/docs/authenticate">Authenticate</a><br/>
-                <a href="/docs/reference">Reference</a><br/>
+                <a href="/docs/api">API</a><br/>
             </p>
         </div>
         <div class="body" style="width: 600px;">

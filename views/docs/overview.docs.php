@@ -12,7 +12,7 @@
 </ul>
 
 <h2>Philosophy</h2>
-<p>The MindaPHP framework aims to be:</p>
+<p>MindaPHP aims to be a full-stack framework that is:</p>
 <ol>
   <li>Easy to learn</li>
   <li>Secure by design</li>
@@ -20,9 +20,9 @@
 </ol>
 <p>By design, it does:</p>
 <ol>
-  <li>Have one big variable scope everywhere</li>
-  <li>NOT support ORM (Object Relational Mapping)</li>
-  <li>Use PHP as a templating language</li>
+  <li>&hellip; have one variable scope for all layers.</li>
+  <li>&hellip; require you to write SQL queries (no ORM).</li>
+  <li>&hellip; use PHP as a templating language.</li>
 </ol>
 <p>Mainly to make it easy to learn for PHP developers.</p>
 

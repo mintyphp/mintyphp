@@ -3,7 +3,7 @@
 <p>This is the documentation of the MindaPHP framework.</p>
 <ul>
   <li>Philosophy</li>
-  <li>Separate logic from presentation</li>
+  <li>Presentation/logic separation</li>
   <li>Front controller</li>
   <li>Default routing</li>
   <li>PHP templating</li>
@@ -26,7 +26,7 @@
 </ol>
 <p>Mainly to make it easy to learn for PHP developers.</p>
 
-<h2>Separate logic from presentation</h2>
+<h2>Presentation/logic separation</h2>
 
 <p>The "views" folder holds all HTML for dynamic pages, while the "actions" folder is supposed
 to hold the PHP part of these pages. The "web" and the "templates" folder hold the static files

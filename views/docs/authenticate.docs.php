@@ -9,7 +9,7 @@
 if (login($username, $password)) {
   redirect("/admin");
 } else {
-  echo "Username/password not valid";
+  $error = "Username/password not valid";
 }
 </pre>
 <h2>Logout</h2>
@@ -27,6 +27,6 @@ if (register($username, $password)) {
   login($username, $password);
   redirect("/admin");
 } else { 
-  echo "User can not be registered";
+  $error = "User can not be registered";
 }
 </pre>

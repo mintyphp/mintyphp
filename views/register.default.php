@@ -8,5 +8,5 @@ Password (again)<br/>
 <input type="password" name="password2"/><br/>
 <br/>
 <input type="submit"/><br/>
-<?php echo $error; ?>
+<?php e($error); ?>
 </form>

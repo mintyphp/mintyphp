@@ -11,8 +11,8 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach ($users as $u): ?>
-      <tr><td><?php echo $u['username'];?></td><td><?php echo $u['created'];?></td></tr>
+    <?php foreach ($users as $user): ?>
+      <tr><td><?php e($user['username']);?></td><td><?php e($user['created']);?></td></tr>
     <?php endforeach; ?>
   </tbody>
 </table>

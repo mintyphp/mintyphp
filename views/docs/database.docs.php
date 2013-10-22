@@ -17,9 +17,10 @@ $success = $db-&gt;q($query,$username,$salt,$password,$salt);
 <p>Or when you want to iterate over records:</p>
 <pre>
 $users = $db-&gt;q('select * from users');
-foreach ($users as $user) {
-  echo '&lt;li&gt;'.$user['username'].'&lt;/li&gt;'; 
-}
+
+&lt;?php foreach ($users as $user): ?&gt;
+&lt;li&gt;&lt;?php e($user['username']); ?&gt;&lt;/li&gt;
+&lt;?php endforeach; ?&gt;
 </pre>
 <h2>Query one</h2>
 <pre>$db-&gt;q1($sql,$arg1,$arg2,...)</pre>

@@ -7,7 +7,7 @@ require '../lib/database.php';
 require '../lib/functions.php';
 
 // Debug on or off
-$debug = true;
+$debug = false;
 
 // Connect to the database
 $db = new Database($debug, 'localhost', 'mindaphp', 'mindaphp', 'mindaphp');

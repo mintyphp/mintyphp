@@ -9,3 +9,6 @@ by the front-controller, so you do not have to "require" this file.</p>
 <pre>parameterless()</pre>
 <p>By putting "&lt;?php parameterless() ?&gt;" in the first line of the action you can force a redirect to the parameterless variant
 of the page.</p>
+<h2>Escaped echo</h2>
+<pre>e()</pre>
+<p>In the views one should use "&lt;?php e($var) ?&gt;" to echo and NOT the normal "echo". This function executes an escaped (with htmlspecialchars) echo to prevent Cross-Site-Scripting (XSS) attacks.</p>

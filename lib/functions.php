@@ -11,3 +11,8 @@ function parameterless()
     redirect($router->getUrl());
   }
 }
+
+function e($string)
+{
+  echo htmlspecialchars($string);
+}

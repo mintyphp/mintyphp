@@ -21,6 +21,7 @@ integer $db-&gt;id()                     lib/database.php
 object  $db-&gt;handle()                 lib/database.php
         redirect($url)                lib/functions.php
         parameterless()               lib/functions.php
+        e($string)                    lib/functions.php
 bool    login($username,$password)    lib/authenticate.php
 bool    logout()                      lib/authenticate.php
 bool    register($username,$password) lib/authenticate.php

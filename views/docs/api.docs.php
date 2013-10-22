@@ -2,7 +2,7 @@
 <h1>API</h1>
 <p>This is a reference of all global variables and functions:</p>
 <pre>
-Type    Variable/Function             File  
+Type    Variable/Function             File
 ==========================================================
 bool    $debug                        web/index.php
 object  $router                       web/index.php
@@ -21,7 +21,8 @@ integer $db-&gt;id()                     lib/database.php
 object  $db-&gt;handle()                 lib/database.php
         redirect($url)                lib/functions.php
         parameterless()               lib/functions.php
-        e($string)                    lib/functions.php
+        e($variable)                  lib/functions.php
+        csrf_token()                  lib/functions.php
 bool    login($username,$password)    lib/authenticate.php
 bool    logout()                      lib/authenticate.php
 bool    register($username,$password) lib/authenticate.php

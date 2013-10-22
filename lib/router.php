@@ -3,39 +3,39 @@
 class Router
 {
     protected $debug;
-    
+
     protected $request;
     protected $actionRoot;
     protected $templateRoot;
-    
+
     protected $url = null;
     protected $view = null;
     protected $action = null;
     protected $template = null;
     protected $parameters = null;
-    
+
     protected function removePrefix($string,$prefix)
     {
         if (substr($string,0,strlen($prefix))==$prefix) {
             $string = substr($string,strlen($prefix));
         }
-        
+
         return $string;
     }
-    
+
     function __construct($debug, $request, $actionRoot, $viewRoot, $templateRoot)
     {
-        
+
         $this->request = $request;
         $this->viewRoot = $viewRoot;
         $this->actionRoot = $actionRoot;
         $this->templateRoot = $templateRoot;
-        
+
         $this->debug = (bool) $debug;
-        
+
         $this->route();
     }
-    
+
     protected function error($message)
     {
         if ($this->debug) {
@@ -45,12 +45,12 @@ class Router
         }
         die();
     }
-    
+
     protected function route()
-    {            
+    {
         $root = $this->viewRoot;
         $dir = '/';
-        
+
         $request = $this->removePrefix($this->request,'/');
         $parts = explode('/',$request);
         foreach ($parts as $i=>$part) {
@@ -64,6 +64,7 @@ class Router
             $matches = glob($root.$dir.$part.'*.php');
             if (count($matches)==0) $matches = glob($root.$dir.'index.*.php');
             else $i++;
+            if (!$this->check_csrf_token()) $matches = glob($root.'/403.*.php');
             if (count($matches)==0) $matches = glob($root.'/404.*.php');
             if (count($matches)==0) $this->error('Could not find 404');
             if (count($matches)>1) $this->error('Mutiple actions matched: '.implode(', ',$matches));
@@ -76,14 +77,28 @@ class Router
             }
             break;
         }
-        
+
     }
-    
+
+    private function check_csrf_token() {
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = rand(0, PHP_INT_MAX);
+        }
+
+        if ($_SERVER['REQUEST_METHOD']=='POST') {
+            $success = (isset($_POST['csrf_token']) && ($_POST['csrf_token'] == $_SESSION['csrf_token']));
+        } else {
+            $success = true;
+        }
+
+        return $success;
+    }
+
     public function getUrl()
     {
         return $this->url;
     }
-    
+
     public function redirect($request,$location)
     {
         if (rtrim($this->request,'/') == rtrim($request,'/')) {
@@ -91,34 +106,34 @@ class Router
           $this->route();
         }
     }
-    
+
     public function getRequest()
     {
         return $this->request;
     }
-    
+
     public function getAction()
     {
       return $this->action;
-    } 
-       
+    }
+
     protected function extractAction($match,$root,$dir)
     {
       $match = $this->removePrefix($match,$root);
       if (!preg_match('/(.*)\.[^\.]+\.php$/', $match, $matches)) $this->error('Could not action from filename: '.$match);
       $root = $this->actionRoot;
-      
+
       $matches = glob($root.$matches[1].'.php');
       if (count($matches)==0) return false;
       if (count($matches)>1) $this->error('Mutiple actions matched: '.implode(', ',$matches));
       return $matches[0];
     }
-    
+
     public function getView()
     {
       return $this->view;
     }
-        
+
     protected function extractTemplate($match,$root,$dir)
     {
         $match = $this->removePrefix($match,$root.$dir);
@@ -136,7 +151,7 @@ class Router
     {
         return $this->template;
     }
-    
+
     public function getParameters()
     {
     	if (!$this->parameters) return array();

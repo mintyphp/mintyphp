@@ -10,5 +10,11 @@ by the front-controller, so you do not have to "require" this file.</p>
 <p>By putting "&lt;?php parameterless() ?&gt;" in the first line of the action you can force a redirect to the parameterless variant
 of the page.</p>
 <h2>Escaped echo</h2>
-<pre>e()</pre>
-<p>In the views one should use "&lt;?php e($var) ?&gt;" to echo and NOT the normal "echo". This function executes an escaped (with htmlspecialchars) echo to prevent Cross-Site-Scripting (XSS) attacks.</p>
+<pre>e($variable)</pre>
+<p>In the views one should use "&lt;?php e($variable); ?&gt;" to echo and NOT the normal "echo". This function
+escapes the variable (with htmlspecialchars) to prevent Cross-Site-Scripting (XSS) attacks.</p>
+<h2>CSRF token</h2>
+<pre>csrf_token()</pre>
+<p>Between the "&lt;form method=&quot;post&quot;&gt;" and the "&lt;/form&gt;" tag in the view one should add "&lt;?php csrf_token(); ?&gt;".
+This call will echo a hidden input field to the form that will prevent Cross-Site-Request-Forgery (CSRF) attacks.
+Note: this is required when sending a form with the "post" method.</p>

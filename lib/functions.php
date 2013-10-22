@@ -16,3 +16,8 @@ function e($string)
 {
   echo htmlspecialchars($string);
 }
+
+function csrf_token()
+{
+  echo '<input type="hidden" name="csrf_token" value="'.$_SESSION['csrf_token'].'"/>';
+}

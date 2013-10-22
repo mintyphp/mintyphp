@@ -1,7 +1,7 @@
 <?php
 // Load the router
 require '../lib/router.php';
-// Load the database abstraction layer 
+// Load the database abstraction layer
 require '../lib/database.php';
 // Load the helper functions
 require '../lib/functions.php';
@@ -25,7 +25,7 @@ $router->redirect('/docs','/docs/overview');
 // Set the parameters
 $parameters = $router->getParameters();
 
-// Handle the 'none' template case 
+// Handle the 'none' template case
 if ($router->getTemplate()=='none') {
     @include $router->getAction();
     require $router->getView();
@@ -38,6 +38,6 @@ ob_start();
 require $router->getView();
 $body = ob_get_contents();
 ob_end_clean();
-  
+
 // Load body into template
 require $router->getTemplate();

@@ -7,16 +7,16 @@ require '../lib/database.php';
 require '../lib/functions.php';
 
 // Debug on or off
-$debug = false;
-
-// Connect to the database
-$db = new Database($debug, 'localhost', 'mindaphp', 'mindaphp', 'mindaphp');
+$debug = true;
 
 // Start the session
 session_start('mindaphp');
 
 // Load the front controller
 $router = new Router($debug, $_SERVER['REQUEST_URI'], '../actions', '../views', '../templates');
+
+// Connect to the database
+$db = new Database($debug, 'localhost', 'mindaphp', 'mindaphp', 'mindaphp');
 
 // Set up redirects
 $router->redirect('/','/hello/world');
@@ -41,3 +41,6 @@ ob_end_clean();
 
 // Load body into template
 require $router->getTemplate();
+
+// Show developer toolbar
+//if ($debug) require '../lib/toolbar.php'; WIP

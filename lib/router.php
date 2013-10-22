@@ -67,10 +67,12 @@ class Router
             if (!$this->check_csrf_token()) $matches = glob($root.'/403.*.php');
             if (count($matches)==0) $matches = glob($root.'/404.*.php');
             if (count($matches)==0) $this->error('Could not find 404');
-            if (count($matches)>1) $this->error('Mutiple actions matched: '.implode(', ',$matches));
-            $this->view = $matches[0];
-            $this->action = $this->extractAction($matches[0],$root,$dir);
-            $this->template = $this->extractTemplate($matches[0],$root,$dir);
+            if (count($matches)>1) $this->error('Mutiple views matched: '.implode(', ',$matches));
+            list($view,$template) = $this->extractParts($matches[0],$root,$dir);
+            $this->view = $this->viewRoot.$dir.$view.'.'.$template.'.php';
+            $this->action = $this->actionRoot.$dir.$view.'.php';
+            if (!file_exists($this->action)) $this->action = false;
+            $this->template = $this->templateRoot.'/'.$template.'.php';
             $this->parameters = array();
             for ($p=$i;$p<count($parts);$p++) {
                 $this->parameters[] = urldecode($parts[$p]);
@@ -80,13 +82,12 @@ class Router
 
     }
 
-    private function check_csrf_token() {
-        if (!isset($_SESSION['csrf_token'])) {
-            $_SESSION['csrf_token'] = rand(0, PHP_INT_MAX);
-        }
-
+    private function check_csrf_token()
+    {
+        if (!isset($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = rand(0, PHP_INT_MAX);
+            
         if ($_SERVER['REQUEST_METHOD']=='POST') {
-            $success = (isset($_POST['csrf_token']) && ($_POST['csrf_token'] == $_SESSION['csrf_token']));
+            $success = isset($_POST['csrf_token']) && ($_POST['csrf_token'] == $_SESSION['csrf_token']);
         } else {
             $success = true;
         }
@@ -117,34 +118,21 @@ class Router
       return $this->action;
     }
 
-    protected function extractAction($match,$root,$dir)
+    protected function extractParts($match,$root,$dir)
     {
-      $match = $this->removePrefix($match,$root);
-      if (!preg_match('/(.*)\.[^\.]+\.php$/', $match, $matches)) $this->error('Could not action from filename: '.$match);
-      $root = $this->actionRoot;
-
-      $matches = glob($root.$matches[1].'.php');
-      if (count($matches)==0) return false;
-      if (count($matches)>1) $this->error('Mutiple actions matched: '.implode(', ',$matches));
-      return $matches[0];
+      $match = $this->removePrefix($match,$root.$dir);
+      $parts = explode('.',$match);
+      array_pop($parts);
+      $template = array_pop($parts);
+      $action = implode('.',$parts);
+      if (!$action) $this->error('Could not extract action from filename: '.$match);
+      if (!$template) $this->error('Could not extract template from filename: '.$match);
+      return array($action,$template);
     }
 
     public function getView()
     {
       return $this->view;
-    }
-
-    protected function extractTemplate($match,$root,$dir)
-    {
-        $match = $this->removePrefix($match,$root.$dir);
-        if (!preg_match('/.*\.([^\.]+)\.php$/', $match, $matches)) $this->error('Could not extract template from filename: '.$match);
-        $root = $this->templateRoot;
-        $dir = '/';
-        if ($matches[1]=='none') return 'none';
-        $matches = glob($root.$dir.$matches[1].'*.php');
-        if (count($matches)==0) $this->error('Could not find template');
-        if (count($matches)>1) $this->error('Mutiple templates matched: '.implode(', ',$matches));
-        return $matches[0];
     }
 
     public function getTemplate()
@@ -156,5 +144,10 @@ class Router
     {
     	if (!$this->parameters) return array();
     	else return $this->parameters;
+    }
+    
+    public function __toString()
+    {
+        return 'Router: '.$this->request;
     }
 }

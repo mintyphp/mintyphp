@@ -12,6 +12,7 @@ function logout()
 {
   if (!isset($_SESSION['user'])) return false;
   unset($_SESSION['user']);
+  unset($_SESSION['csrf_token']);
   return true;
 }
 

@@ -4,6 +4,8 @@ class Database
 {
     protected $debug;
     protected $mysqli;
+    public $queryCount;
+    public $queryDuration;
     
     public function __construct($debug, $host, $username, $password, $database)
     {
@@ -53,6 +55,8 @@ class Database
    
     private function qt($query)
     {
+        if ($this->debug) $start = microtime(true);
+      
         $query = $this->mysqli->prepare($query);
         if (!$query) {
             return $this->error($this->mysqli->error,false);
@@ -85,6 +89,12 @@ class Database
         }
 
         $query->close(); 
+        
+        if ($this->debug) {
+            $this->queryCount++;
+            $this->queryDuration += round((microtime(true)-$start)*1000,3);
+        }
+        
         return $result;
     }
  
@@ -96,5 +106,10 @@ class Database
     public function handle()
     {
         return $this->mysqli;
+    }
+    
+    public function __toString()
+    {
+        return 'Database';
     }
 }

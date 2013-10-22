@@ -9,6 +9,7 @@
   <li>PHP templating</li>
   <li>Database abstraction layer</li>
   <li>Authentication</li>
+  <li>Security</li>
 </ul>
 
 <h2>Philosophy</h2>
@@ -83,5 +84,5 @@ secured with a md5 salt.</p>
 
 <p>Protection mechanisms against SQL injection, Cross-Site-Scripting (XSS) and
 Cross-Site-Request-Forgery (CSRF) are provided. In the views one should use the "e()" function
-to escape output to protect against XSS. The forms should use the "post" method and call the
-"csrf_token()" function to protect against CSRF.</p>
+to escape output to protect against XSS. The forms should use the "post" method and must call
+the "csrf_token()" function to protect against CSRF.</p>

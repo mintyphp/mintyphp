@@ -13,7 +13,7 @@ session_start('mindaphp');
 
 // Debugger on or off
 $debugger = false;
-$debugger = new Debugger(&$_SESSION['debugger'],3);
+//$debugger = new Debugger(&$_SESSION['debugger'],3);
 
 // Load the front controller
 $router = new Router($debugger, $_SERVER['REQUEST_URI'], '../actions', '../views', '../templates');

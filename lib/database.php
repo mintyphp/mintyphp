@@ -1,4 +1,5 @@
 <?php
+class DatabaseError extends Exception {};
 
 class Database
 {
@@ -7,25 +8,19 @@ class Database
     public $queryCount;
     public $queryDuration;
     
-    public function __construct($debug, $host, $username, $password, $database)
+    public function __construct($debugger, $host, $username, $password, $database)
     {
-        $this->debug = (bool) $debug;
+        $this->debugger = $debugger;
         $reflect  = new ReflectionClass('mysqli');
         $this->mysqli = $reflect->newInstanceArgs(array_slice(func_get_args(), 1));
         if (mysqli_connect_errno()) {
             $this->error(mysqli_connect_error());
         }
     }
-
-    private function error($message, $die = true)
+    
+    protected function error($message)
     {
-        if ($this->debug) {
-            header('Content-Type: text/plain');
-            echo "Error: ".$message."\n";
-            debug_print_backtrace();
-        }
-        if ($this->debug || $die) die();
-        return false;
+      throw new DatabaseError($message);
     }
     
     public function q1($query)
@@ -55,8 +50,19 @@ class Database
    
     private function qt($query)
     {
-        if ($this->debug) $start = microtime(true);
-      
+        if (!$this->debugger) {
+            return call_user_func_array(array($this, '_qt'), func_get_args());
+        }
+        $time = microtime(true);
+        $result = call_user_func_array(array($this, '_qt'), func_get_args());
+        $duration += round((microtime(true)-$time)*1000,3);
+        $this->debugger->log("$query in $duration ms");
+        //$this->debugger->logQuery(compact('time','duration','query'));
+        return $result;
+    }
+    
+    private function _qt($query)
+    {
         $query = $this->mysqli->prepare($query);
         if (!$query) {
             return $this->error($this->mysqli->error,false);
@@ -89,11 +95,6 @@ class Database
         }
 
         $query->close(); 
-        
-        if ($this->debug) {
-            $this->queryCount++;
-            $this->queryDuration += round((microtime(true)-$start)*1000,3);
-        }
         
         return $result;
     }

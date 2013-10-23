@@ -5,18 +5,21 @@ require '../lib/router.php';
 require '../lib/database.php';
 // Load the helper functions
 require '../lib/functions.php';
-
-// Debug on or off
-$debug = true;
+// Load the helper functions
+require '../lib/debugger.php';
 
 // Start the session
 session_start('mindaphp');
 
+// Debugger on or off
+$debugger = false;
+$debugger = new Debugger(&$_SESSION['debugger'],3);
+
 // Load the front controller
-$router = new Router($debug, $_SERVER['REQUEST_URI'], '../actions', '../views', '../templates');
+$router = new Router($debugger, $_SERVER['REQUEST_URI'], '../actions', '../views', '../templates');
 
 // Connect to the database
-$db = new Database($debug, 'localhost', 'mindaphp', 'mindaphp', 'mindaphp');
+$db = new Database($debugger, 'localhost', 'mindaphp', 'mindaphp', 'mindaphp');
 
 // Set up redirects
 $router->redirect('/','/hello/world');
@@ -29,7 +32,7 @@ $parameters = $router->getParameters();
 if ($router->getTemplate()=='none') {
     @include $router->getAction();
     require $router->getView();
-    die();
+    exit();
 }
 
 // Load the action into body
@@ -43,4 +46,4 @@ ob_end_clean();
 require $router->getTemplate();
 
 // Show developer toolbar
-//if ($debug) require '../lib/toolbar.php'; WIP
+if ($debugger) $debugger->toolbar(get_defined_vars());

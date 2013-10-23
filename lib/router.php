@@ -1,9 +1,10 @@
 <?php
+class RouterError extends Exception {};
 
 class Router
 {
-    protected $debug;
-
+    protected $debugger;
+    
     protected $request;
     protected $actionRoot;
     protected $templateRoot;
@@ -14,38 +15,30 @@ class Router
     protected $template = null;
     protected $parameters = null;
 
-    protected function removePrefix($string,$prefix)
+    function __construct($debugger, $request, $actionRoot, $viewRoot, $templateRoot)
     {
-        if (substr($string,0,strlen($prefix))==$prefix) {
-            $string = substr($string,strlen($prefix));
-        }
-
-        return $string;
-    }
-
-    function __construct($debug, $request, $actionRoot, $viewRoot, $templateRoot)
-    {
-
+        $this->debugger = $debugger;
         $this->request = $request;
         $this->viewRoot = $viewRoot;
         $this->actionRoot = $actionRoot;
         $this->templateRoot = $templateRoot;
-
-        $this->debug = (bool) $debug;
-
         $this->route();
     }
 
     protected function error($message)
     {
-        if ($this->debug) {
-            header('Content-Type: text/plain');
-            echo "Error: ".$message."\n";
-            debug_print_backtrace();
-        }
-        die();
+        throw new RouterError($message);
     }
 
+    protected function removePrefix($string,$prefix)
+    {
+      if (substr($string,0,strlen($prefix))==$prefix) {
+        $string = substr($string,strlen($prefix));
+      }
+    
+      return $string;
+    }
+    
     protected function route()
     {
         $root = $this->viewRoot;
@@ -77,12 +70,17 @@ class Router
             for ($p=$i;$p<count($parts);$p++) {
                 $this->parameters[] = urldecode($parts[$p]);
             }
+            if ($this->debugger) {
+              $this->debugger->log("view:$this->view");
+              $this->debugger->log("action:$this->action");
+              $this->debugger->log("template:$this->template");
+            }
             break;
         }
 
     }
 
-    private function check_csrf_token()
+    protected function check_csrf_token()
     {
         if (!isset($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = rand(0, PHP_INT_MAX);
             

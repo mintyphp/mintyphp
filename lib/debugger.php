@@ -42,7 +42,7 @@ class Debugger
 <a onclick="$('#queries').toggle(); return false;" href="#">db</a>
 <?php e($this->request['router']['url']); ?> - 
 <?php echo sprintf('%.2f',$this->request['duration']*1000); ?> ms - 
-<?php echo sprintf('%.2f',memory_get_peak_usage()/1000000); ?> MB
+<?php echo sprintf('%.2f',memory_get_peak_usage(true)/1000000); ?> MB
 <a style="float:right;" onclick="$('#debugbar').toggle(); return false;" href="#">X</a>
 </div>
 </div>

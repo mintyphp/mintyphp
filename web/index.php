@@ -13,10 +13,10 @@ session_start('mindaphp');
 
 // Debugger on or off
 $debugger = false;
-//$debugger = new Debugger(&$_SESSION['debugger'],3);
+$debugger = new Debugger(&$_SESSION['debugger'],10);
 
 // Load the front controller
-$router = new Router($debugger, $_SERVER['REQUEST_URI'], '../actions', '../views', '../templates');
+$router = new Router($debugger, $_SERVER['REQUEST_URI'], $_SERVER['SCRIPT_NAME'], '../actions', '../views', '../templates');
 
 // Connect to the database
 $db = new Database($debugger, 'localhost', 'mindaphp', 'mindaphp', 'mindaphp');

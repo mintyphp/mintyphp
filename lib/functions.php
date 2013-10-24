@@ -1,7 +1,9 @@
 <?php
 function redirect($url)
 {
-  die(header("Location: $url"));
+  global $debugger;
+  if ($debugger) $debugger->log('redirect: '.$url);
+  die(header("Location: $url"));  
 }
 
 function parameterless()

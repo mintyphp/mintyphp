@@ -6,6 +6,7 @@ class Router
     protected $debugger;
     
     protected $request;
+    protected $script;
     protected $actionRoot;
     protected $templateRoot;
 
@@ -15,10 +16,11 @@ class Router
     protected $template = null;
     protected $parameters = null;
 
-    function __construct($debugger, $request, $actionRoot, $viewRoot, $templateRoot)
+    function __construct($debugger, $request, $script, $actionRoot, $viewRoot, $templateRoot)
     {
         $this->debugger = $debugger;
         $this->request = $request;
+        $this->script = $script;
         $this->viewRoot = $viewRoot;
         $this->actionRoot = $actionRoot;
         $this->templateRoot = $templateRoot;
@@ -44,8 +46,8 @@ class Router
         $root = $this->viewRoot;
         $dir = '/';
 
-        $request = $this->removePrefix($this->request,'/');
-        $parts = explode('/',$request);
+        $request = $this->removePrefix($this->request,$this->script?:'');
+        $parts = explode('/',ltrim($request,'/'));
         foreach ($parts as $i=>$part) {
             $this->url = $dir.$part;
             if ($part && file_exists($root.$dir.$part) && is_dir($root.$dir.$part)) {
@@ -71,9 +73,10 @@ class Router
                 $this->parameters[] = urldecode($parts[$p]);
             }
             if ($this->debugger) {
-              $this->debugger->log("view:$this->view");
-              $this->debugger->log("action:$this->action");
-              $this->debugger->log("template:$this->template");
+              $request = $this->request; 
+              $url = $this->url;
+              $this->debugger->set('router',compact('request','url','dir','view','template'));
+              if ($this->debugger) $this->debugger->log('url: '.$url);
             }
             break;
         }
@@ -102,6 +105,7 @@ class Router
     {
         if (rtrim($this->request,'/') == rtrim($request,'/')) {
           $this->request = $location;
+          $this->debugger->log('redirect: '.$location);
           $this->route();
         }
     }
@@ -146,6 +150,6 @@ class Router
     
     public function __toString()
     {
-        return 'Router: '.$this->request;
+        return 'Router';
     }
 }

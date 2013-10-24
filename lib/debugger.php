@@ -6,7 +6,8 @@ class Debugger
     
     public function __construct(&$storage,$history)
     {
-        $this->requests = &$storage;
+        if (!isset($storage['debugger'])) $storage['debugger'] = array();
+        $this->requests = &$storage['debugger'];
         $this->request = array('log'=>array());
         array_unshift($this->requests,&$this->request);
         while (count($this->requests)>$history) array_pop($this->requests);

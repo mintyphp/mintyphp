@@ -55,9 +55,8 @@ class Database
         }
         $time = microtime(true);
         $result = call_user_func_array(array($this, '_qt'), func_get_args());
-        $duration += round((microtime(true)-$time)*1000,3);
-        $this->debugger->log("$query in $duration ms");
-        //$this->debugger->logQuery(compact('time','duration','query'));
+        $duration = microtime(true)-$time;
+        $this->debugger->add('queries',compact('time','duration','query'));
         return $result;
     }
     

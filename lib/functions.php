@@ -2,7 +2,7 @@
 function redirect($url)
 {
   global $debugger;
-  if ($debugger) $debugger->log('redirect: '.$url);
+  if ($debugger) $debugger->add('log','redirect: '.$url);
   die(header("Location: $url"));  
 }
 

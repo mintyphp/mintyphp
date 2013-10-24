@@ -76,7 +76,7 @@ class Router
               $request = $this->request; 
               $url = $this->url;
               $this->debugger->set('router',compact('request','url','dir','view','template'));
-              if ($this->debugger) $this->debugger->log('url: '.$url);
+              $this->debugger->add('log','url: '.$url);
             }
             break;
         }
@@ -105,7 +105,7 @@ class Router
     {
         if (rtrim($this->request,'/') == rtrim($request,'/')) {
           $this->request = $location;
-          $this->debugger->log('redirect: '.$location);
+          $this->debugger->add('log','redirect: '.$location);
           $this->route();
         }
     }

@@ -37,7 +37,7 @@ if ($router->getTemplate()=='none') {
 
 // Load the action into body
 ob_start();
-@include $router->getAction();
+if ($router->getAction()) require $router->getAction();
 require $router->getView();
 $body = ob_get_contents();
 ob_end_clean();
@@ -46,4 +46,4 @@ ob_end_clean();
 require $router->getTemplate();
 
 // Show developer toolbar
-if ($debugger) $debugger->toolbar(get_defined_vars());
+if ($debugger) $debugger->toolbar();

@@ -1,7 +1,7 @@
 <?php include __DIR__.'/parts/header.html'; ?>
         <div class="title">
             <div class="logo">
-                MindaPHP - Documentation - <?php echo $router->getUrl(); ?>
+                MindaPHP - Documentation
             </div>
         </div>
         <div class="menu">

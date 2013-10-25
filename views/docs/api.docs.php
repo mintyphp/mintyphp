@@ -4,7 +4,7 @@
 <pre>
 Type    Variable/Function             File
 ==========================================================
-bool    $debug                        web/index.php
+object  $debugger                     web/index.php
 object  $router                       web/index.php
         $router-&gt;redirect($url,$loc)  lib/router.php
 string  $router-&gt;getParameters()      lib/router.php

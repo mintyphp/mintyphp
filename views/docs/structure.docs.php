@@ -1,6 +1,6 @@
 <?php parameterless() ?>
 <h1>Structure</h1>
-<pre>
+<pre style="width:800px;">
 .
 ├── actions                         Folder containing PHP for dynamic pages
 │   ├── admin

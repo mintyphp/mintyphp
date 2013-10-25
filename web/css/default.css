@@ -1,7 +1,4 @@
 @CHARSET "UTF-8";
-body   { font-family: 'Arial', sans; font-size:120%; line-height: 1.4em; margin: 0;}
-a      { color: blue;}
-pre    { line-height: 1.25em;}
 .menu  { float: left; padding: 20px; width: 160px; }
 .body  { margin-left: 200px; padding: 20px; border-left: 1px solid silver;}
 .title { background-color: silver; padding: 20px;}

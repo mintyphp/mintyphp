@@ -13,13 +13,15 @@ session_start('mindaphp');
 
 // Debugger on or off
 $debugger = false;
-$debugger = new Debugger(&$_SESSION,10);
+$debugger = new Debugger(10);
 
 // Load the front controller
-$router = new Router($debugger, $_SERVER['REQUEST_URI'], $_SERVER['SCRIPT_NAME'], '../actions', '../views', '../templates');
+$router = new Router($debugger, '../actions', '../views', '../templates');
 
 // Connect to the database
 $db = new Database($debugger, 'localhost', 'mindaphp', 'mindaphp', 'mindaphp');
+
+debug($router);
 
 // Set up redirects
 $router->redirect('/','/hello/world');
@@ -29,7 +31,7 @@ $router->redirect('/docs','/docs/overview');
 $parameters = $router->getParameters();
 
 // Handle the 'none' template case
-if ($router->getTemplate()=='none') {
+if (!$router->getTemplate()) {
     @include $router->getAction();
     require $router->getView();
     exit();
@@ -39,11 +41,10 @@ if ($router->getTemplate()=='none') {
 ob_start();
 if ($router->getAction()) require $router->getAction();
 require $router->getView();
+// Show developer toolbar
+if ($debugger) echo $debugger->toolbar();
 $body = ob_get_contents();
 ob_end_clean();
 
 // Load body into template
 require $router->getTemplate();
-
-// Show developer toolbar
-if ($debugger) $debugger->toolbar();

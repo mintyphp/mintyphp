@@ -12,7 +12,7 @@ of the page.</p>
 <h2>Escaped echo</h2>
 <pre>e($variable)</pre>
 <p>In the views one should use "&lt;?php e($variable); ?&gt;" to echo and NOT the normal "echo". This function
-escapes the variable (with htmlspecialchars) to prevent Cross-Site-Scripting (XSS) attacks.</p>
+escapes the variable (using "htmlspecialchars") to prevent Cross-Site-Scripting (XSS) attacks.</p>
 <h2>CSRF token</h2>
 <pre>csrf_token()</pre>
 <p>Between the "&lt;form method=&quot;post&quot;&gt;" and the "&lt;/form&gt;" tag in the view one should add "&lt;?php csrf_token(); ?&gt;".
@@ -21,6 +21,7 @@ Note: this is required when sending a form with the "post" method.</p>
 <h2>Debug</h2>
 <pre>debug($variable)</pre>
 <p>The "debug" function logs the contents of a variable to the "Logging" panel of the debugger.
+In the debugger the file and line number of the invocation will also be logged.
 If the debugger is not loaded (in production) then calls to the "debug" function are ignored.
 To reduce memory usage this function limits the output:</p>
 <ol>

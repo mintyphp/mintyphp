@@ -40,7 +40,7 @@ ob_start();
 if ($router->getAction()) require $router->getAction();
 require $router->getView();
 // Show developer toolbar
-if ($debugger) echo $debugger->toolbar();
+if ($debugger) $debugger->toolbar();
 $body = ob_get_contents();
 ob_end_clean();
 

@@ -50,7 +50,7 @@ class Debugger
         $html.= self::formatRequest($this->requests[0]);
         $html.= ' - <a href="/debugger.php">debugger</a>';
         $html.= '</div></div>';
-        return $html;
+        echo $html;
     }
     
     static function formatRequest($request)

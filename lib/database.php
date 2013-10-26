@@ -5,19 +5,15 @@ class Database
 {
     protected $debugger;
     protected $mysqli;
-    public $queryCount;
-    public $queryDuration;
+    protected $arguments;
     
     public function __construct($debugger, $host, $username, $password, $database)
     {
         $this->debugger = $debugger;
-        $reflect  = new ReflectionClass('mysqli');
-        $this->mysqli = $reflect->newInstanceArgs(array_slice(func_get_args(), 1));
-        if (mysqli_connect_errno()) {
-            $this->error(mysqli_connect_error());
-        }
+        $this->mysqli = null;
+        $this->arguments = array_slice(func_get_args(), 1);
     }
-    
+
     protected function error($message)
     {
       throw new DatabaseError($message);
@@ -62,6 +58,11 @@ class Database
     
     private function _qt($query)
     {
+        if (!$this->mysqli) {
+          $reflect  = new ReflectionClass('mysqli');
+          $this->mysqli = $reflect->newInstanceArgs($this->arguments);
+          if (mysqli_connect_errno()) $this->error(mysqli_connect_error());
+        }
         $query = $this->mysqli->prepare($query);
         if (!$query) {
             return $this->error($this->mysqli->error,false);

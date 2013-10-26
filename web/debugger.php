@@ -74,6 +74,12 @@ session_start('mindaphp');
 <div class="well well-sm">
 <?php echo $request['router']['method'].' '.htmlentities($request['router']['dir'].$request['router']['view'].'.'.$request['router']['template'].'.php'); ?>
 </div>
+<h4>Files</h4>
+<table class="table"><tbody>
+<tr><th>Action</th><td><?php echo $request['router']['actionFile']?:'<em>None</em>'; ?></td></tr>
+<tr><th>View</th><td><?php echo $request['router']['viewFile']; ?></td></tr>
+<tr><th>Template</th><td><?php echo $request['router']['templateFile']?:'<em>None</em>'; ?></td></tr>
+</tbody></table>
 <h4>$parameters</h4>
 <table class="table"><tbody>
 <?php if (!count($request['router']['parameters']['url'])):?>
@@ -128,11 +134,16 @@ session_start('mindaphp');
   <td><?php echo isset($request['memory'])?sprintf('%.2f',$request['memory']/1000000):'???'; ?> MB</td>
 </tr>
 </tbody></table>
-<h4>File paths</h4>
+<h4>Files</h4>
 <table class="table"><tbody>
-<tr><th>Action</th><td><?php echo $request['router']['actionFile']?:'<em>None</em>'; ?></td></tr>
-<tr><th>View</th><td><?php echo $request['router']['viewFile']; ?></td></tr>
-<tr><th>Template</th><td><?php echo $request['router']['templateFile']?:'<em>None</em>'; ?></td></tr>
+<?php $total = 0; $count = 0; ?>
+<?php foreach ($request['files'] as $filename): ?>
+<?php $size = filesize($filename); $total+= $size; $count++; ?>
+<?php $path = str_replace(realpath(__DIR__.'/..'),'..',$filename); ?>
+<tr><td><?php echo htmlspecialchars($path); ?></td><td><?php echo sprintf('%.2f',$size/1000) ?> kB</td></tr>
+<?php endforeach;?>
+<tr><td><strong>Total <?php echo $count; ?> files</strong></td>
+<td><strong><?php echo sprintf('%.2f',$total/1000) ?> kB</strong></td></tr>
 </tbody></table>
 </div>
 

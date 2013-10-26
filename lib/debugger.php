@@ -38,6 +38,7 @@ class Debugger
         $this->set('type',$type);
         $this->set('duration',microtime(true)-$this->get('start'));
         $this->set('memory',memory_get_peak_usage(true));
+        $this->set('files',get_included_files());
     }
     
     public function toolbar()

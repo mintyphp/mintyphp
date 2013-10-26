@@ -23,6 +23,8 @@ session_start('mindaphp');
     
   </head>
   <body>
+  <div class="container">
+  
   <div class="row">
   <div class="col-md-4">
   <h3>MindaPHP Debugger</h3>
@@ -126,24 +128,30 @@ session_start('mindaphp');
   <th>Time</th>
   <th>Duration</th>
   <th>Peak memory</th>
+  <th>Run as</th>
 </tr>
 </thead><tbody>
 <tr>
   <td><?php list($time,$micro) = explode('.',$request['start']); echo date('H:i:s',$time).'.'.substr($micro,0,3); ?></td>
   <td><?php echo isset($request['duration'])?sprintf('%.2f',$request['duration']*1000):'???'; ?> ms</td>
   <td><?php echo isset($request['memory'])?sprintf('%.2f',$request['memory']/1000000):'???'; ?> MB</td>
+  <td><?php echo $request['user']; ?></td>
 </tr>
 </tbody></table>
 <h4>Files</h4>
 <table class="table"><tbody>
+<?php if (!isset($request['files'])): ?>
+<tr><td colspan="3"><em>None</em></td></tr>
+<?php else: ?>
 <?php $total = 0; $count = 0; ?>
-<?php foreach ($request['files'] as $filename): ?>
+<?php foreach ($request['files'] as $i=>$filename): ?>
 <?php $size = filesize($filename); $total+= $size; $count++; ?>
 <?php $path = str_replace(realpath(__DIR__.'/..'),'..',$filename); ?>
-<tr><td><?php echo htmlspecialchars($path); ?></td><td><?php echo sprintf('%.2f',$size/1000) ?> kB</td></tr>
+<tr><td><?php echo $i+1; ?></td><td><?php echo htmlspecialchars($path); ?></td><td><?php echo sprintf('%.2f',$size/1000) ?> kB</td></tr>
 <?php endforeach;?>
-<tr><td><strong>Total <?php echo $count; ?> files</strong></td>
+<tr><td></td><td><strong><?php echo $count; ?> files</strong></td>
 <td><strong><?php echo sprintf('%.2f',$total/1000) ?> kB</strong></td></tr>
+<?php endif;?>
 </tbody></table>
 </div>
 
@@ -187,5 +195,7 @@ $(function () {
 </script>
 
 </div></div>
+
+</div>
 </body>
 </html>

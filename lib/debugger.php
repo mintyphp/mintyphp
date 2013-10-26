@@ -13,6 +13,7 @@ class Debugger
         array_unshift($this->requests,&$this->request);
         while (count($this->requests)>$history) array_pop($this->requests);
         $this->set('start',microtime(true));
+        $this->set('user',get_current_user());
         register_shutdown_function(array($this,'end'),'abort');
     }
 

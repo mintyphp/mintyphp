@@ -103,11 +103,17 @@ session_start('mindaphp');
 <div class="tab-pane" id="debug-request-<?php echo $i ?>-execution">
 <h4>Result</h4>
 <div class="well well-sm">
-<?php if ($request['type']=='ok'):?>
-<?php echo htmlspecialchars('Render page: '.$request['router']['url']); ?>
-<?php elseif ($request['type']=='redirect'):?>
-<?php echo htmlspecialchars('Redirect to: '.$request['redirect']); ?>
-<?php endif; ?>
+<?php
+  if (!isset($request['type'])) {
+    echo '???';
+  } elseif ($request['type']=='abort') {
+    echo htmlspecialchars('Aborted: Exception, die() or exit encountered');
+  } elseif ($request['type']=='ok') {
+    echo htmlspecialchars('Rendered page: '.$request['router']['url']);
+  } elseif ($request['type']=='redirect') {
+    echo htmlspecialchars('Redirected to: '.$request['redirect']); 
+  }
+?>
 </div>
 <table class="table"><thead>
 <tr>
@@ -118,8 +124,8 @@ session_start('mindaphp');
 </thead><tbody>
 <tr>
   <td><?php list($time,$micro) = explode('.',$request['start']); echo date('H:i:s',$time).'.'.substr($micro,0,3); ?></td>
-  <td><?php echo sprintf('%.2f',$request['duration']*1000); ?> ms</td>
-  <td><?php echo sprintf('%.2f',$request['memory']/1000000); ?> MB</td>
+  <td><?php echo isset($request['duration'])?sprintf('%.2f',$request['duration']*1000):'???'; ?> ms</td>
+  <td><?php echo isset($request['memory'])?sprintf('%.2f',$request['memory']/1000000):'???'; ?> MB</td>
 </tr>
 </tbody></table>
 <h4>File paths</h4>
@@ -143,7 +149,7 @@ session_start('mindaphp');
 <br/>
 <pre>
 <?php foreach ($request['log'] as $k=>$v): ?>
-<?php echo $v."\n"; ?>
+<?php echo htmlspecialchars($v)."\n"; ?>
 <?php endforeach; ?>
 </pre>
 </div>

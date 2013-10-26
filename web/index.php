@@ -21,8 +21,6 @@ $router = new Router($debugger, '../actions', '../views', '../templates');
 // Connect to the database
 $db = new Database($debugger, 'localhost', 'mindaphp', 'mindaphp', 'mindaphp');
 
-debug($router);
-
 // Set up redirects
 $router->redirect('/','/hello/world');
 $router->redirect('/docs','/docs/overview');

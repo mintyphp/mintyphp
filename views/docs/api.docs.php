@@ -23,6 +23,7 @@ object  $db-&gt;handle()                 lib/database.php
         parameterless()               lib/functions.php
         e($variable)                  lib/functions.php
         csrf_token()                  lib/functions.php
+        debug($variable,$strlen)      lib/functions.php
 bool    login($username,$password)    lib/authenticate.php
 bool    logout()                      lib/authenticate.php
 bool    register($username,$password) lib/authenticate.php

@@ -3,7 +3,7 @@ class DatabaseError extends Exception {};
 
 class Database
 {
-    protected $debug;
+    protected $debugger;
     protected $mysqli;
     public $queryCount;
     public $queryDuration;

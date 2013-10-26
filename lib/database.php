@@ -14,6 +14,15 @@ class Database
         $this->arguments = array_slice(func_get_args(), 1);
     }
 
+    private function connect()
+    {
+      if (!$this->mysqli) {
+        $reflect  = new ReflectionClass('mysqli');
+        $this->mysqli = $reflect->newInstanceArgs($this->arguments);
+        if (mysqli_connect_errno()) $this->error(mysqli_connect_error());
+      }
+    }
+    
     protected function error($message)
     {
       throw new DatabaseError($message);
@@ -58,11 +67,7 @@ class Database
     
     private function _qt($query)
     {
-        if (!$this->mysqli) {
-          $reflect  = new ReflectionClass('mysqli');
-          $this->mysqli = $reflect->newInstanceArgs($this->arguments);
-          if (mysqli_connect_errno()) $this->error(mysqli_connect_error());
-        }
+        $this->connect();
         $query = $this->mysqli->prepare($query);
         if (!$query) {
             return $this->error($this->mysqli->error,false);
@@ -106,6 +111,7 @@ class Database
     
     public function handle()
     {
+        $this->connect();
         return $this->mysqli;
     }
     

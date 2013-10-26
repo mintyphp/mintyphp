@@ -107,7 +107,7 @@ session_start('mindaphp');
   if (!isset($request['type'])) {
     echo '???';
   } elseif ($request['type']=='abort') {
-    echo htmlspecialchars('Aborted: Exception, die() or exit encountered');
+    echo htmlspecialchars('Aborted: Exception, "die()" or "exit" encountered');
   } elseif ($request['type']=='ok') {
     echo htmlspecialchars('Rendered page: '.$request['router']['url']);
   } elseif ($request['type']=='redirect') {

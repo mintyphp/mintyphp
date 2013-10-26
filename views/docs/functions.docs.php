@@ -18,9 +18,9 @@ escapes the variable (with htmlspecialchars) to prevent Cross-Site-Scripting (XS
 <p>Between the "&lt;form method=&quot;post&quot;&gt;" and the "&lt;/form&gt;" tag in the view one should add "&lt;?php csrf_token(); ?&gt;".
 This call will echo a hidden input field to the form that will prevent Cross-Site-Request-Forgery (CSRF) attacks.
 Note: this is required when sending a form with the "post" method.</p>
-<h2>Log to debugger</h2>
+<h2>Debug</h2>
 <pre>debug($variable,$strlen=100)</pre>
-<p>The "debug" function logs a variable to the "Logging" panel of the debugger.
-To reduce memory usage the function only logs the first 100 characters of each string.
+<p>The "debug" function logs the contents of a variable to the "Logging" panel of the debugger.
+To reduce memory usage only the first 100 characters of each string are logged.
 The "strlen" parameter is optional and allows you to change this limit.
-If the debugger is not loaded then calls to the "debug" function are ignored.</p>
+Note: if the debugger is not loaded then calls to the "debug" function are ignored.</p>

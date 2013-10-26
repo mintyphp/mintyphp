@@ -72,15 +72,14 @@ function debug($variable,$strlen=100,$depth=10,$i=0,&$objects = array())
         $string.=get_class($variable).'(...)';
       else {
         $id = array_push($objects,&$variable);
-        $className = get_class($variable);
-        $members = (array)$variable;
-        $keys = array_keys($members);
+        $array = (array)$variable;
         $spaces = str_repeat(' ',$i*2);
-        $string.= "$className#$id\n".$spaces.'(';
-        foreach($keys as $key) {
-          $name = str_replace("\0",':',trim($key));
+        $string.= get_class($variable)."#$id\n".$spaces.'(';
+        $properties = array_keys($array);
+        foreach($properties as $property) {
+          $name = str_replace("\0",':',trim($property));
           $string.= "\n".$spaces."  [$name] => ";
-          $string.= debug($members[$key],$strlen,$depth,$i+1,&$objects);
+          $string.= debug($array[$property],$strlen,$depth,$i+1,&$objects);
         }
         $string.= "\n".$spaces.')';
       }

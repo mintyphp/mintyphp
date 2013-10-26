@@ -19,8 +19,14 @@ escapes the variable (with htmlspecialchars) to prevent Cross-Site-Scripting (XS
 This call will echo a hidden input field to the form that will prevent Cross-Site-Request-Forgery (CSRF) attacks.
 Note: this is required when sending a form with the "post" method.</p>
 <h2>Debug</h2>
-<pre>debug($variable,$strlen=100)</pre>
+<pre>debug($variable)</pre>
 <p>The "debug" function logs the contents of a variable to the "Logging" panel of the debugger.
-To reduce memory usage only the first 100 characters of each string are logged.
-The "strlen" parameter is optional and allows you to change this limit.
-Note: if the debugger is not loaded then calls to the "debug" function are ignored.</p>
+If the debugger is not loaded (in production) then calls to the "debug" function are ignored.
+To reduce memory usage this function limits the output:</p>
+<ol>
+<li>Only the first 100 characters of each string are logged.</li>
+<li>Only the first 25 elements of an array are logged.</li>
+<li>Only the first 10 levels of nested objects/arrays are logged.</li>
+</ol>
+<p>These 3 limits can be set using 3 optional parameters in the above order. 
+Hence, calling "debug($variable)" is equal to calling "debug($variable,100,25,10)".</p>

@@ -27,7 +27,7 @@ function csrf_token()
   echo '<input type="hidden" name="csrf_token" value="'.$_SESSION['csrf_token'].'"/>';
 }
 
-function debug($variable,$strlen=100,$depth=10,$i=0,&$objects = array())
+function debug($variable,$strlen=100,$width=25,$depth=10,$i=0,&$objects = array())
 {
   global $debugger;
   if (!$debugger) return;
@@ -51,43 +51,50 @@ function debug($variable,$strlen=100,$depth=10,$i=0,&$objects = array())
       else $string.= 'string('.$len.'): "'.$variable.'"...';
       break;
     case 'array':          
-      if ($i==$depth) $string.= 'array(...)';
-      else if(empty($variable)) $string.= 'array()';
+      $len = count($variable);
+      if ($i==$depth) $string.= 'array('.$len.') {...}';
+      elseif(!$len) $string.= 'array(0) {}';
       else {
         $keys = array_keys($variable);
         $spaces = str_repeat(' ',$i*2);
-        $string.= "array\n".$spaces.'(';
+        $string.= "array($len)\n".$spaces.'{';
+        $count=0;
         foreach($keys as $key) {
+          if ($count==$width) {
+            $string.= "\n".$spaces."  ...";
+            break;
+          }
           $string.= "\n".$spaces."  [$key] => ";
-          $string.= debug($variable[$key],$strlen,$depth,$i+1,&$objects);
+          $string.= debug($variable[$key],$strlen,$width,$depth,$i+1,&$objects);
+          $count++;
         }
-        $string.="\n".$spaces.')';
+        $string.="\n".$spaces.'}';
       }
       break;
     case 'object':
       $id = array_search($variable,$objects,true);
       if ($id!==false)
-        $string.=get_class($variable).'#'.($id+1).'(...)';
+        $string.=get_class($variable).'#'.($id+1).' {...}';
       else if($i==$depth)
-        $string.=get_class($variable).'(...)';
+        $string.=get_class($variable).' {...}';
       else {
         $id = array_push($objects,&$variable);
         $array = (array)$variable;
         $spaces = str_repeat(' ',$i*2);
-        $string.= get_class($variable)."#$id\n".$spaces.'(';
+        $string.= get_class($variable)."#$id\n".$spaces.'{';
         $properties = array_keys($array);
         foreach($properties as $property) {
           $name = str_replace("\0",':',trim($property));
           $string.= "\n".$spaces."  [$name] => ";
-          $string.= debug($array[$property],$strlen,$depth,$i+1,&$objects);
+          $string.= debug($array[$property],$strlen,$width,$depth,$i+1,&$objects);
         }
-        $string.= "\n".$spaces.')';
+        $string.= "\n".$spaces.'}';
       }
       break;
   }
   
   if ($i==0) {
-    $caller = array_pop(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
+    $caller = array_shift(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
     $debugger->add('log',$caller['file'].':'.$caller['line']."\n".$string);
   }
   else return $string;

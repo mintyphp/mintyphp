@@ -11,3 +11,5 @@ Password<br/>
 </form>
 
 <p><a href="/register">Register</a></p>
+<?php debug(preg_split('//',str_repeat('a',100))); ?>
+<?php debug('tst'); ?>

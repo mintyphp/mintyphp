@@ -144,10 +144,10 @@ session_start('mindaphp');
 <tr><td colspan="3"><em>None</em></td></tr>
 <?php else: ?>
 <?php $total = 0; $count = 0; ?>
-<?php foreach ($request['files'] as $i=>$filename): ?>
+<?php foreach ($request['files'] as $n=>$filename): ?>
 <?php $size = filesize($filename); $total+= $size; $count++; ?>
 <?php $path = str_replace(realpath(__DIR__.'/..'),'..',$filename); ?>
-<tr><td><?php echo $i+1; ?></td><td><?php echo htmlspecialchars($path); ?></td><td><?php echo sprintf('%.2f',$size/1000) ?> kB</td></tr>
+<tr><td><?php echo $n+1; ?></td><td><?php echo htmlspecialchars($path); ?></td><td><?php echo sprintf('%.2f',$size/1000) ?> kB</td></tr>
 <?php endforeach;?>
 <tr><td></td><td><strong><?php echo $count; ?> files</strong></td>
 <td><strong><?php echo sprintf('%.2f',$total/1000) ?> kB</strong></td></tr>
@@ -173,8 +173,7 @@ session_start('mindaphp');
 </pre>
 </div>
 
-</div>
-</div>
+</div></div>
 <?php endforeach; ?>
 </div>
 

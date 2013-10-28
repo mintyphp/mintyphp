@@ -170,9 +170,5 @@ class Router
     	if (!$this->parameters) return array();
     	else return $this->parameters;
     }
-    
-    public function __toString()
-    {
-        return 'Router';
-    }
+
 }

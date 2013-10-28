@@ -24,13 +24,15 @@ class Debugger
 
     public function add($key,$value)
     {
-      if (!isset($this->request[$key])) $this->request[$key] = array();
-      $this->request[$key][] = $value;
+        if (!isset($this->request[$key])) {
+            $this->request[$key] = array();
+        }
+        $this->request[$key][] = $value;
     }
     
     public function get($key)
     {
-      return isset($this->request[$key])?$this->request[$key]:false;
+        return isset($this->request[$key])?$this->request[$key]:false;
     }
     
     public function end($type)
@@ -49,30 +51,20 @@ class Debugger
         $html.= '<div style="margin:6px;">';
         $javascript = "document.getElementById('debugger-bar').style.display='none'; return false;";
         $html.= '<a href="#" onclick="'.$javascript.'" style="float:right;">close</a>';
-        $html.= self::formatRequest($this->requests[0]);
-        $html.= ' - <a href="/debugger.php">debugger</a>';
+        $request = $this->request;
+        $parts = array();
+        $parts[] = date('H:i:s',$request['start']);
+        $parts[] = strtolower($request['router']['method']).' '.htmlentities($request['router']['url']);
+        if (!isset($request['type'])) {
+          $parts[] ='???';
+        } else {
+          $parts[] = $request['type'];
+          $parts[] = round($request['duration']*1000).' ms ';
+          $parts[] = round($request['memory']/1000000).' MB';
+        }
+        $html.= implode(' - ',$parts).' - <a href="/debugger.php">debugger</a>';
         $html.= '</div></div>';
         echo $html;
-    }
-    
-    static function formatRequest($request)
-    {
-        $html = date('H:i:s',$request['start']).' - ';
-        $html.= strtolower($request['router']['method']).' ';
-        $html.= htmlentities($request['router']['url']).' - ';
-        if (!isset($request['type'])) {
-          $html.= '???';
-        } else {
-          $html.= $request['type'].' - ';
-          $html.= round($request['duration']*1000).' ms - ';
-          $html.= round($request['memory']/1000000).' MB';
-        }
-        return $html;
-    }
-    
-    public function __toString()
-    {
-      return 'Debugger';
     }
     
 }

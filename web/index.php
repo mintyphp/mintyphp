@@ -5,15 +5,18 @@ require '../lib/router.php';
 require '../lib/database.php';
 // Load the helper functions
 require '../lib/functions.php';
-// Load the helper functions
-require '../lib/debugger.php';
 
 // Start the session
 session_start('mindaphp');
 
 // Debugger on or off
-$debugger = false;
-$debugger = new Debugger(10);
+$debugger = true;
+
+// Load the debugger
+if ($debugger) {
+  require '../lib/debugger.php';
+  $debugger = new Debugger(10);
+}
 
 // Load the front controller
 $router = new Router($debugger, '../actions', '../views', '../templates');

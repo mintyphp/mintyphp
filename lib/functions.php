@@ -31,6 +31,7 @@ function debug($variable,$strlen=100,$width=25,$depth=10,$i=0,&$objects = array(
 {
   global $debugger;
   if (!$debugger) return;
+  
   $search = array("\0", "\a", "\b", "\f", "\n", "\r", "\t", "\v");
   $replace = array('\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v');
   
@@ -93,9 +94,12 @@ function debug($variable,$strlen=100,$width=25,$depth=10,$i=0,&$objects = array(
       break;
   }
   
-  if ($i==0) {
-    $caller = array_shift(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
-    $debugger->add('log',$caller['file'].':'.$caller['line']."\n".$string);
-  }
-  else return $string;
+  if ($i>0) return $string;
+  
+  $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+  do $caller = array_shift($backtrace); while ($caller && !isset($caller['file']));
+  if ($caller) $string = $caller['file'].':'.$caller['line']."\n".$string;
+  
+  $debugger->add('log',$string);
+  return $string;
 }

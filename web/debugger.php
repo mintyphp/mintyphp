@@ -1,6 +1,179 @@
 <?php 
-// Load the helper functions
-require '../lib/debugger.php';
+class Debugger
+{
+  static function getRequestCaption($request)
+  {
+    $parts = array();
+    $parts[] = date('H:i:s',$request['start']);
+    $parts[] = strtolower($request['router']['method']).' '.htmlentities($request['router']['url']);
+    
+    if (!isset($request['type'])) {
+      $parts[] ='???';
+    } else {
+      $parts[] = $request['type'];
+      $parts[] = round($request['duration']*1000).' ms ';
+      $parts[] = round($request['memory']/1000000).' MB';
+    }
+    return implode(' - ',$parts);
+  }
+  
+  static function getRequestList()
+  {
+    $html = array();
+    $html[] ='<ul class="nav nav-pills nav-stacked">';
+    foreach ($_SESSION['debugger'] as $i=>$request) {
+      $active = ($i==0?'active':'');
+      $html[] ='<li class="'.$active.'"><a href="#debug-request-'.$i.'" data-toggle="tab">';
+      $html[] =self::getRequestCaption($request);
+      $html[] ='</a></li>';
+    }
+    $html[] ='</ul>';
+    return implode("\n",$html);
+  }
+  
+  static function getTabList($i)
+  {
+    $html = array();
+    $html[] ='<ul class="nav nav-pills">';
+    $html[] ='<li class="active"><a class="debug-request-routing" href="#debug-request-'.$i.'-routing" data-toggle="tab">Routing</a></li>';
+    $html[] ='<li><a class="debug-request-execution" href="#debug-request-'.$i.'-execution" data-toggle="tab">Execution</a></li>';
+    $html[] ='<li><a class="debug-request-queries" href="#debug-request-'.$i.'-queries" data-toggle="tab">Queries</a></li>';
+    $html[] ='<li><a class="debug-request-logging" href="#debug-request-'.$i.'-logging" data-toggle="tab">Logging</a></li>';
+    $html[] ='</ul>';
+    return implode("\n",$html);
+  }
+  
+  static function getRoutingTabPane($requestId,$request)
+  {
+    $html = array();
+    $html[] ='<div class="tab-pane active" id="debug-request-'.$requestId.'-routing">';
+    if ($request['router']['method']=='GET' && count($request['router']['parameters']['get'])) {
+      $html[] ='<div class="alert alert-warning"><strong>Warning:</strong> GET parameters should not be used</div>';    
+    }
+    if ($request['router']['method']=='POST' && !$request['router']['csrfOk']) {
+      $html[] ='<div class="alert alert-danger"><strong>Error:</strong> CSRF token validation failed</div>';
+    }
+    $method = $request['router']['method'];
+    $html[] ='<h4>Request</h4>';
+    $html[] ='<div class="well well-sm">'.$method.' '.htmlentities($request['router']['request']).'</div>';
+    if ($request['router']['redirect']) {
+      $html[] ='<h4>Redirect</h4>';
+      $html[] ='<div class="well well-sm">'.$method.' '.htmlentities($request['router']['redirect']).'</div>';
+    }
+    $path = $request['router']['dir'].$request['router']['view'].'.'.$request['router']['template'].'.php';
+    $html[] ='<h4>Target</h4>';
+    $html[] ='<div class="well well-sm">'.$method.' '.htmlentities($path).'</div>';
+    $html[] ='<h4>Files</h4>';
+    $html[] ='<table class="table"><tbody>';
+    $html[] ='<tr><th>Action</th><td>'.($request['router']['actionFile']?:'<em>None</em>').'</td></tr>';
+    $html[] ='<tr><th>View</th><td>'.$request['router']['viewFile'].'</td></tr>';
+    $html[] ='<tr><th>Template</th><td>'.($request['router']['templateFile']?:'<em>None</em>').'</td></tr>';
+    $html[] ='</tbody></table>';
+    $html[] ='<h4>$parameters</h4>';
+    $html[] ='<table class="table"><tbody>';
+    if (!count($request['router']['parameters']['url'])) {
+      $html[] ='<tr><td colspan="2"><em>None</em></td></tr>';
+    } else foreach ($request['router']['parameters']['url'] as $k=>$v) {
+      $html[] ='<tr><th>'.htmlspecialchars($k).'</th><td>'.htmlspecialchars($v).'</td></tr>';
+    }
+    $html[] ='</tbody></table>';
+    if (count($request['router']['parameters']['get'])) {
+      $html[] ='<h4>$_GET</h4>';
+      $html[] ='<table class="table"><tbody>';
+      foreach ($request['router']['parameters']['get'] as $k=>$v) {
+        $html[] ='<tr><th>'.htmlspecialchars($k).'</th><td>'.htmlspecialchars($v).'</td></tr>';
+      }
+      $html[] ='</tbody></table>';
+    }
+    if (count($request['router']['parameters']['post'])) {
+      $html[] ='<h4>$_POST</h4>';
+      $html[] ='<table class="table"><tbody>';
+      foreach ($request['router']['parameters']['post'] as $k=>$v) {
+        $html[] ='<tr><th>'.htmlspecialchars($k).'</th><td>'.htmlspecialchars($v).'</td></tr>';
+      }
+      $html[] ='</tbody></table>';
+    }
+    $html[] ='</div>';
+    return implode("\n",$html);
+  }
+  
+  static function getExecutionTabPane($requestId,$request)
+  {
+    $html = array();
+    $html[] ='<div class="tab-pane" id="debug-request-'.$requestId.'-execution">';
+    $html[] ='<h4>Result</h4>';
+    $html[] ='<div class="well well-sm">';
+    if (!isset($request['type'])) {
+      $html[] = '???';
+    } elseif ($request['type']=='abort') {
+      $html[] = htmlspecialchars('Aborted: Exception, "die()" or "exit" encountered');
+    } elseif ($request['type']=='ok') {
+      $html[] = htmlspecialchars('Rendered page: '.$request['router']['url']);
+    } elseif ($request['type']=='redirect') {
+      $html[] = htmlspecialchars('Redirected to: '.$request['redirect']);
+    }
+    $html[] ='</div>';
+    list($time,$micro) = explode('.',$request['start']);
+    $time = date('H:i:s',$time).'.'.substr($micro,0,3);
+    $duration = isset($request['duration'])?sprintf('%.2f ms',$request['duration']*1000):'???';
+    $memory = isset($request['memory'])?sprintf('%.2f MB',$request['memory']/1000000):'???';
+    $html[] ='<table class="table"><thead>';
+    $html[] ='<tr><th>Time</th><th>Duration</th><th>Peak memory</th><th>Run as</th></tr>';
+    $html[] ='</thead><tbody><tr>';
+    $html[] ='<td>'.$time.'</td><td>'.$duration.'</td><td>'.$memory.'</td><td>'.$request['user'].'</td>';
+    $html[] ='</tr></tbody></table>';    
+    $html[] ='<h4>Files</h4>';
+    $html[] ='<table class="table"><tbody>';
+    if (!isset($request['files'])) {
+      $html[] ='<tr><td colspan="3"><em>None</em></td></tr>';
+    } else {
+      $total = 0;
+      $count = 0;
+      foreach ($request['files'] as $filename) {
+        $count++;
+        $path = str_replace(realpath(__DIR__.'/..'),'..',$filename);
+        $path = htmlspecialchars($path);
+        $size = filesize($filename); 
+        $total+= $size;
+        $size = sprintf('%.2f kB',$size/1000); 
+        $html[] ='<tr><td>'.$count.'</td><td>'.$path.'</td><td>'.$size.'</td></tr>';
+      }
+      $total = sprintf('%.2f kB',$total/1000);
+      $html[] ='<tr><td></td><td><strong>'.$count.' files</strong></td><td><strong>'.$total.'</strong></td></tr>';
+    }
+    $html[] ='</tbody></table>';
+    $html[] ='</div>';
+    return implode("\n",$html);
+  }
+  
+  static function getQueriesTabPane($requestId,$request)
+  {
+    $html = array();
+    $html[] ='<div class="tab-pane" id="debug-request-'.$requestId.'-queries">';
+    $html[] ='<br/><pre>';
+    foreach ($request['queries'] as $query) {
+      foreach ($query as $k=>$v) {
+        $html[] ="$k=>$v";
+      }
+    }
+    $html[] ='</pre>';
+    $html[] ='</div>';
+    return implode("\n",$html);
+  }
+  
+  static function getLoggingTabPane($requestId,$request)
+  {
+    $html = array();
+    $html[] ='<div class="tab-pane" id="debug-request-'.$requestId.'-logging">';
+    $html[] ='<br/><pre>';
+    foreach ($request['log'] as $log) {
+       $html[] =htmlspecialchars($log)."\n";
+    }
+    $html[] ='</pre>';
+    $html[] ='</div>';
+    return implode("\n",$html);
+  }
+}
 
 session_start('mindaphp'); 
 ?>
@@ -25,176 +198,48 @@ session_start('mindaphp');
   <body>
   <div class="container">
   
-  <div class="row">
-  <div class="col-md-4">
-  <h3>MindaPHP Debugger</h3>
+    <div class="row">
+      <div class="col-md-4">
+        <h3>MindaPHP Debugger</h3>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-4">
+        <?php echo Debugger::getRequestList(); ?>
+      </div>
+      <div class="col-md-8">
+        <div class="tab-content">
+          <?php foreach ($_SESSION['debugger'] as $i=>$request): ?>
+          <div class="tab-pane <?php echo $i==0?'active':''; ?>" id="debug-request-<?php echo $i ?>">
+            <?php echo Debugger::getTabList($i); ?>
+            <div class="tab-content">
+              <?php echo Debugger::getRoutingTabPane($i,$request); ?>
+              <?php echo Debugger::getExecutionTabPane($i,$request); ?>
+              <?php echo Debugger::getQueriesTabPane($i,$request); ?>
+              <?php echo Debugger::getLoggingTabPane($i,$request); ?>
+            </div>
+          </div>
+          <?php endforeach; ?>
+        </div>
+        <script>
+        $(function () {
+          var classes=[];
+          $('#debug-request-0 a[data-toggle="tab"]').each(function (e) { 
+            classes.push($(this).attr('class')); 
+          });
+          $(classes).each(function (i,c) {
+        	$('a[data-toggle="tab"].'+c).on('shown.bs.tab', function (e) {
+          	  $('a[data-toggle="tab"].'+c).each(function (e) {
+        	    $(this).tab('show');
+        	  });
+            });
+          });
+        });
+        </script>
+      </div>
+    </div>
+    
   </div>
-  </div>
-  <div class="row">
-  <div class="col-md-4">
-  
-<ul class="nav nav-pills nav-stacked">
-<?php foreach ($_SESSION['debugger'] as $i=>$request): ?>
-<li class="<?php echo $i==0?'active':''; ?>"><a href="#debug-request-<?php echo $i ?>" data-toggle="tab">
-  <?php echo Debugger::formatRequest($request); ?>
-</a></li>
-<?php endforeach; ?>
-</ul>
-
-  </div>
-  <div class="col-md-8">
-  
-<div class="tab-content">
-<?php foreach ($_SESSION['debugger'] as $i=>$request): ?>
-<div class="tab-pane <?php echo $i==0?'active':''; ?>" id="debug-request-<?php echo $i ?>">
-<ul class="nav nav-pills">
-  <li class="active"><a class="debug-request-routing" href="#debug-request-<?php echo $i ?>-routing" data-toggle="tab">Routing</a></li>
-  <li><a class="debug-request-execution" href="#debug-request-<?php echo $i ?>-execution" data-toggle="tab">Execution</a></li>
-  <li><a class="debug-request-queries" href="#debug-request-<?php echo $i ?>-queries" data-toggle="tab">Queries</a></li>
-  <li><a class="debug-request-logging" href="#debug-request-<?php echo $i ?>-logging" data-toggle="tab">Logging</a></li>
-</ul>
-<div class="tab-content">
-
-<div class="tab-pane active" id="debug-request-<?php echo $i ?>-routing">
-<?php if ($request['router']['method']=='GET' && count($request['router']['parameters']['get'])):?>
-<div class="alert alert-warning"><strong>Warning:</strong> GET parameters should not be used</div>
-<?php endif; ?>
-<?php if ($request['router']['method']=='POST' && !$request['router']['csrfOk']):?>
-<div class="alert alert-danger"><strong>Error:</strong> CSRF token validation failed</div>
-<?php endif; ?>
-<h4>Request</h4>
-<div class="well well-sm">
-<?php echo $request['router']['method'].' '.htmlentities($request['router']['request']); ?>
-</div>
-<?php if ($request['router']['redirect']):?>
-<h4>Redirect</h4>
-<div class="well well-sm">
-<?php echo $request['router']['method'].' '.$request['router']['redirect']; ?><br/>
-</div>
-<?php endif;?>
-<h4>Target</h4>
-<div class="well well-sm">
-<?php echo $request['router']['method'].' '.htmlentities($request['router']['dir'].$request['router']['view'].'.'.$request['router']['template'].'.php'); ?>
-</div>
-<h4>Files</h4>
-<table class="table"><tbody>
-<tr><th>Action</th><td><?php echo $request['router']['actionFile']?:'<em>None</em>'; ?></td></tr>
-<tr><th>View</th><td><?php echo $request['router']['viewFile']; ?></td></tr>
-<tr><th>Template</th><td><?php echo $request['router']['templateFile']?:'<em>None</em>'; ?></td></tr>
-</tbody></table>
-<h4>$parameters</h4>
-<table class="table"><tbody>
-<?php if (!count($request['router']['parameters']['url'])):?>
-<tr><td colspan="2"><em>None</em></td></tr>
-<?php else: foreach ($request['router']['parameters']['url'] as $k=>$v): ?>
-<tr><th><?php echo $k; ?></th><td><?php echo htmlspecialchars($v); ?></td></tr>
-<?php endforeach; endif;?>
-</tbody></table>
-<?php if (count($request['router']['parameters']['get'])):?>
-<h4>$_GET</h4>
-<table class="table"><tbody>
-<?php foreach ($request['router']['parameters']['get'] as $k=>$v): ?>
-<tr><th><?php echo $k; ?></th><td><?php echo htmlspecialchars($v); ?></td></tr>
-<?php endforeach;?>
-</tbody></table>
-<?php endif;?>
-<?php if (count($request['router']['parameters']['post'])):?>
-<h4>$_POST</h4>
-<table class="table"><tbody>
-<?php foreach ($request['router']['parameters']['post'] as $k=>$v): ?>
-<tr><th><?php echo $k; ?></th><td><?php echo htmlspecialchars($v); ?></td></tr>
-<?php endforeach;?>
-</tbody></table>
-<?php endif;?>
-</div>
-
-<div class="tab-pane" id="debug-request-<?php echo $i ?>-execution">
-<h4>Result</h4>
-<div class="well well-sm">
-<?php
-  if (!isset($request['type'])) {
-    echo '???';
-  } elseif ($request['type']=='abort') {
-    echo htmlspecialchars('Aborted: Exception, "die()" or "exit" encountered');
-  } elseif ($request['type']=='ok') {
-    echo htmlspecialchars('Rendered page: '.$request['router']['url']);
-  } elseif ($request['type']=='redirect') {
-    echo htmlspecialchars('Redirected to: '.$request['redirect']); 
-  }
-?>
-</div>
-<table class="table"><thead>
-<tr>
-  <th>Time</th>
-  <th>Duration</th>
-  <th>Peak memory</th>
-  <th>Run as</th>
-</tr>
-</thead><tbody>
-<tr>
-  <td><?php list($time,$micro) = explode('.',$request['start']); echo date('H:i:s',$time).'.'.substr($micro,0,3); ?></td>
-  <td><?php echo isset($request['duration'])?sprintf('%.2f',$request['duration']*1000):'???'; ?> ms</td>
-  <td><?php echo isset($request['memory'])?sprintf('%.2f',$request['memory']/1000000):'???'; ?> MB</td>
-  <td><?php echo $request['user']; ?></td>
-</tr>
-</tbody></table>
-<h4>Files</h4>
-<table class="table"><tbody>
-<?php if (!isset($request['files'])): ?>
-<tr><td colspan="3"><em>None</em></td></tr>
-<?php else: ?>
-<?php $total = 0; $count = 0; ?>
-<?php foreach ($request['files'] as $n=>$filename): ?>
-<?php $size = filesize($filename); $total+= $size; $count++; ?>
-<?php $path = str_replace(realpath(__DIR__.'/..'),'..',$filename); ?>
-<tr><td><?php echo $n+1; ?></td><td><?php echo htmlspecialchars($path); ?></td><td><?php echo sprintf('%.2f',$size/1000) ?> kB</td></tr>
-<?php endforeach;?>
-<tr><td></td><td><strong><?php echo $count; ?> files</strong></td>
-<td><strong><?php echo sprintf('%.2f',$total/1000) ?> kB</strong></td></tr>
-<?php endif;?>
-</tbody></table>
-</div>
-
-<div class="tab-pane" id="debug-request-<?php echo $i ?>-queries">
-<?php foreach ($request['queries'] as $j=>$query): ?>
-<?php echo "-"?><br/>
-<?php foreach ($query as $k=>$v): ?>
-<?php echo "$k=>$v"; ?><br/>
-<?php endforeach; ?>
-<?php endforeach; ?>
-</div>
-
-<div class="tab-pane" id="debug-request-<?php echo $i ?>-logging">
-<br/>
-<pre>
-<?php foreach ($request['log'] as $k=>$v): ?>
-<?php echo htmlspecialchars($v)."\n"; ?>
-<?php endforeach; ?>
-</pre>
-</div>
-
-</div></div>
-<?php endforeach; ?>
-</div>
-
-<script>
-$(function () {
-  var classes=[];
-  $('#debug-request-0 a[data-toggle="tab"]').each(function (e) { 
-    classes.push($(this).attr('class')); 
-  });
-  $(classes).each(function (i,c) {
-	$('a[data-toggle="tab"].'+c).on('shown.bs.tab', function (e) {
-  	  $('a[data-toggle="tab"].'+c).each(function (e) {
-	    $(this).tab('show');
-	  });
-    });
-  });
-});
-</script>
-
-</div></div>
-
-</div>
 </body>
 </html>

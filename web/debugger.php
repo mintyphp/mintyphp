@@ -146,18 +146,90 @@ class Debugger
     return implode("\n",$html);
   }
   
+  static function getQueriesTabPaneTabList($requestId,$i,$args,$rows)
+  {
+    $html = array();
+    $html[] ='<ul class="nav nav-pills">';
+    $args = $args?'<span class="badge pull-right">'.$args.'</span>':'';
+    $html[] ='<li class="active"><a href="#debug-request-'.$requestId.'-query-'.$i.'-arguments" data-toggle="tab">Arguments'.$args.'</a></li>';
+    $html[] ='<li><a href="#debug-request-'.$requestId.'-query-'.$i.'-explain" data-toggle="tab">Explain</a></li>';
+    $rows = $rows?'<span class="badge pull-right">'.$rows.'</span>':'';
+    $html[] ='<li><a href="#debug-request-'.$requestId.'-query-'.$i.'-result" data-toggle="tab">Result'.$rows.'</a></li>';
+    $html[] ='</ul>';
+    return implode("\n",$html);
+  }
+  
+  static function getQueriesTabPaneTabPane($requestId,$query,$i,$type)
+  {
+    $html = array();
+    if ($type=='arguments') {
+      $html[] = '<div class="tab-pane active" id="debug-request-'.$requestId.'-query-'.$i.'-'.$type.'">';
+      $html[] = '<pre style="margin-top:10px;">';
+      $html[] = 'PREPARE `query` FROM \''.$query['equery'].'\';';
+      $params = false;
+      foreach ($query[$type] as $i=>$argument) {
+        if (!$params) {
+          $html[] = '';
+          $params = ' USING ';
+        }
+        $params.= '@argument'.($i+1).',';
+        $html[] = 'SET @argument'.($i+1).' = '.var_export($argument,true).';';
+      }
+      $params = rtrim($params,',');
+      $html[] = '';
+      $html[] = 'EXECUTE `query`'.$params.';';
+      $html[] = 'DEALLOCATE PREPARE `query`;';
+      $html[] = '</pre></div>';
+    } else {
+      $html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-query-'.$i.'-'.$type.'">';
+      $html[] = '<table class="table"><thead>';
+      $html[] = '<tr><th>#</th><th>Field</th><th>Value</th></tr>';
+      $html[] = '</thead><tbody>';
+      foreach ($query[$type] as $r=>$row) {
+        $f=0;
+        $fc = count($row);
+        foreach ($row as $field=>$value) {
+          $html[] = '<tr>'.($f?'':'<td rowspan="'.$fc.'">'.($r+1).'</td>').'<td>'.$field.'</td><td>'.var_export($value,true).'</td></tr>';
+          $f++;
+        }
+      }
+      $html[] = '</tbody>';
+      $html[] = '</table></div>';
+    }
+    return implode("\n",$html);
+  }
+  
   static function getQueriesTabPane($requestId,$request)
   {
     $html = array();
-    $html[] ='<div class="tab-pane" id="debug-request-'.$requestId.'-queries">';
-    $html[] ='<br/><pre>';
-    foreach ($request['queries'] as $query) {
-      foreach ($query as $k=>$v) {
-        $html[] ="$k=>$v";
-      }
+    $html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-queries">';
+    $html[] = '<table class="table"><thead>';
+    $html[] = '<tr><th>Query</th><th>Duration</th></tr>';
+    $html[] = '</thead><tbody>';
+    $count = 0;
+    $total = 0;
+    foreach ($request['queries'] as $i=>$query) {
+      $count++;
+      $total+= $query['duration'];
+      $html[] = '<tr>';
+      $html[] = '<td><a href="#" onclick="$(\'#debug-request-'.$requestId.'-query-'.$i.'\').toggle(); return false;">'.$query['query'].'</a>';
+      $html[] = '<td>'.sprintf('%.2f ms',$query['duration']*1000).'</td>';
+      $html[] = '</tr>';
+      $html[] = '<tr style="display:none;" id="debug-request-'.$requestId.'-query-'.$i.'"><td colspan="5">';
+      
+      $html[] = self::getQueriesTabPaneTabList($requestId,$i,count($query['arguments']),count($query['result']));
+      $html[] = '<div class="tab-content">';
+      $html[] = self::getQueriesTabPaneTabPane($requestId,$query,$i,'arguments');
+      $html[] = self::getQueriesTabPaneTabPane($requestId,$query,$i,'explain');
+      $html[] = self::getQueriesTabPaneTabPane($requestId,$query,$i,'result');
+      $html[] = '</div>';
+      
+      $html[] = '</td></tr>';
     }
-    $html[] ='</pre>';
-    $html[] ='</div>';
+    $html[] = '<tr><td><strong>'.$count.' queries</strong></td>';
+    $html[] = '<td>'.sprintf('%.2f ms',$total*1000).'</td></tr>';
+    $html[] = '</tbody></table>';
+    $html[] = '</div>';
     return implode("\n",$html);
   }
   

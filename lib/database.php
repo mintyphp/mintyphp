@@ -61,7 +61,13 @@ class Database
         $time = microtime(true);
         $result = call_user_func_array(array($this, '_qt'), func_get_args());
         $duration = microtime(true)-$time;
-        $this->debugger->add('queries',compact('time','duration','query'));
+        $arguments = func_get_args();
+        $arguments[0] = 'explain '.$query;
+        $explain = call_user_func_array(array($this, '_qt'), $arguments);
+        $arguments = array_slice(func_get_args(),2);
+        $rows = $this->mysqli->affected_rows;
+        $equery = $this->mysqli->real_escape_string($query);
+        $this->debugger->add('queries',compact('duration','query','equery','arguments','rows','result','explain'));
         return $result;
     }
     

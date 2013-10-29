@@ -65,9 +65,8 @@ class Database
         $arguments[0] = 'explain '.$query;
         $explain = call_user_func_array(array($this, '_qt'), $arguments);
         $arguments = array_slice(func_get_args(),2);
-        $rows = $this->mysqli->affected_rows;
         $equery = $this->mysqli->real_escape_string($query);
-        $this->debugger->add('queries',compact('duration','query','equery','arguments','rows','result','explain'));
+        $this->debugger->add('queries',compact('duration','query','equery','arguments','result','explain'));
         return $result;
     }
     

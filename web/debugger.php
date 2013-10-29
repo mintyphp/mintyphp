@@ -159,11 +159,11 @@ class Debugger
     return implode("\n",$html);
   }
   
-  static function getQueriesTabPaneTabPane($requestId,$query,$i,$type)
+  static function getQueriesTabPaneTabPane($requestId,$query,$queryId,$type)
   {
     $html = array();
     if ($type=='arguments') {
-      $html[] = '<div class="tab-pane active" id="debug-request-'.$requestId.'-query-'.$i.'-'.$type.'">';
+      $html[] = '<div class="tab-pane active" id="debug-request-'.$requestId.'-query-'.$queryId.'-'.$type.'">';
       $html[] = '<pre style="margin-top:10px;">';
       $html[] = 'PREPARE `query` FROM \''.$query['equery'].'\';';
       $params = false;
@@ -181,15 +181,16 @@ class Debugger
       $html[] = 'DEALLOCATE PREPARE `query`;';
       $html[] = '</pre></div>';
     } else {
-      $html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-query-'.$i.'-'.$type.'">';
+      $html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-query-'.$queryId.'-'.$type.'">';
       $html[] = '<table class="table"><thead>';
       $html[] = '<tr><th>#</th><th>Field</th><th>Value</th></tr>';
       $html[] = '</thead><tbody>';
-      foreach ($query[$type] as $r=>$row) {
+      foreach ($query[$type] as $i=>$row) {
         $f=0;
         $fc = count($row);
         foreach ($row as $field=>$value) {
-          $html[] = '<tr>'.($f?'':'<td rowspan="'.$fc.'">'.($r+1).'</td>').'<td>'.$field.'</td><td>'.var_export($value,true).'</td></tr>';
+          $row = $f?'':'<td rowspan="'.$fc.'">'.($i+1).'</td>';
+          $html[] = '<tr>'.$row.'<td>'.$field.'</td><td>'.var_export($value,true).'</td></tr>';
           $f++;
         }
       }

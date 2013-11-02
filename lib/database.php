@@ -119,7 +119,17 @@ class Database
         $this->connect();
         return $this->mysqli;
     }
+
+    public function options()
+    {
+        return call_user_func_array(array($this->mysqli, 'options'), func_get_args());
+    }
     
+    public function close()
+    {
+      return $this->mysqli->close();
+    }
+        
     public function __toString()
     {
         return 'Database';

@@ -120,18 +120,16 @@ class Database
         return $this->mysqli;
     }
 
+    // Undocumented
     public function options()
     {
         return call_user_func_array(array($this->mysqli, 'options'), func_get_args());
     }
     
+    // Undocumented
     public function close()
     {
       return $this->mysqli->close();
     }
-        
-    public function __toString()
-    {
-        return 'Database';
-    }
+
 }

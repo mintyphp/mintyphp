@@ -159,7 +159,7 @@ class Router
     {
       return $this->view;
     }
-
+    
     public function getTemplate()
     {
         return $this->template;

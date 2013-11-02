@@ -33,7 +33,8 @@ $parameters = $router->getParameters();
 
 // Handle the 'none' template case
 if (!$router->getTemplate()) {
-    @include $router->getAction();
+    if ($router->getAction()) require $router->getAction();
+    $db=null;
     require $router->getView();
     exit();
 }
@@ -41,6 +42,7 @@ if (!$router->getTemplate()) {
 // Load the action into body
 ob_start();
 if ($router->getAction()) require $router->getAction();
+$db=null;
 require $router->getView();
 // Show developer toolbar
 if ($debugger) $debugger->toolbar();

@@ -64,7 +64,7 @@ class Router
                 else continue;
             } 
             if (!$part) $part = 'index';
-            $matches = glob($root.$dir.$part.'*.php');
+            $matches = glob($root.$dir.$part.'.*.php');
             if (count($matches)==0) $matches = glob($root.$dir.'index.*.php');
             else $i++;
             $csrfOk = $this->check_csrf_token($this->method);

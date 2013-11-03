@@ -31,7 +31,8 @@ class Database
     public function qv($query)
     {
       $result = call_user_func_array(array($this, 'q1'), func_get_args());
-      if (isset($result[0])) return $result[0];
+      $key = array_shift(array_keys($result));
+      if ($key) return $result[$key];
       return $result;
     }
     

@@ -28,6 +28,13 @@ class Database
       throw new DatabaseError($message);
     }
     
+    public function qv($query)
+    {
+      $result = call_user_func_array(array($this, 'q1'), func_get_args());
+      if (isset($result[0])) return $result[0];
+      return $result;
+    }
+    
     public function q1($query)
     {
         $args = func_get_args();
@@ -62,8 +69,12 @@ class Database
         $result = call_user_func_array(array($this, '_qt'), func_get_args());
         $duration = microtime(true)-$time;
         $arguments = func_get_args();
-        $arguments[0] = 'explain '.$query;
-        $explain = call_user_func_array(array($this, '_qt'), $arguments);
+        if (strtoupper(substr(trim($query), 0, 6))=='SELECT') {
+          $arguments[0] = 'explain '.$query;
+          $explain = call_user_func_array(array($this, '_qt'), $arguments);
+        } else {
+          $explain = false;
+        }
         $arguments = array_slice(func_get_args(),2);
         $equery = $this->mysqli->real_escape_string($query);
         $this->debugger->add('queries',compact('duration','query','equery','arguments','result','explain'));

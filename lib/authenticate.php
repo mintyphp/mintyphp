@@ -4,7 +4,7 @@ function login($username,$password)
   global $db;
   $query = 'select * from `users` where `username` = ? and sha1(concat(`salt`,?)) = `password` limit 1';
   $user = $db->q1($query,$username,$password);
-  if ($user) $_SESSION['user'] = $user;
+  if ($user) $_SESSION['user'] = $user['users'];
   return $user;
 }
 

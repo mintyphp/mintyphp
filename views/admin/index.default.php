@@ -12,7 +12,7 @@
   </thead>
   <tbody>
     <?php foreach ($users as $user): ?>
-      <tr><td><?php e($user['username']);?></td><td><?php e($user['created']);?></td></tr>
+      <tr><td><?php e($user['users']['username']);?></td><td><?php e($user['users']['created']);?></td></tr>
     <?php endforeach; ?>
   </tbody>
 </table>

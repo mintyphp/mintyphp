@@ -31,8 +31,9 @@ class Database
     public function qv($query)
     {
       $result = call_user_func_array(array($this, 'q1'), func_get_args());
-      $key = array_shift(array_keys($result));
-      if ($key) return $result[$key];
+      while ($key = array_shift(array_keys($result))) {
+        $result = $result[$key];
+      }
       return $result;
     }
     
@@ -103,17 +104,14 @@ class Database
         $params = array();
         $meta = $query->result_metadata();
         while ($field = $meta->fetch_field()) {
-            $params[] = &$row[$field->name];
+            if (!isset($row[$field->table])) $row[$field->table] = array();
+            $params[] = &$row[$field->table][$field->name];
         }
         call_user_func_array(array($query, 'bind_result'), $params);
 
         $result = array();
         while ($query->fetch()) {
-            $r = array();
-            foreach ($row as $key => $val) {
-                $r[$key] = $val;
-            }
-            $result[] = $r;
+            $result[] = json_decode(json_encode($row),true);
         }
 
         $query->close(); 

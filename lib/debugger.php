@@ -10,7 +10,7 @@ class Debugger
         if (!isset($_SESSION['debugger'])) $_SESSION['debugger'] = array();
         $this->requests = &$_SESSION['debugger'];
         $this->request = array('log'=>array(),'queries'=>array(),'session'=>array());
-        $this->logSession('start');
+        $this->logSession('before');
         array_unshift($this->requests,&$this->request);
         while (count($this->requests)>$history) array_pop($this->requests);
         $this->set('start',microtime(true));
@@ -56,7 +56,7 @@ class Debugger
         $this->set('duration',microtime(true)-$this->get('start'));
         $this->set('memory',memory_get_peak_usage(true));
         $this->set('files',get_included_files());
-        $this->logSession('end');
+        $this->logSession('after');
     }
     
     public function toolbar()

@@ -150,11 +150,14 @@ class Debugger
   static function getSessionTabPane($requestId,$request)
   {
     $html = array();
-    $html[] ='<div class="tab-pane" id="debug-request-'.$requestId.'-session">';
-    $html[] ='<br/><pre>';
-    $html[] = $request['session'];
-    $html[] ='</pre>';
-    $html[] ='</div>';
+    $html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-session">';
+    foreach ($request['session'] as $title => $value) {
+      $html[] = '<h4>'.ucfirst($title).'</h4>';
+      $html[] = '<pre>';
+      $html[] = $value;
+      $html[] = '</pre>';
+    }
+    $html[] = '</div>';
     return implode("\n",$html);
   }
   

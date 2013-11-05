@@ -9,17 +9,26 @@ class Debugger
     {
         if (!isset($_SESSION['debugger'])) $_SESSION['debugger'] = array();
         $this->requests = &$_SESSION['debugger'];
-        $session = array();
-        foreach ($_SESSION as $k=>$v) {
-          if ($k=='debugger') continue;
-          $session[$k] = $v;
-        } 
-        $this->request = array('log'=>array(),'queries'=>array(),'session'=>debug($session));
+        $this->request = array('log'=>array(),'queries'=>array(),'session'=>array());
+        $this->logSession('start');
         array_unshift($this->requests,&$this->request);
         while (count($this->requests)>$history) array_pop($this->requests);
         $this->set('start',microtime(true));
         $this->set('user',get_current_user());
         register_shutdown_function(array($this,'end'),'abort');
+    }
+    
+    private function logSession($title)
+    {
+        $session = array();
+        foreach ($_SESSION as $k=>$v) {
+            if ($k=='debugger') $v=true;
+            $session[$k] = $v;
+        }
+        $data = debug($session);
+        $data = substr($data, strpos($data,"\n"));
+        $this->request['session'][$title] = trim($data);
+        if (is_object($this)) array_pop($this->request['log']);
     }
 
     public function set($key,$value)
@@ -47,6 +56,7 @@ class Debugger
         $this->set('duration',microtime(true)-$this->get('start'));
         $this->set('memory',memory_get_peak_usage(true));
         $this->set('files',get_included_files());
+        $this->logSession('end');
     }
     
     public function toolbar()

@@ -95,8 +95,7 @@ function debug($variable,$strlen=100,$width=25,$depth=10,$i=0,&$objects = array(
   }
   
   if ($i>0) return $string;
-  
-  $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+  $backtrace = debug_backtrace(false);
   do $caller = array_shift($backtrace); while ($caller && !isset($caller['file']));
   if ($caller) $string = $caller['file'].':'.$caller['line']."\n".$string;
   

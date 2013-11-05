@@ -183,15 +183,21 @@ class Debugger
     } else {
       $html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-query-'.$queryId.'-'.$type.'">';
       $html[] = '<table class="table"><thead>';
-      $html[] = '<tr><th>#</th><th>Field</th><th>Value</th></tr>';
+      $html[] = '<tr><th>#</th><th>Table</th><th>Field</th><th>Value</th></tr>';
       $html[] = '</thead><tbody>';
-      foreach ($query[$type] as $i=>$row) {
+      foreach ($query[$type] as $i=>$tables) {
         $f=0;
-        $fc = count($row);
-        foreach ($row as $field=>$value) {
-          $row = $f?'':'<td rowspan="'.$fc.'">'.($i+1).'</td>';
-          $html[] = '<tr>'.$row.'<td>'.$field.'</td><td>'.var_export($value,true).'</td></tr>';
-          $f++;
+        $fc=array_sum(array_map("count", $tables));
+        foreach ($tables as $table=>$fields) {
+          $t=0;
+          $tc=count($fields);
+          foreach ($fields as $field=>$value) {
+            $rowCell = $f?'':'<td rowspan="'.$fc.'">'.($i+1).'</td>';
+            $tableCell = $t?'':'<td rowspan="'.$tc.'">'.$table.'</td>';
+            $html[] = '<tr>'.$rowCell.$tableCell.'<td>'.$field.'</td><td>'.var_export($value,true).'</td></tr>';
+            $t++;
+            $f++;
+          }
         }
       }
       $html[] = '</tbody>';

@@ -105,8 +105,13 @@ class Database
         $params = array();
         $meta = $query->result_metadata();
         while ($field = $meta->fetch_field()) {
-            if (!isset($row[$field->table])) $row[$field->table] = array();
-            $params[] = &$row[$field->table][$field->name];
+            if (!$field->table && strpos($field->name, '.')) {
+                $parts = explode('.', $field->name, 2);
+                $params[] = &$row[$parts[0]][$parts[1]];
+            } else {
+                if (!isset($row[$field->table])) $row[$field->table] = array();
+                $params[] = &$row[$field->table][$field->name];
+            }
         }
         call_user_func_array(array($query, 'bind_result'), $params);
 

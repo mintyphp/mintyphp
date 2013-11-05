@@ -7,7 +7,10 @@ foreach ($paths as $path) {
   foreach (glob($path) as $filename) {
     $files++;
     $data = @file_get_contents($source.$filename);
-    if ($data===false) die("Error loading URL ($source$filename)\n");
+    if ($data===false) {
+      echo "Error loading URL ($source$filename)\n";
+      continue;
+    }
     $size = strlen($data);
     $hash = sha1($data);
     $old = sha1(file_get_contents($filename));

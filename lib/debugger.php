@@ -9,7 +9,12 @@ class Debugger
     {
         if (!isset($_SESSION['debugger'])) $_SESSION['debugger'] = array();
         $this->requests = &$_SESSION['debugger'];
-        $this->request = array('log'=>array(),'queries'=>array());
+        $session = array();
+        foreach ($_SESSION as $k=>$v) {
+          if ($k=='debugger') continue;
+          $session[$k] = $v;
+        } 
+        $this->request = array('log'=>array(),'queries'=>array(),'session'=>debug($session));
         array_unshift($this->requests,&$this->request);
         while (count($this->requests)>$history) array_pop($this->requests);
         $this->set('start',microtime(true));

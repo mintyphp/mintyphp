@@ -37,6 +37,7 @@ class Debugger
     $html[] ='<ul class="nav nav-pills">';
     $html[] ='<li class="active"><a class="debug-request-routing" href="#debug-request-'.$i.'-routing" data-toggle="tab">Routing</a></li>';
     $html[] ='<li><a class="debug-request-execution" href="#debug-request-'.$i.'-execution" data-toggle="tab">Execution</a></li>';
+    $html[] ='<li><a class="debug-request-session" href="#debug-request-'.$i.'-session" data-toggle="tab">Session</a></li>';
     $html[] ='<li><a class="debug-request-queries" href="#debug-request-'.$i.'-queries" data-toggle="tab">Queries</a></li>';
     $html[] ='<li><a class="debug-request-logging" href="#debug-request-'.$i.'-logging" data-toggle="tab">Logging</a></li>';
     $html[] ='</ul>';
@@ -142,6 +143,17 @@ class Debugger
       $html[] ='<tr><td></td><td><strong>'.$count.' files</strong></td><td><strong>'.$total.'</strong></td></tr>';
     }
     $html[] ='</tbody></table>';
+    $html[] ='</div>';
+    return implode("\n",$html);
+  }
+  
+  static function getSessionTabPane($requestId,$request)
+  {
+    $html = array();
+    $html[] ='<div class="tab-pane" id="debug-request-'.$requestId.'-session">';
+    $html[] ='<br/><pre>';
+    $html[] = $request['session'];
+    $html[] ='</pre>';
     $html[] ='</div>';
     return implode("\n",$html);
   }
@@ -266,7 +278,6 @@ session_start('mindaphp');
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/default.css" rel="stylesheet">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="/js/jquery.min.js"></script>
@@ -295,6 +306,7 @@ session_start('mindaphp');
             <div class="tab-content">
               <?php echo Debugger::getRoutingTabPane($i,$request); ?>
               <?php echo Debugger::getExecutionTabPane($i,$request); ?>
+              <?php echo Debugger::getSessionTabPane($i,$request); ?>
               <?php echo Debugger::getQueriesTabPane($i,$request); ?>
               <?php echo Debugger::getLoggingTabPane($i,$request); ?>
             </div>

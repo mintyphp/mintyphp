@@ -109,7 +109,7 @@ class Router
         if ($method=='POST') {
             if (isset($_POST['csrf_token'])) {
                 $success = $_POST['csrf_token'] == $_SESSION['csrf_token'];
-                unset($_POST['csrf_token']);
+                //unset($_POST['csrf_token']);
             } else {
                 $success = false;
             }

@@ -100,6 +100,6 @@ function debug($variable,$strlen=100,$width=25,$depth=10,$i=0,&$objects = array(
   do $caller = array_shift($backtrace); while ($caller && !isset($caller['file']));
   if ($caller) $string = $caller['file'].':'.$caller['line']."\n".$string;
   
-  $debugger->add('log',$string);
+  if (is_object($debugger)) $debugger->add('log',$string);
   return $string;
 }

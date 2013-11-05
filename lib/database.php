@@ -31,7 +31,8 @@ class Database
     public function qv($query)
     {
       $result = call_user_func_array(array($this, 'q1'), func_get_args());
-      while ($key = array_shift(array_keys($result))) {
+      while (is_array($result)) {
+        $key = array_shift(array_keys($result));
         $result = $result[$key];
       }
       return $result;

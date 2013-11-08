@@ -68,9 +68,9 @@ class Router
             if (count($matches)==0) $matches = glob($root.$dir.'index.*.php');
             else $i++;
             $csrfOk = $this->check_csrf_token($this->method);
-            if (!$csrfOk) { $matches = glob($root.'/403.*.php'); $i=count($parts); }
-            if (!$this->allowGet && !$getOk) { $matches = glob($root.'/405.*.php'); $i=count($parts); }
-            if (count($matches)==0) { $matches = glob($root.'/404.*.php'); $i=count($parts); }
+            if (!$csrfOk) { $matches = glob($root.'/403.*.php'); $dir='/'; $i=count($parts); }
+            if (!$this->allowGet && !$getOk) { $matches = glob($root.'/405.*.php'); $dir='/'; $i=count($parts); }
+            if (count($matches)==0) { $matches = glob($root.'/404.*.php'); $dir='/'; $i=count($parts); }
             if (count($matches)==0) $this->error('Could not find 404');
             if (count($matches)>1) $this->error('Mutiple views matched: '.implode(', ',$matches));
             list($view,$template) = $this->extractParts($matches[0],$root,$dir);

@@ -5,5 +5,5 @@ Name<br/>
 <input name="name"/><br/>
 <br/>
 <input type="submit"/>
-<?php csrf_token(); ?>
+<?php Session::getCsrfInput(); ?>
 </form>

@@ -31,7 +31,7 @@
     </p>
   </div>
   <div class="body">
-    <?php echo $body; ?>
+    <?php echo Router::getContent(); ?>
   </div>
 </body>
 </html>

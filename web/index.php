@@ -1,53 +1,38 @@
 <?php
-// Load the router
-require '../lib/router.php';
-// Load the database abstraction layer
-require '../lib/database.php';
-// Load the helper functions
-require '../lib/functions.php';
-
+// Use default autoload implementation
+require "../lib/core/Loader.php";
+// Load the libraries
+require '../config/loader.php';
+// Load the config parameters
+require '../config/parameters.php';
+// Load the routes
+require '../config/router.php';
+// Register shortcut functions
+function e() {	echo call_user_func_array('htmlspecialchars',func_get_args()); }
+function d() { return call_user_func_array('Debugger::debug',func_get_args()); }
 // Start the session
-session_start('mindaphp');
-
-// Debugger on or off
-$debugger = true;
-
-// Load the debugger
-if ($debugger) {
-  require '../lib/debugger.php';
-  $debugger = new Debugger(10);
-}
-
-// Load the front controller
-$router = new Router($debugger, '../actions', '../views', '../templates');
-
-// Connect to the database
-$db = new Database($debugger, 'localhost', 'mindaphp', 'mindaphp', 'mindaphp');
-
-// Set up redirects
-$router->redirect('/','/hello/world');
-$router->redirect('/docs','/docs/overview');
-
-// Set the parameters
-$parameters = $router->getParameters();
-
-// Handle the 'none' template case
-if (!$router->getTemplate()) {
-    if ($router->getAction()) require $router->getAction();
-    $db=null;
-    require $router->getView();
-    exit();
-}
+Session::start();
 
 // Load the action into body
 ob_start();
-if ($router->getAction()) require $router->getAction();
-$db=null;
-require $router->getView();
-// Show developer toolbar
-if ($debugger) $debugger->toolbar();
-$body = ob_get_contents();
-ob_end_clean();
-
-// Load body into template
-require $router->getTemplate();
+if (Router::getAction()) require Router::getAction();
+if (ob_get_contents()) {
+	ob_end_flush();
+  trigger_error('MindaPHP action "'.Router::getAction().'" should not send output.', E_USER_WARNING);
+}
+else {
+	ob_end_clean();
+}
+DB::$enabled = false;
+if (Router::getTemplate()) {
+  ob_start();
+	require Router::getView();
+	// Show developer toolbar
+	if (Debugger::$enabled) Debugger::toolbar();
+	Router::setContent(ob_get_contents());
+	ob_end_clean();
+	// Load body into template
+	require Router::getTemplate();
+} else { // Handle the 'none' template case
+	require Router::getView();
+}

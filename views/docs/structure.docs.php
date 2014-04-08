@@ -1,4 +1,3 @@
-<?php parameterless() ?>
 <h1>Structure</h1>
 <pre style="width:800px;">
 .

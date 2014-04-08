@@ -1,0 +1,2 @@
+<?php
+Loader::register('core', '');

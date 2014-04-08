@@ -1,7 +1,4 @@
 <?php
-// Load the authenticate functions
-require '../lib/authenticate.php';
-
 $error = false;
 if (isset($_POST['username']))
 { $username = $_POST['username'];
@@ -16,11 +13,11 @@ if (isset($_POST['username']))
   elseif ($password!=$password2) 
   { $error = "Passwords must match"; 
   } 
-  elseif (!register($username, $password))
+  elseif (!Auth::register($username, $password))
   { $error = "User can not be registered";
   }
   else
-  { login($username, $password);
-    redirect("/admin");
+  { Auth::login($username, $password);
+    Router::redirect("/admin");
   }
 }

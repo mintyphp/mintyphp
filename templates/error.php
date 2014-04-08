@@ -1,4 +1,4 @@
 <?php
-  $body = '<p style="color:red;">ERROR: '.$body.'</p>';
+  Router::setContent('<p style="color:red;">ERROR: '.Router::getContent().'</p>');
   require __DIR__.'/default.php';
 ?>

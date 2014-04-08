@@ -7,7 +7,7 @@ Password<br/>
 <br/>
 <input type="submit"/><br/>
 <?php e($error); ?>
-<?php csrf_token(); ?>
+<?php Session::getCsrfInput(); ?>
 </form>
 
 <p><a href="/register">Register</a></p>

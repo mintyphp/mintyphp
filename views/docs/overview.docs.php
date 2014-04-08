@@ -1,4 +1,3 @@
-<?php parameterless() ?>
 <h1>Documentation</h1>
 <p>This is the documentation of the MindaPHP framework.</p>
 <ul>
@@ -48,31 +47,30 @@ reside in a sub-folder and their filename is constructed like this: "{name}.{tem
 Both the folder path and the "name" segment are part of the URL. Files with the name "index"
 can be used to serve the directory URL.</p>
 
-<p>The variable "$parameters" can be used to get access to anything provided after the URL. This
-means that when you access the URL "/customers/23", the router will match the "customers" page
-and set "$parameters[0]" to "23". This behavior can be turned off on a per page basis by calling
-the "parameterless" function. This will guarantee a consistent URL, which is useful when using
-relative links.</p>
+<p>The array returned by "Router::getParameters()" can be used to get access to anything provided
+after the URL. This means that when you access the URL "/customers/23", the router will match the
+"customers" page and set the first element to "23". This behavior can be turned off on a per page
+basis by calling the "Router::parameterless()" function. This will guarantee a consistent URL,
+which is useful when using relative links.</p>
 
-<p>The router has a "redirect" method, that allows you to map certain URL's to other URL's. A
+<p>The router has a "setRedirect" method, that allows you to map certain URL's to other URL's. A
 simple redirect that most projects have is that the "/" URL is redirected to some page in the
-project. These redirects need to be called on the router from the "web/index.php"
-front-controller file.</p>
+project. These redirects need to be defined in the "config/router.php" configuration file.</p>
 
 <p>Note that there is a dynamic page named "404", that will be rendered when a page is not found.</p>
 
 <h2>PHP templating</h2>
 
-<p>The "template" folder holds all templates. Normally the action is executed and the output is
-captured in the "$body" variable. A template will "echo" this variable where the action output
-needs to be placed. If you do not want a template you can use the "none" template. If given the
-dynamic page will be rendered directly.</p>
+<p>The "template" folder holds all templates. Normally the action is executed and the corresponding
+view is rendered. The output is captured and can be retrieved using the "Router::getContent()" function.
+A template will "echo" the return value where the rendered view needs to be placed. If you do not want
+to use a template you can use the "none" template. In this case the view will be rendered directly.</p>
 
 <h2>Database abstraction layer</h2>
 
-<p>The "$db" variable holds your database connection. It allows you to execute SQL queries very
-simple (using the "query" method). It protects you against SQL injection attacks. Note that this
-method is not suited for large datasets that exceed the PHP memory limit.</p>
+<p>The "DB" class holds your database connection. It allows you to execute SQL queries very
+simple (using the "q" and "q1" methods). It protects you against SQL injection attacks. Note that these
+methods are not suited for large datasets that exceed the PHP memory limit (streaming output).</p>
 
 <h2>Authentication</h2>
 
@@ -85,4 +83,4 @@ secured with a md5 salt.</p>
 <p>Protection mechanisms against SQL injection, Cross-Site-Scripting (XSS) and
 Cross-Site-Request-Forgery (CSRF) are provided. In the views one should use the "e()" function
 to escape output to protect against XSS. The forms should use the "post" method and must call
-the "csrf_token()" function to protect against CSRF.</p>
+the "Session::getCsrfInput()" function to protect against CSRF.</p>

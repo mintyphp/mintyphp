@@ -1,4 +1,4 @@
-<?php 
-if (!isset($_SESSION['user'])) redirect('/login');
+<?php
+if (!isset($_SESSION['user'])) Router::redirect('/login');
 $user = $_SESSION['user'];
-$users = $db->q('select * from users');
+$users = DB::q('select * from users');

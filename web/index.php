@@ -17,7 +17,7 @@ Session::start();
 ob_start();
 if (Router::getAction()) require Router::getAction();
 if (ob_get_contents()) {
-	ob_end_flush();
+  ob_end_flush();
   trigger_error('MindaPHP action "'.Router::getAction().'" should not send output.', E_USER_WARNING);
 }
 else {

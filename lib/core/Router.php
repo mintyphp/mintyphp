@@ -22,6 +22,7 @@ class Router
   protected static $forwards = array();
   
   protected static $initialized = false;
+  protected static $phase = 'initialize';
   
   protected static function initialize()
   {
@@ -154,6 +155,7 @@ class Router
   public static function getAction()
   {
     if (!self::$initialized) self::initialize();
+    self::$phase = 'action';
     return self::$action;
   }
 
@@ -173,6 +175,7 @@ class Router
   public static function getView()
   {
     if (!self::$initialized) self::initialize();
+    self::$phase = 'view';
     return self::$view;
   }
   
@@ -191,6 +194,7 @@ class Router
   public static function getTemplate()
   {
     if (!self::$initialized) self::initialize();
+    self::$phase = 'view';
     return self::$template;
   }
 
@@ -199,5 +203,10 @@ class Router
   	if (!self::$initialized) self::initialize();
     if (!self::$parameters) return array();
   	else return self::$parameters;
+  }
+  
+  public static function getPhase()
+  {
+  	return self::$phase;
   }
 }

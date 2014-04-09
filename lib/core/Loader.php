@@ -33,7 +33,7 @@ class Loader
 				
 				if (file_exists($fileName)) {
 				  self::$files[] = $fileName;
-  			  include $fileName;
+				  include $fileName;
   			  self::setParameters($class);
 				  return true;
 				} 

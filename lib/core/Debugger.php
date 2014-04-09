@@ -7,7 +7,7 @@ class Debugger
 	
   protected static $requests = null;
   protected static $request = null;
- 
+  
   protected static $initialized = false;
   
   protected static function initialize()
@@ -67,7 +67,7 @@ class Debugger
     self::set('type',$type);
     self::set('duration',microtime(true)-self::get('start'));
     self::set('memory',memory_get_peak_usage(true));
-    self::set('files',Loader::getFiles());
+  	self::set('classes',Loader::getFiles());
     self::logSession('after');
   }
   
@@ -96,7 +96,7 @@ class Debugger
   
   function debug($variable,$strlen=100,$width=25,$depth=10,$i=0,&$objects = array())
   {
-  	if (!Debugger::$enabled) return;
+  	if (!self::$enabled) return;
   		
   	$search = array("\0", "\a", "\b", "\f", "\n", "\r", "\t", "\v");
   	$replace = array('\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v');
@@ -165,7 +165,7 @@ class Debugger
   	do $caller = array_shift($backtrace); while ($caller && !isset($caller['file']));
   	if ($caller) $string = $caller['file'].':'.$caller['line']."\n".$string;
   
-  	if (Debugger::$enabled) Debugger::add('log',$string);
+  	if (self::$enabled) self::add('log',$string);
   	return $string;
   }
   

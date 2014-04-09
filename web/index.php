@@ -1,6 +1,6 @@
 <?php
 // Use default autoload implementation
-require "../lib/core/Loader.php";
+require '../lib/core/Loader.php';
 // Load the libraries
 require '../config/loader.php';
 // Load the config parameters
@@ -15,7 +15,9 @@ Session::start();
 
 // Load the action into body
 ob_start();
-if (Router::getAction()) require Router::getAction();
+if (Router::getAction()) {
+	require Router::getAction();
+}
 if (ob_get_contents()) {
   ob_end_flush();
   trigger_error('MindaPHP action "'.Router::getAction().'" should not send output.', E_USER_WARNING);
@@ -23,10 +25,9 @@ if (ob_get_contents()) {
 else {
 	ob_end_clean();
 }
-DB::$enabled = false;
 if (Router::getTemplate()) {
   ob_start();
-	require Router::getView();
+  require Router::getView();
 	// Show developer toolbar
 	if (Debugger::$enabled) Debugger::toolbar();
 	Router::setContent(ob_get_contents());

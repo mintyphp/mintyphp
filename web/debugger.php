@@ -130,25 +130,21 @@ class DebugView
 		$html[] ='</thead><tbody><tr>';
 		$html[] ='<td>'.$time.'</td><td>'.$duration.'</td><td>'.$memory.'</td><td>'.$request['user'].'</td>';
 		$html[] ='</tr></tbody></table>';
-		$html[] ='<h4>Class files</h4>';
+		$html[] ='<h4>Classes</h4>';
 		$html[] ='<table class="table"><tbody>';
-		if (!isset($request['files'])) {
-			$html[] ='<tr><td colspan="3"><em>None</em></td></tr>';
-		} else {
-			$total = 0;
-			$count = 0;
-			foreach ($request['files'] as $filename) {
-				$count++;
-				$path = str_replace(realpath(__DIR__.'/..'),'..',$filename);
-				$path = htmlspecialchars($path);
-				$size = filesize($filename);
-				$total+= $size;
-				$size = sprintf('%.2f kB',$size/1000);
-				$html[] ='<tr><td>'.$count.'</td><td>'.$path.'</td><td>'.$size.'</td></tr>';
-			}
-			$total = sprintf('%.2f kB',$total/1000);
-			$html[] ='<tr><td></td><td><strong>'.$count.' class files</strong></td><td><strong>'.$total.'</strong></td></tr>';
+		$total = 0;
+		$count = 0;
+		foreach ($request['classes'] as $filename) {
+			$count++;
+			$path = str_replace(realpath(__DIR__.'/..'),'..',$filename);
+			$path = htmlspecialchars($path);
+			$size = filesize($filename);
+			$total+= $size;
+			$size = sprintf('%.2f kB',$size/1000);
+			$html[] ='<tr><td>autoload</td><td>'.$path.'</td><td>'.$size.'</td></tr>';
 		}
+		$total = sprintf('%.2f kB',$total/1000);
+		$html[] ='<tr><td colspan="2"><strong>'.$count.' files</strong></td><td><strong>'.$total.'</strong></td></tr>';
 		$html[] ='</tbody></table>';
 		$html[] ='</div>';
 		return implode("\n",$html);

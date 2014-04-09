@@ -9,13 +9,12 @@ class DB
 	public static $database=null;
 	public static $port=null;
 	public static $socket=null;
-	public static $enabled = true;
 	
   protected static $mysqli = null;
   
   protected static function connect()
   {
-  	if (!self::$enabled) {
+  	if (!Router::getPhase()=='view') {
   		self::error('Database cannot be used in MindaPHP view');
   	}
     if (!self::$mysqli) {

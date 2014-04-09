@@ -141,10 +141,10 @@ class DebugView
 			$size = filesize($filename);
 			$total+= $size;
 			$size = sprintf('%.2f kB',$size/1000);
-			$html[] ='<tr><td>autoload</td><td>'.$path.'</td><td>'.$size.'</td></tr>';
+			$html[] ='<tr><td>'.$count.'.</td><td>'.$path.'</td><td>'.$size.'</td></tr>';
 		}
 		$total = sprintf('%.2f kB',$total/1000);
-		$html[] ='<tr><td colspan="2"><strong>'.$count.' files</strong></td><td><strong>'.$total.'</strong></td></tr>';
+		$html[] ='<tr><td colspan="2"><strong>Total</strong></td><td><strong>'.$total.'</strong></td></tr>';
 		$html[] ='</tbody></table>';
 		$html[] ='</div>';
 		return implode("\n",$html);

@@ -22,7 +22,7 @@ class Router
   protected static $forwards = array();
   
   protected static $initialized = false;
-  protected static $phase = 'initialize';
+  protected static $phase = 'init';
   
   protected static function initialize()
   {

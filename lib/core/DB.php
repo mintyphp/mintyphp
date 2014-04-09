@@ -14,8 +14,8 @@ class DB
   
   protected static function connect()
   {
-  	if (!Router::getPhase()=='view') {
-  		self::error('Database cannot be used in MindaPHP view');
+  	if (Router::getPhase()!='action') {
+  		self::error('Database can only be used in MindaPHP action');
   	}
     if (!self::$mysqli) {
       $reflect = new ReflectionClass('mysqli');

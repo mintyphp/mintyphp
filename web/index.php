@@ -1,10 +1,10 @@
 <?php
 // Use default autoload implementation
-require '../lib/core/Loader.php';
+require '../vendor/core/Loader.php';
 // Load the libraries
 require '../config/loader.php';
 // Load the config parameters
-require '../config/parameters.php';
+require '../config/config.php';
 // Load the routes
 require '../config/router.php';
 // Register shortcut functions

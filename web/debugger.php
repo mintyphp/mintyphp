@@ -1,10 +1,10 @@
 <?php 
 // Use default autoload implementation
-require "../lib/core/Loader.php";
+require "../vendor/core/Loader.php";
 // Load only the core library
 Loader::register('core', '');
 // Load the config parameters
-require '../config/parameters.php';
+require '../config/config.php';
 // Debugview class
 class DebugView
 {

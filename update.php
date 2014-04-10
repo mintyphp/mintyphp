@@ -2,7 +2,7 @@
 $files = 0;
 $updated = 0;
 $source = "https://raw.github.com/mevdschee/MindaPHP/master/";
-$paths = array('web/debugger.php','lib/*.php');
+$paths = array('web/index.php','web/debugger.php','vendor/core/*.php');
 foreach ($paths as $path) {
   foreach (glob($path) as $filename) {
     $files++;

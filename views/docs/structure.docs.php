@@ -9,7 +9,7 @@
 │   │   └── index.php               Advanced "hello world" example (output)
 │   ├── login.php                   Authorization example: logging in
 │   └── register.php                Authorization example: registration
-├── lib                             
+├── vendor                             
 │   ├── authenticate.php            Authentication functions
 │   ├── database.php                Database abstraction layer ($db)
 │   ├── functions.php               Helper functions

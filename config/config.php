@@ -1,5 +1,5 @@
 <?php
-namespace Parameters;
+namespace Config;
 
 class Router
 {

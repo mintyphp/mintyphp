@@ -44,7 +44,7 @@ class Loader
 	
 	
 	protected static function setParameters($className) {
-		$parameterClassName = 'Parameters\\'.$className;
+		$parameterClassName = 'Config\\'.$className;
 		if (!class_exists($parameterClassName,false)) return;
 		$parameterClass = new ReflectionClass($parameterClassName);
 		$staticMembers = $parameterClass->getStaticProperties();

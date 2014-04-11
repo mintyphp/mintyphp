@@ -43,7 +43,7 @@ class Router
   protected static function removePrefix($string,$prefix)
   {
     if (substr($string,0,strlen($prefix))==$prefix) {
-    $string = substr($string,strlen($prefix));
+      $string = substr($string,strlen($prefix));
     }
   
     return $string;

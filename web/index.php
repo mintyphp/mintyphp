@@ -10,6 +10,7 @@ require '../config/router.php';
 // Register shortcut functions
 function e() {	echo call_user_func_array('htmlspecialchars',func_get_args()); }
 function d() { return call_user_func_array('Debugger::debug',func_get_args()); }
+
 // Start the session
 Session::start();
 
@@ -25,6 +26,10 @@ if (ob_get_contents()) {
 else {
 	ob_end_clean();
 }
+
+// End the session
+Session::end();
+
 if (Router::getTemplate()) {
   ob_start();
   require Router::getView();

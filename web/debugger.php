@@ -271,6 +271,7 @@ class DebugView
 		return implode("\n",$html);
 	}
 }
+Debugger::$enabled = false;
 // Start the session
 Session::start();
 ?>

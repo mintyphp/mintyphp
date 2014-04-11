@@ -1,5 +1,5 @@
 <h1>Authenticate</h1>
-<p>In "lib/core/auth.php" you find 3 functions that you can use anywhere.</p>
+<p>In "vendor/core/auth.php" you find 3 functions that you can use anywhere.</p>
 <h2>Login</h2>
 <pre>Auth::login($username,$password)</pre>
 <p>Call this function to authenticate a user, example:</p>

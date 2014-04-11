@@ -14,12 +14,10 @@ class Debugger
   {
   	if (self::$initialized) return;
     self::$initialized = true;
-    Session::start();
     if (!self::$enabled) return;
-    if (!isset($_SESSION[self::$sessionKey])) $_SESSION[self::$sessionKey] = array();
+    Session::start();
     self::$requests = &$_SESSION[self::$sessionKey];
     self::$request = array('log'=>array(),'queries'=>array(),'session'=>array());
-    self::logSession('before');
     array_unshift(self::$requests,&self::$request);
     while (count(self::$requests)>self::$history) array_pop(self::$requests);
     self::set('start',microtime(true));
@@ -27,9 +25,10 @@ class Debugger
     register_shutdown_function('Debugger::end','abort');
   }
   
-  protected static function logSession($title)
+  public static function logSession($title)
   {
-  	$session = array();
+  	if (!self::$initialized) self::initialize();
+    $session = array();
     foreach ($_SESSION as $k=>$v) {
       if ($k=='debugger') $v=true;
       $session[$k] = $v;
@@ -39,7 +38,7 @@ class Debugger
     self::$request['session'][$title] = trim($data);
     array_pop(self::$request['log']);
   }
-
+  
   public static function set($key,$value)
   {
     if (!self::$initialized) self::initialize();
@@ -64,11 +63,11 @@ class Debugger
   public static function end($type)
   {
     if (self::get('type')) return;
-    self::set('type',$type);
+  	Session::end();
+  	self::set('type',$type);
     self::set('duration',microtime(true)-self::get('start'));
     self::set('memory',memory_get_peak_usage(true));
   	self::set('classes',Loader::getFiles());
-    self::logSession('after');
   }
   
   public static function toolbar()

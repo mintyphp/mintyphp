@@ -8,7 +8,8 @@ class Session
   
   protected static $initialized = false;
   protected static $started = false;
-  
+  protected static $ended = false;
+
   protected static function initialize()
   {
     if (self::$initialized) return;
@@ -31,12 +32,26 @@ class Session
   	session_name(self::$sessionName);
   	session_start();
   	self::$started = true;
+  	if (Debugger::$enabled) {
+  		if (!isset($_SESSION[Debugger::$sessionKey])) {
+  			$_SESSION[Debugger::$sessionKey] = array();
+  		}
+  		Debugger::logSession('before');
+  	}
   }
   
   public static function end()
   {
   	if (!self::$initialized) self::initialize();
-  	session_write_close();
+  	if (self::$ended) return;
+  	if (!Debugger::$enabled)  session_write_close();
+  	self::$ended = true;
+  	if (Debugger::$enabled) Debugger::logSession('after');
+  	if (Debugger::$enabled) {
+  		$session = $_SESSION;
+  		unset($_SESSION);
+  		$_SESSION = $session;
+  	}
   }
   
   public static function checkCsrfToken()

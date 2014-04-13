@@ -28,8 +28,9 @@ class DebugView
 	{
 		$html = array();
 		$html[] ='<ul class="nav nav-pills nav-stacked">';
+		$last = count($_SESSION[Debugger::$sessionKey])-1;
 		foreach ($_SESSION[Debugger::$sessionKey] as $i=>$request) {
-			$active = ($i==0?'active':'');
+			$active = ($i==$last?'active':'');
 			$html[] ='<li class="'.$active.'"><a href="#debug-request-'.$i.'" data-toggle="tab">';
 			$html[] =self::getRequestCaption($request);
 			$html[] ='</a></li>';
@@ -274,6 +275,19 @@ class DebugView
 Debugger::$enabled = false;
 // Start the session
 Session::start();
+/*
+$requests = &$_SESSION['debugger'];
+$request = array('log'=>array(),'queries'=>array(),'session'=>array());
+
+$request['start'] = microtime(true);
+
+
+array_unshift($requests,&$request);
+while (count($requests)>10) array_pop($requests);
+
+
+
+var_dump($_SESSION);die();*/
 ?>
 <!DOCTYPE html>
 <html>

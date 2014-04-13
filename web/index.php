@@ -33,12 +33,12 @@ Session::end();
 if (Router::getTemplate()) {
   ob_start();
   require Router::getView();
-	// Show developer toolbar
-	if (Debugger::$enabled) Debugger::toolbar();
-	Router::setContent(ob_get_contents());
-	ob_end_clean();
-	// Load body into template
-	require Router::getTemplate();
+  // Show developer toolbar
+  if (Debugger::$enabled) Debugger::toolbar();
+  Router::setContent(ob_get_contents());
+  ob_end_clean();
+  // Load body into template
+  require Router::getTemplate();
 } else { // Handle the 'none' template case
-	require Router::getView();
+  require Router::getView();
 }

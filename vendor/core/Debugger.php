@@ -5,7 +5,6 @@ class Debugger
 	public static $enabled    = false;
 	public static $sessionKey = 'debugger';
 	
-  protected static $requests = null;
   protected static $request = null;
   
   protected static $initialized = false;
@@ -16,10 +15,9 @@ class Debugger
     self::$initialized = true;
     if (!self::$enabled) return;
     Session::start();
-    self::$requests = &$_SESSION[self::$sessionKey];
     self::$request = array('log'=>array(),'queries'=>array(),'session'=>array());
-    array_unshift(self::$requests,&self::$request);
-    while (count(self::$requests)>self::$history) array_pop(self::$requests);
+    $_SESSION[self::$sessionKey][] = &self::$request;
+    while (count($_SESSION[self::$sessionKey])>self::$history) array_shift($_SESSION[self::$sessionKey]);
     self::set('start',microtime(true));
     self::set('user',get_current_user());
     register_shutdown_function('Debugger::end','abort');

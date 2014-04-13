@@ -78,7 +78,7 @@ class DebugView
 		$html[] ='<tr><th>View</th><td>'.$request['router']['viewFile'].'</td></tr>';
 		$html[] ='<tr><th>Template</th><td>'.($request['router']['templateFile']?:'<em>None</em>').'</td></tr>';
 		$html[] ='</tbody></table>';
-		$html[] ='<h4>$parameters</h4>';
+		$html[] ='<h4>Parameters</h4>';
 		$html[] ='<table class="table"><tbody>';
 		if (!count($request['router']['parameters']['url'])) {
 			$html[] ='<tr><td colspan="2"><em>None</em></td></tr>';

@@ -23,7 +23,7 @@
 </pre>
 <p>Benchmarks:</p>
 <pre>
-ab -n 2000 -c 10 http://localhost/hello/world
+ab -n 2000 -c 10 http://mindaphp.dev/hello/world
 Requests per second:    861.30 [#/sec] (mean)
 </pre>
 <h2>Nginx + HHVM (Linux)</h2>

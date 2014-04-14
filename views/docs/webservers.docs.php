@@ -1,6 +1,6 @@
 <h1>Webservers</h1>
 <p>The following webservers have been tested:</p>
-<h2>Apache</h2>
+<h2>Apache + mod_php</h2>
 <pre>
 &lt;VirtualHost *:80&gt;
         ServerAdmin webmaster@localhost

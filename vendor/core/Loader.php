@@ -3,6 +3,7 @@ class Loader
 {
 	protected static $parentPath = null;
 	protected static $paths = null;
+	protected static $nsChar = '\\';
 	protected static $initialized = false;
 	protected static $files = null;
 	
@@ -11,6 +12,9 @@ class Loader
 		if (self::$initialized) return;
 		self::$initialized = true;
 		self::$parentPath = dirname(dirname(__FILE__));
+		for ($i=substr_count(get_class(), self::$nsChar);$i>1;$i--) {
+			self::$parentPath = dirname(self::$parentPath);
+		}
 		self::$paths = array();
 		self::$files = array(__FILE__);
 	}
@@ -23,12 +27,11 @@ class Loader
 	public static function load($class) {
 		if (class_exists($class,false)) return; 
 		if (!self::$initialized) self::initialize();
-		$nsChar = '\\';
 		foreach (self::$paths as $namespace => $path) {
-			if (!$namespace || $namespace.$nsChar === substr($class, 0, strlen($namespace.$nsChar))) {
+			if (!$namespace || $namespace.self::$nsChar === substr($class, 0, strlen($namespace.self::$nsChar))) {
 				
-				$fileName = substr($class,strlen($namespace.$nsChar)-1);
-				$fileName = str_replace($nsChar, DIRECTORY_SEPARATOR, ltrim($fileName,$nsChar));
+				$fileName = substr($class,strlen($namespace.self::$nsChar)-1);
+				$fileName = str_replace(self::$nsChar, DIRECTORY_SEPARATOR, ltrim($fileName,self::$nsChar));
 				$fileName = self::$parentPath.DIRECTORY_SEPARATOR.$path.DIRECTORY_SEPARATOR.$fileName.'.php';
 				
 				if (file_exists($fileName)) {
@@ -46,7 +49,7 @@ class Loader
 	protected static function setParameters($className) {
 		$parameterClassName = 'Config\\'.$className;
 		if (!class_exists($parameterClassName,false)) return;
-		$parameterClass = new ReflectionClass($parameterClassName);
+		$parameterClass = new \ReflectionClass($parameterClassName);
 		$staticMembers = $parameterClass->getStaticProperties();
 		foreach($staticMembers as $field => &$value) {
 			if (property_exists($className, $field)) {

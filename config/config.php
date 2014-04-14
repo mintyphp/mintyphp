@@ -33,5 +33,5 @@ class Auth
 
 class Debugger
 {
-  public static $enabled = false;
+  public static $enabled = true;
 }

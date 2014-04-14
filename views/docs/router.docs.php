@@ -32,8 +32,3 @@ also the "parameterless" function in the "Functions" section of the documentatio
 <pre>Router::parameterless()</pre>
 <p>By putting "&lt;?php Router::parameterless() ?&gt;" in the first line of the action you can force a redirect to the parameterless variant
 of the page.</p>
-<h2>CSRF token</h2>
-<pre>Session::getCsrfInput()</pre>
-<p>Between the "&lt;form method=&quot;post&quot;&gt;" and the "&lt;/form&gt;" tag in the view one should add "&lt;?php Session::getCsrfInput(); ?&gt;".
-This call will echo a hidden input field to the form that will prevent Cross-Site-Request-Forgery (CSRF) attacks.
-Note: this is required when sending a form with the "post" method.</p>

@@ -10,7 +10,7 @@
     <a href="https://github.com/mevdschee/MindaPHP"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/img/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
     <div class="title">
       <div class="logo">
-        MindaPHP
+        <img src="/img/mindaphp_logo.png" alt="MindaPHP logo"> MindaPHP
       </div>
     </div>
     <div class="menu">

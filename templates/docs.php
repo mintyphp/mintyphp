@@ -22,6 +22,7 @@
 
         <div class="title">
             <div class="logo">
+                <img src="/img/mindaphp_logo.png" alt="MindaPHP logo">
                 MindaPHP - Documentation
             </div>
         </div>

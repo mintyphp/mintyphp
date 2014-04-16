@@ -2,20 +2,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MindaPHP</title>
+    <title>MindaPHP Documentation</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/img/favicon.ico">
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/default.css" rel="stylesheet">
-    
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="../../assets/js/html5shiv.js"></script>
-      <script src="../../assets/js/respond.min.js"></script>
-    <![endif]-->
   </head>
   <body>
     <a href="https://github.com/mevdschee/MindaPHP"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/img/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>

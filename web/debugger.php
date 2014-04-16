@@ -65,9 +65,9 @@ class DebugView
 		$method = $request['router']['method'];
 		$html[] ='<h4>Request</h4>';
 		$html[] ='<div class="well well-sm">'.$method.' '.htmlentities($request['router']['request']).'</div>';
-		if ($request['router']['redirect']) {
-			$html[] ='<h4>Redirect</h4>';
-			$html[] ='<div class="well well-sm">'.$method.' '.htmlentities($request['router']['redirect']).'</div>';
+		if ($request['router']['routed']) {
+			$html[] ='<h4>Routed</h4>';
+			$html[] ='<div class="well well-sm">'.$method.' '.htmlentities($request['router']['routed']).'</div>';
 		}
 		$path = $request['router']['dir'].$request['router']['view'].'.'.$request['router']['template'].'.php';
 		$html[] ='<h4>Target</h4>';
@@ -279,18 +279,19 @@ Session::start();
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MindaPHP</title>
+    <title>MindaPHP Debugger</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/debugger/img/favicon.ico">
     <!-- Bootstrap -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
-    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/debugger/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/debugger/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+    <link href="/debugger/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="/js/jquery.min.js"></script>
+    <script src="/debugger/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/js/bootstrap.min.js"></script>
+    <script src="/debugger/js/bootstrap.min.js"></script>
     
   </head>
   <body>
@@ -298,7 +299,10 @@ Session::start();
   
     <div class="row">
       <div class="col-md-4">
-        <h3>MindaPHP Debugger</h3>
+        <h3>
+          <img src="/debugger/img/mindaphp_logo_22x24.png" alt="MindaPHP logo" style="float:left; margin-right:10px;">
+          MindaPHP Debugger
+        </h3>
       </div>
     </div>
     

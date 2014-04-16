@@ -21,7 +21,7 @@ class Router
   protected static $template = null;
   protected static $parameters = null;
   
-  protected static $forwards = array();
+  protected static $routes = array();
   
   protected static $initialized = false;
   protected static $phase = 'init';
@@ -34,7 +34,7 @@ class Router
     self::$request = $_SERVER['REQUEST_URI'];
     self::$script = $_SERVER['SCRIPT_NAME'];
     self::route();
-    self::forward();
+    self::applyRoutes();
   }
 
   protected static function error($message)
@@ -109,7 +109,7 @@ class Router
       }
       if (Debugger::$enabled) {
         $method = self::$method;
-        $redirect = $request!=$_SERVER['REQUEST_URI']?$request:false;
+        $routed = $request!=$_SERVER['REQUEST_URI']?$request:false;
         $request = $_SERVER['REQUEST_URI'];
         $url = self::$url;
         $viewFile = self::$view;
@@ -119,7 +119,7 @@ class Router
         $parameters['url'] = self::$parameters;
         $parameters['get'] = $_GET;
         $parameters['post'] = $_POST;
-        Debugger::set('router',compact('method','csrfOk','request','redirect','url','dir','view','template','viewFile','actionFile','templateFile','parameters'));
+        Debugger::set('router',compact('method','csrfOk','request','routed','url','dir','view','template','viewFile','actionFile','templateFile','parameters'));
       }
       break;
     }
@@ -131,15 +131,15 @@ class Router
     return self::$url;
   }
 
-  public static function addForward($sourcePath,$destinationPath)
+  public static function addRoute($sourcePath,$destinationPath)
   {
-  	self::$forwards[$destinationPath] = $sourcePath;
+  	self::$routes[$destinationPath] = $sourcePath;
   }
   
-  protected static function forward()
+  protected static function applyRoutes()
   {
   	if (!self::$initialized) self::initialize();
-  	foreach (self::$forwards as $destinationPath => $sourcePath) {
+  	foreach (self::$routes as $destinationPath => $sourcePath) {
 	  	if (rtrim(self::$request,'/') == rtrim($sourcePath,'/')) {
 	  		self::$request = $destinationPath;
 	  		self::route();

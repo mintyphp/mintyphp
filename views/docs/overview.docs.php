@@ -53,9 +53,9 @@ after the URL. This means that when you access the URL "/customers/23", the rout
 basis by calling the "Router::parameterless()" function. This will guarantee a consistent URL,
 which is useful when using relative links.</p>
 
-<p>The router has a "setRedirect" method, that allows you to map certain URL's to other URL's. A
+<p>The router has a "addRoute" method, that allows you to map certain URL's to other URL's. A
 simple redirect that most projects have is that the "/" URL is redirected to some page in the
-project. These redirects need to be defined in the "config/router.php" configuration file.</p>
+project. These routes need to be defined in the "config/router.php" configuration file.</p>
 
 <p>Note that there is a dynamic page named "404", that will be rendered when a page is not found.</p>
 

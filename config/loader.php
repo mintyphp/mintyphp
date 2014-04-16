@@ -1,2 +1,2 @@
 <?php
-Loader::register('core', '');
+Loader::register('mindaphp', 'MindaPHP');

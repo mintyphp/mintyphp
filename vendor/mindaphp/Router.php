@@ -1,5 +1,7 @@
 <?php
-class RouterError extends Exception {};
+namespace MindaPHP;
+
+class RouterError extends \Exception {};
 
 class Router
 {

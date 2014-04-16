@@ -1,4 +1,6 @@
 <?php
+namespace MindaPHP;
+
 class Auth
 {
 	static $usersTable    = 'users';

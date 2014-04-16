@@ -1,6 +1,6 @@
 <?php 
 // Use default autoload implementation
-require "../vendor/core/Loader.php";
+require "../vendor/mindaphp/Loader.php";
 // Load only the core library
 Loader::register('core', '');
 // Load the config parameters

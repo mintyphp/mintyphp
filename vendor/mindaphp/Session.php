@@ -1,5 +1,7 @@
 <?php
-class SessionError extends Exception {};
+namespace MindaPHP;
+
+class SessionError extends \Exception {};
 
 class Session
 {

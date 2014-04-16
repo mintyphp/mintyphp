@@ -1,4 +1,6 @@
 <?php
+namespace MindaPHP;
+
 class Debugger
 {
 	public static $history    = 10;

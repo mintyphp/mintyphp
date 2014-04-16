@@ -1,4 +1,6 @@
 <?php
+namespace MindaPHP;
+
 class Loader
 {
 	protected static $parentPath = null;
@@ -11,8 +13,8 @@ class Loader
 	{
 		if (self::$initialized) return;
 		self::$initialized = true;
-		self::$parentPath = dirname(dirname(__FILE__));
-		for ($i=substr_count(get_class(), self::$nsChar);$i>1;$i--) {
+		self::$parentPath = __FILE__;
+		for ($i=substr_count(get_class(), self::$nsChar);$i>=0;$i--) {
 			self::$parentPath = dirname(self::$parentPath);
 		}
 		self::$paths = array();
@@ -25,7 +27,7 @@ class Loader
 	}
 	
 	public static function load($class) {
-		if (class_exists($class,false)) return; 
+		if (class_exists($class,false)) return true; 
 		if (!self::$initialized) self::initialize();
 		foreach (self::$paths as $namespace => $path) {
 			if (!$namespace || $namespace.self::$nsChar === substr($class, 0, strlen($namespace.self::$nsChar))) {
@@ -37,17 +39,34 @@ class Loader
 				if (file_exists($fileName)) {
 				  self::$files[] = $fileName;
 				  include $fileName;
-  			  self::setParameters($class);
 				  return true;
 				} 
 			}
 		}
 		return false;
 	}
-	
+
+	public static function loadCore($class) {
+		if (class_exists(__NAMESPACE__.self::$nsChar.$class,false)) return true; 
+		if (!self::$initialized) self::initialize();
+		if (substr($class,0,strlen(__NAMESPACE__))==__NAMESPACE__) {
+			$class = substr($class,strlen(__NAMESPACE__)+strlen(self::$nsChar));
+		}
+		if (strpos($class,self::$nsChar)===false) {
+			$fileName = dirname(__FILE__).DIRECTORY_SEPARATOR.$class.'.php';
+			if (file_exists($fileName)) {
+				self::$files[] = $fileName;
+				include $fileName;
+				class_alias(__NAMESPACE__.self::$nsChar.$class,$class);
+				self::setParameters($class);
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	protected static function setParameters($className) {
-		$parameterClassName = 'Config\\'.$className;
+		$parameterClassName = __NAMESPACE__.self::$nsChar.'Config'.self::$nsChar.$className;
 		if (!class_exists($parameterClassName,false)) return;
 		$parameterClass = new \ReflectionClass($parameterClassName);
 		$staticMembers = $parameterClass->getStaticProperties();
@@ -64,4 +83,6 @@ class Loader
 	}
 }
 
+class_alias(__NAMESPACE__.'\\Loader','Loader');
+spl_autoload_register(array('Loader', 'loadCore'));
 spl_autoload_register(array('Loader', 'load'));

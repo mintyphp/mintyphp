@@ -1,4 +1,6 @@
 <?php
+namespace MindaPHP;
+
 class DBError extends \Exception {};
 
 class DB
@@ -18,7 +20,7 @@ class DB
   		self::error('Database can only be used in MindaPHP action');
   	}
     if (!self::$mysqli) {
-      $reflect = new ReflectionClass('mysqli');
+      $reflect = new \ReflectionClass('mysqli');
       $args = array(self::$host,self::$username,self::$password,self::$database,self::$port,self::$socket);
       while (isset($args[count($args)-1]) && $args[count($args)-1] !== null) array_pop($args);
       self::$mysqli = $reflect->newInstanceArgs($args);

@@ -275,19 +275,6 @@ class DebugView
 Debugger::$enabled = false;
 // Start the session
 Session::start();
-/*
-$requests = &$_SESSION['debugger'];
-$request = array('log'=>array(),'queries'=>array(),'session'=>array());
-
-$request['start'] = microtime(true);
-
-
-array_unshift($requests,&$request);
-while (count($requests)>10) array_pop($requests);
-
-
-
-var_dump($_SESSION);die();*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -321,8 +308,9 @@ var_dump($_SESSION);die();*/
       </div>
       <div class="col-md-8">
         <div class="tab-content">
+          <?php $last = count($_SESSION[Debugger::$sessionKey])-1; ?>
           <?php foreach ($_SESSION[Debugger::$sessionKey] as $i=>$request): ?>
-          <div class="tab-pane <?php echo $i==0?'active':''; ?>" id="debug-request-<?php echo $i ?>">
+          <div class="tab-pane <?php echo $i==$last?'active':''; ?>" id="debug-request-<?php echo $i ?>">
             <?php echo DebugView::getTabList($i); ?>
             <div class="tab-content">
               <?php echo DebugView::getRoutingTabPane($i,$request); ?>
@@ -337,7 +325,7 @@ var_dump($_SESSION);die();*/
         <script>
         $(function () {
           var classes=[];
-          $('#debug-request-0 a[data-toggle="tab"]').each(function (e) { 
+          $('#debug-request-<?php echo $last; ?> a[data-toggle="tab"]').each(function (e) { 
             classes.push($(this).attr('class')); 
           });
           $(classes).each(function (i,c) {

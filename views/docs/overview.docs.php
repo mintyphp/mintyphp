@@ -78,15 +78,15 @@ methods are not suited for large datasets that exceed the PHP memory limit (stre
 some security best practises. It uses session cookies and stores sha1 hashed passwords that are
 secured with a md5 salt.</p>
 
-<h2>Debugger</h2>
-
-<p>There is a debug mode that enables the web debug toolbar. This toolbar gives you access to the debugger.
-The debugger shows you everything you need to know about the last 10 requests. Loaded files, chosen routes,
-executed queries and many more things can be found.</p>
-
 <h2>Security</h2>
 
 <p>Protection mechanisms against SQL injection, Cross-Site-Scripting (XSS) and
 Cross-Site-Request-Forgery (CSRF) are provided. In the views one should use the "e()" function
 to escape output to protect against XSS. The forms should use the "post" method and must call
 the "Session::getCsrfInput()" function to protect against CSRF.</p>
+
+<h2>Debugger</h2>
+
+<p>There is a debug mode that enables the web debug toolbar. This toolbar gives you access to the debugger.
+The debugger shows you everything you need to know about the last 10 requests. Loaded files, chosen routes,
+executed queries and many more things can be found.</p>

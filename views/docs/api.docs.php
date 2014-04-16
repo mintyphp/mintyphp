@@ -11,8 +11,8 @@ string  DB::qv($sql,...)                    Action          Database query   Pub
 bool    Auth::login($username,$password)    Action          Logging in       Public
 bool    Auth::logout()                      Action          Logging out      Public
 bool    Auth::register($username,$password) Action          Adding users     Public
-        Router::addForward($url,$loc)       Router Config   Redirection      Public
-        Router::redirect($url)              View            Redirection      Public
+        Router::addRoute($req,$loc)         Router Config   Routing          Public
+        Router::redirect($url)              Action          Redirection      Public
 array   Router::getParameters()             Action          User input       Public
 string  Session::getCsrfInput()             Template/View   Form security    Public
 =====================================================================================================

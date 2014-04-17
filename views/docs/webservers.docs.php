@@ -40,28 +40,20 @@ sudo apt-get install hhvm
 <pre>
 $ cat /etc/nginx/sites-enabled/mindaphp 
 server {
-    listen              8080;
+    listen             8080;
 
-    location /debugger.php {
-        root /home/maurits/public_html/mindaphp/web;
+    root               /home/maurits/public_html/mindaphp/web;
+    try_files          $uri @proxy;
+    
+    location ~ ^/debugger/$ {
         fastcgi_pass   127.0.0.1:9000;
-        set            $index debugger.php;
-        fastcgi_index  $index;
-        fastcgi_param  SCRIPT_FILENAME $document_root/$index;
+        fastcgi_param  SCRIPT_FILENAME $document_root/debugger/index.php;
         include        fastcgi_params;
     }
 
-    location / {
-        root /home/maurits/public_html/mindaphp/web;
-        try_files $uri $uri @proxy;
-    }
-
     location @proxy {
-        root /home/maurits/public_html/mindaphp/web;
         fastcgi_pass   127.0.0.1:9000;
-        set            $index index.php;
-        fastcgi_index  $index;
-        fastcgi_param  SCRIPT_FILENAME $document_root/$index;
+        fastcgi_param  SCRIPT_FILENAME $document_root/index.php;
         include        fastcgi_params;
     }
 

@@ -1,10 +1,8 @@
 <?php 
 // Use default autoload implementation
-require "../vendor/mindaphp/Loader.php";
-// Load only the core library
-Loader::register('core', '');
+require "../../vendor/mindaphp/Loader.php";
 // Load the config parameters
-require '../config/config.php';
+require '../../config/config.php';
 // Debugview class
 class DebugView
 {
@@ -137,7 +135,7 @@ class DebugView
 		$count = 0;
 		foreach ($request['classes'] as $filename) {
 			$count++;
-			$path = str_replace(realpath(__DIR__.'/..'),'..',$filename);
+			$path = str_replace(realpath(__DIR__.'/../..'),'..',$filename);
 			$path = htmlspecialchars($path);
 			$size = filesize($filename);
 			$total+= $size;

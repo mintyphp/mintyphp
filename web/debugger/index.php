@@ -4,7 +4,7 @@ require "../../vendor/mindaphp/Loader.php";
 // Load only the core library
 Loader::register('core', '');
 // Load the config parameters
-require '../config/config.php';
+require '../../config/config.php';
 // Debugview class
 class DebugView
 {

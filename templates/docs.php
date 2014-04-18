@@ -36,6 +36,5 @@
         <div class="body">
             <?php echo Router::getContent(); ?>
         </div>
-
 </body>
 </html>

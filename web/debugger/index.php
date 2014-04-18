@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Use default autoload implementation
 require "../../vendor/mindaphp/Loader.php";
 // Load the config parameters

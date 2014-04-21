@@ -131,7 +131,7 @@ class Debugger
   						break;
   					}
   					$string.= "\n".$spaces."  [$key] => ";
-  					$string.= self::debug($variable[$key],$strlen,$width,$depth,$i+1,&$objects);
+  					$string.= self::debug($variable[$key],$strlen,$width,$depth,$i+1,$objects);
   					$count++;
   				}
   				$string.="\n".$spaces.'}';
@@ -144,7 +144,7 @@ class Debugger
   			else if($i==$depth)
   				$string.=get_class($variable).' {...}';
   			else {
-  				$id = array_push($objects,&$variable);
+  				$id = array_push($objects,$variable);
   				$array = (array)$variable;
   				$spaces = str_repeat(' ',$i*2);
   				$string.= get_class($variable)."#$id\n".$spaces.'{';
@@ -152,7 +152,7 @@ class Debugger
   				foreach($properties as $property) {
   					$name = str_replace("\0",':',trim($property));
   					$string.= "\n".$spaces."  [$name] => ";
-  					$string.= self::debug($array[$property],$strlen,$width,$depth,$i+1,&$objects);
+  					$string.= self::debug($array[$property],$strlen,$width,$depth,$i+1,$objects);
   				}
   				$string.= "\n".$spaces.'}';
   			}

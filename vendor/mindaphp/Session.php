@@ -14,26 +14,26 @@ class Session
 
   protected static function initialize()
   {
-    if (self::$initialized) return;
-    self::$initialized = true;
-    self::start();
-    self::setCsrfToken();
+    if (static::$initialized) return;
+    static::$initialized = true;
+    static::start();
+    static::setCsrfToken();
   }
   
   protected static function setCsrfToken()
   {
-  	if (!isset($_SESSION[self::$csrfSessionKey])) {
-  		$_SESSION[self::$csrfSessionKey] = rand(0, PHP_INT_MAX);
+  	if (!isset($_SESSION[static::$csrfSessionKey])) {
+  		$_SESSION[static::$csrfSessionKey] = rand(0, PHP_INT_MAX);
   	}
   }
   
   public static function start()
   {
-  	if (!self::$initialized) self::initialize();
-  	if (self::$started) return;
-  	session_name(self::$sessionName);
+  	if (!static::$initialized) static::initialize();
+  	if (static::$started) return;
+  	session_name(static::$sessionName);
   	session_start();
-  	self::$started = true;
+  	static::$started = true;
   	if (Debugger::$enabled) {
   		if (!isset($_SESSION[Debugger::$sessionKey])) {
   			$_SESSION[Debugger::$sessionKey] = array();
@@ -44,10 +44,10 @@ class Session
   
   public static function end()
   {
-  	if (!self::$initialized) self::initialize();
-  	if (self::$ended) return;
+  	if (!static::$initialized) static::initialize();
+  	if (static::$ended) return;
   	if (!Debugger::$enabled)  session_write_close();
-  	self::$ended = true;
+  	static::$ended = true;
   	if (Debugger::$enabled) Debugger::logSession('after');
   	if (Debugger::$enabled) {
   		$session = $_SESSION;
@@ -58,10 +58,10 @@ class Session
   
   public static function checkCsrfToken()
   {
-  	if (!self::$initialized) self::initialize();
+  	if (!static::$initialized) static::initialize();
   	$success = false;
-  	if (isset($_POST[self::$csrfSessionKey])) {
-  		$success = $_POST[self::$csrfSessionKey] == $_SESSION[self::$csrfSessionKey];
+  	if (isset($_POST[static::$csrfSessionKey])) {
+  		$success = $_POST[static::$csrfSessionKey] == $_SESSION[static::$csrfSessionKey];
   		//unset($_POST['csrf_token']);
   	}
   	return $success;
@@ -69,8 +69,8 @@ class Session
   
   public static function getCsrfInput()
   {
-  	if (!self::$initialized) self::initialize();
-  	echo '<input type="hidden" name="'.self::$csrfSessionKey.'" value="'.$_SESSION[self::$csrfSessionKey].'"/>';
+  	if (!static::$initialized) static::initialize();
+  	echo '<input type="hidden" name="'.static::$csrfSessionKey.'" value="'.$_SESSION[static::$csrfSessionKey].'"/>';
   }
   
 }

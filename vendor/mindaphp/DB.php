@@ -17,14 +17,14 @@ class DB
   protected static function connect()
   {
   	if (Router::getPhase()!='action') {
-  		self::error('Database can only be used in MindaPHP action');
+  		static::error('Database can only be used in MindaPHP action');
   	}
-    if (!self::$mysqli) {
+    if (!static::$mysqli) {
       $reflect = new \ReflectionClass('mysqli');
-      $args = array(self::$host,self::$username,self::$password,self::$database,self::$port,self::$socket);
+      $args = array(static::$host,static::$username,static::$password,static::$database,static::$port,static::$socket);
       while (isset($args[count($args)-1]) && $args[count($args)-1] !== null) array_pop($args);
-      self::$mysqli = $reflect->newInstanceArgs($args);
-      if (mysqli_connect_errno()) self::error(mysqli_connect_error());
+      static::$mysqli = $reflect->newInstanceArgs($args);
+      if (mysqli_connect_errno()) static::error(mysqli_connect_error());
     }
   }
     
@@ -84,17 +84,17 @@ class DB
       $explain = false;
     }
     $arguments = array_slice(func_get_args(),2);
-    $equery = self::$mysqli->real_escape_string($query);
+    $equery = static::$mysqli->real_escape_string($query);
     Debugger::add('queries',compact('duration','query','equery','arguments','result','explain'));
     return $result;
   }
     
   private static function _qt($query)
   {
-    self::connect();
-  	$query = self::$mysqli->prepare($query);
+    static::connect();
+  	$query = static::$mysqli->prepare($query);
     if (!$query) {
-      return self::error(self::$mysqli->error,false);
+      return static::error(static::$mysqli->error,false);
     }
     if (func_num_args() > 1) {
       $args = array_slice(func_get_args(), 1);
@@ -105,7 +105,7 @@ class DB
     }
     $query->execute();
     if ($query->errno) {
-      return self::error(mysqli_error(self::$mysqli),false);
+      return static::error(mysqli_error(static::$mysqli),false);
     }
     if ($query->affected_rows > -1) {
       return $query->affected_rows;
@@ -135,26 +135,26 @@ class DB
  
   public static function id()
   {
-    return self::$mysqli->insert_id;
+    return static::$mysqli->insert_id;
   }
     
   // Undocumented
   public static function handle()
   {
-    self::connect();
-    return self::$mysqli;
+    static::connect();
+    return static::$mysqli;
   }
   
   // Undocumented
   public static function options()
   {
-    return call_user_func_array(array(self::$mysqli, 'options'), func_get_args());
+    return call_user_func_array(array(static::$mysqli, 'options'), func_get_args());
   }
    
   // Undocumented
   public static function close()
   {
-    return self::$mysqli->close();
+    return static::$mysqli->close();
   }
 
 }

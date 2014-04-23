@@ -13,71 +13,71 @@ class Debugger
   
   protected static function initialize()
   {
-  	if (self::$initialized) return;
-    self::$initialized = true;
-    if (!self::$enabled) return;
+  	if (static::$initialized) return;
+    static::$initialized = true;
+    if (!static::$enabled) return;
     Session::start();
-    self::$request = array('log'=>array(),'queries'=>array(),'session'=>array());
-    $_SESSION[self::$sessionKey][] = &self::$request;
-    while (count($_SESSION[self::$sessionKey])>self::$history) array_shift($_SESSION[self::$sessionKey]);
-    self::set('start',microtime(true));
-    self::set('user',get_current_user());
+    static::$request = array('log'=>array(),'queries'=>array(),'session'=>array());
+    $_SESSION[static::$sessionKey][] = &static::$request;
+    while (count($_SESSION[static::$sessionKey])>static::$history) array_shift($_SESSION[static::$sessionKey]);
+    static::set('start',microtime(true));
+    static::set('user',get_current_user());
     register_shutdown_function('Debugger::end','abort');
   }
   
   public static function logSession($title)
   {
-  	if (!self::$initialized) self::initialize();
+  	if (!static::$initialized) static::initialize();
     $session = array();
     foreach ($_SESSION as $k=>$v) {
       if ($k=='debugger') $v=true;
       $session[$k] = $v;
     }
-    $data = self::debug($session);
+    $data = static::debug($session);
     $data = substr($data, strpos($data,"\n"));
-    self::$request['session'][$title] = trim($data);
-    array_pop(self::$request['log']);
+    static::$request['session'][$title] = trim($data);
+    array_pop(static::$request['log']);
   }
   
   public static function set($key,$value)
   {
-    if (!self::$initialized) self::initialize();
-    self::$request[$key] = $value;
+    if (!static::$initialized) static::initialize();
+    static::$request[$key] = $value;
   }
 
   public static function add($key,$value)
   {
-    if (!self::$initialized) self::initialize();
-    if (!isset(self::$request[$key])) {
-      self::$request[$key] = array();
+    if (!static::$initialized) static::initialize();
+    if (!isset(static::$request[$key])) {
+      static::$request[$key] = array();
     }
-    self::$request[$key][] = $value;
+    static::$request[$key][] = $value;
   }
   
   public static function get($key)
   {
-    if (!self::$initialized) self::initialize();
-    return isset(self::$request[$key])?self::$request[$key]:false;
+    if (!static::$initialized) static::initialize();
+    return isset(static::$request[$key])?static::$request[$key]:false;
   }
   
   public static function end($type)
   {
-    if (self::get('type')) return;
+    if (static::get('type')) return;
   	Session::end();
-  	self::set('type',$type);
-    self::set('duration',microtime(true)-self::get('start'));
-    self::set('memory',memory_get_peak_usage(true));
-  	self::set('classes',Loader::getFiles());
+  	static::set('type',$type);
+    static::set('duration',microtime(true)-static::get('start'));
+    static::set('memory',memory_get_peak_usage(true));
+  	static::set('classes',Loader::getFiles());
   }
   
   public static function toolbar()
   {
-    self::end('ok');
+    static::end('ok');
     $html = '<div id="debugger-bar" style="position: fixed; width:100%; left: 0; bottom: 0; border-top: 1px solid silver; background: white;">';
     $html.= '<div style="margin:6px;">';
     $javascript = "document.getElementById('debugger-bar').style.display='none'; return false;";
     $html.= '<a href="#" onclick="'.$javascript.'" style="float:right;">close</a>';
-    $request = self::$request;
+    $request = static::$request;
     $parts = array();
     $parts[] = date('H:i:s',$request['start']);
     $parts[] = strtolower($request['router']['method']).' '.htmlentities($request['router']['url']);
@@ -95,7 +95,7 @@ class Debugger
   
   function debug($variable,$strlen=100,$width=25,$depth=10,$i=0,&$objects = array())
   {
-  	if (!self::$enabled) return;
+  	if (!static::$enabled) return;
   		
   	$search = array("\0", "\a", "\b", "\f", "\n", "\r", "\t", "\v");
   	$replace = array('\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v');
@@ -131,7 +131,7 @@ class Debugger
   						break;
   					}
   					$string.= "\n".$spaces."  [$key] => ";
-  					$string.= self::debug($variable[$key],$strlen,$width,$depth,$i+1,$objects);
+  					$string.= static::debug($variable[$key],$strlen,$width,$depth,$i+1,$objects);
   					$count++;
   				}
   				$string.="\n".$spaces.'}';
@@ -152,7 +152,7 @@ class Debugger
   				foreach($properties as $property) {
   					$name = str_replace("\0",':',trim($property));
   					$string.= "\n".$spaces."  [$name] => ";
-  					$string.= self::debug($array[$property],$strlen,$width,$depth,$i+1,$objects);
+  					$string.= static::debug($array[$property],$strlen,$width,$depth,$i+1,$objects);
   				}
   				$string.= "\n".$spaces.'}';
   			}
@@ -164,7 +164,7 @@ class Debugger
   	do $caller = array_shift($backtrace); while ($caller && !isset($caller['file']));
   	if ($caller) $string = $caller['file'].':'.$caller['line']."\n".$string;
   
-  	if (self::$enabled) self::add('log',$string);
+  	if (static::$enabled) static::add('log',$string);
   	return $string;
   }
   

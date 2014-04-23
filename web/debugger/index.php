@@ -30,7 +30,7 @@ class DebugView
 		foreach ($_SESSION[Debugger::$sessionKey] as $i=>$request) {
 			$active = ($i==$last?'active':'');
 			$html[] ='<li class="'.$active.'"><a href="#debug-request-'.$i.'" data-toggle="tab">';
-			$html[] =self::getRequestCaption($request);
+			$html[] =static::getRequestCaption($request);
 			$html[] ='</a></li>';
 		}
 		$html[] ='</ul>';
@@ -241,11 +241,11 @@ class DebugView
 			$html[] = '</tr>';
 			$html[] = '<tr style="display:none;" id="debug-request-'.$requestId.'-query-'.$i.'"><td colspan="5">';
 
-			$html[] = self::getQueriesTabPaneTabList($requestId,$i,count($query['arguments']),count($query['result']));
+			$html[] = static::getQueriesTabPaneTabList($requestId,$i,count($query['arguments']),count($query['result']));
 			$html[] = '<div class="tab-content">';
-			$html[] = self::getQueriesTabPaneTabPane($requestId,$query,$i,'arguments');
-			$html[] = self::getQueriesTabPaneTabPane($requestId,$query,$i,'explain');
-			$html[] = self::getQueriesTabPaneTabPane($requestId,$query,$i,'result');
+			$html[] = static::getQueriesTabPaneTabPane($requestId,$query,$i,'arguments');
+			$html[] = static::getQueriesTabPaneTabPane($requestId,$query,$i,'explain');
+			$html[] = static::getQueriesTabPaneTabPane($requestId,$query,$i,'result');
 			$html[] = '</div>';
 
 			$html[] = '</td></tr>';

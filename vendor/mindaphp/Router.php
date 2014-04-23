@@ -28,13 +28,13 @@ class Router
   
   protected static function initialize()
   {
-    if (self::$initialized) return;
-    self::$initialized = true;
-    self::$method = $_SERVER['REQUEST_METHOD'];
-    self::$request = $_SERVER['REQUEST_URI'];
-    self::$script = $_SERVER['SCRIPT_NAME'];
-    self::route();
-    self::applyRoutes();
+    if (static::$initialized) return;
+    static::$initialized = true;
+    static::$method = $_SERVER['REQUEST_METHOD'];
+    static::$request = $_SERVER['REQUEST_URI'];
+    static::$script = $_SERVER['SCRIPT_NAME'];
+    static::route();
+    static::applyRoutes();
   }
 
   protected static function error($message)
@@ -53,15 +53,15 @@ class Router
   
   public static function parameterless()
   {
-  	if (!self::$initialized) self::initialize();
-    if (self::getRequest()!=self::getUrl()) {
-  		self::redirect(self::getUrl());
+  	if (!static::$initialized) static::initialize();
+    if (static::getRequest()!=static::getUrl()) {
+  		static::redirect(static::getUrl());
   	}
   }
   
   public static function redirect($url,$permanent=false)
   {
-  	if (!self::$initialized) self::initialize();
+  	if (!static::$initialized) static::initialize();
     if (Debugger::$enabled) {
   		Debugger::set('redirect',$url);
   		Debugger::end('redirect');
@@ -71,14 +71,14 @@ class Router
   
   protected static function route()
   {
-    $root = self::$viewRoot;
+    $root = static::$viewRoot;
     $dir = '/';
 
-    $request = self::removePrefix(self::$request,self::$script?:'');
+    $request = static::removePrefix(static::$request,static::$script?:'');
     $getOk = strpos($request, '?')===false;
     $parts = explode('/',ltrim($request,'/'));
     foreach ($parts as $i=>$part) {
-      self::$url = $dir.$part;
+      static::$url = $dir.$part;
       if (strpos($part,'?')!==false) {
         $part = substr($part,0,strpos($part,'?'));
         $i=count($parts);
@@ -91,32 +91,32 @@ class Router
       $matches = glob($root.$dir.$part.'.*.php');
       if (count($matches)==0) $matches = glob($root.$dir.'index.*.php');
       else $i++;
-      $csrfOk = self::$method=='GET'?true:Session::checkCsrfToken();
+      $csrfOk = static::$method=='GET'?true:Session::checkCsrfToken();
       if (!$csrfOk) { $matches = glob($root.'/403.*.php'); $dir='/'; $i=count($parts); }
-      if (!self::$allowGet && !$getOk) { $matches = glob($root.'/405.*.php'); $dir='/'; $i=count($parts); }
+      if (!static::$allowGet && !$getOk) { $matches = glob($root.'/405.*.php'); $dir='/'; $i=count($parts); }
       if (count($matches)==0) { $matches = glob($root.'/404.*.php'); $dir='/'; $i=count($parts); }
-      if (count($matches)==0) self::error('Could not find 404');
-      if (count($matches)>1) self::error('Mutiple views matched: '.implode(', ',$matches));
-      list($view,$template) = self::extractParts($matches[0],$root,$dir);
-      self::$view = self::$viewRoot.$dir.$view.'.'.$template.'.php';
-      self::$action = self::$actionRoot.$dir.$view.'.php';
-      if (!file_exists(self::$action)) self::$action = false;
-      self::$template = $template!='none'?self::$templateRoot.'/'.$template.'.php':false;
-      self::$parameters = array();
+      if (count($matches)==0) static::error('Could not find 404');
+      if (count($matches)>1) static::error('Mutiple views matched: '.implode(', ',$matches));
+      list($view,$template) = static::extractParts($matches[0],$root,$dir);
+      static::$view = static::$viewRoot.$dir.$view.'.'.$template.'.php';
+      static::$action = static::$actionRoot.$dir.$view.'.php';
+      if (!file_exists(static::$action)) static::$action = false;
+      static::$template = $template!='none'?static::$templateRoot.'/'.$template.'.php':false;
+      static::$parameters = array();
       for ($p=$i;$p<count($parts);$p++) {
         if (strpos($parts[$p],'?')!==false) break;
-        self::$parameters[] = urldecode($parts[$p]);
+        static::$parameters[] = urldecode($parts[$p]);
       }
       if (Debugger::$enabled) {
-        $method = self::$method;
+        $method = static::$method;
         $routed = $request!=$_SERVER['REQUEST_URI']?$request:false;
         $request = $_SERVER['REQUEST_URI'];
-        $url = self::$url;
-        $viewFile = self::$view;
-        $actionFile = self::$action;
-        $templateFile = self::$template;
+        $url = static::$url;
+        $viewFile = static::$view;
+        $actionFile = static::$action;
+        $templateFile = static::$template;
         $parameters = array();
-        $parameters['url'] = self::$parameters;
+        $parameters['url'] = static::$parameters;
         $parameters['get'] = $_GET;
         $parameters['post'] = $_POST;
         Debugger::set('router',compact('method','csrfOk','request','routed','url','dir','view','template','viewFile','actionFile','templateFile','parameters'));
@@ -127,22 +127,22 @@ class Router
 
   public static function getUrl()
   {
-    if (!self::$initialized) self::initialize();
-    return self::$url;
+    if (!static::$initialized) static::initialize();
+    return static::$url;
   }
 
   public static function addRoute($sourcePath,$destinationPath)
   {
-  	self::$routes[$destinationPath] = $sourcePath;
+  	static::$routes[$destinationPath] = $sourcePath;
   }
   
   protected static function applyRoutes()
   {
-  	if (!self::$initialized) self::initialize();
-  	foreach (self::$routes as $destinationPath => $sourcePath) {
-	  	if (rtrim(self::$request,'/') == rtrim($sourcePath,'/')) {
-	  		self::$request = $destinationPath;
-	  		self::route();
+  	if (!static::$initialized) static::initialize();
+  	foreach (static::$routes as $destinationPath => $sourcePath) {
+	  	if (rtrim(static::$request,'/') == rtrim($sourcePath,'/')) {
+	  		static::$request = $destinationPath;
+	  		static::route();
 	  		break;
 	  	}
   	}
@@ -150,65 +150,65 @@ class Router
 
   public static function getRequest()
   {
-    if (!self::$initialized) self::initialize();
-    return self::$request;
+    if (!static::$initialized) static::initialize();
+    return static::$request;
   }
 
   public static function getAction()
   {
-    if (!self::$initialized) self::initialize();
-    self::$phase = 'action';
-    return self::$action;
+    if (!static::$initialized) static::initialize();
+    static::$phase = 'action';
+    return static::$action;
   }
 
   protected static function extractParts($match,$root,$dir)
   {
-    if (!self::$initialized) self::initialize();
-    $match = self::removePrefix($match,$root.$dir);
+    if (!static::$initialized) static::initialize();
+    $match = static::removePrefix($match,$root.$dir);
     $parts = explode('.',$match);
     array_pop($parts);
     $template = array_pop($parts);
     $action = implode('.',$parts);
-    if (!$action) self::error('Could not extract action from filename: '.$match);
-    if (!$template) self::error('Could not extract template from filename: '.$match);
+    if (!$action) static::error('Could not extract action from filename: '.$match);
+    if (!$template) static::error('Could not extract template from filename: '.$match);
     return array($action,$template);
   }
 
   public static function getView()
   {
-    if (!self::$initialized) self::initialize();
-    self::$phase = 'view';
-    return self::$view;
+    if (!static::$initialized) static::initialize();
+    static::$phase = 'view';
+    return static::$view;
   }
   
   public static function setContent($content)
   {
-  	if (!self::$initialized) self::initialize();
-  	self::$content = $content;
+  	if (!static::$initialized) static::initialize();
+  	static::$content = $content;
   }
   
   public static function getContent()
   {
-  	if (!self::$initialized) self::initialize();
-  	return self::$content;
+  	if (!static::$initialized) static::initialize();
+  	return static::$content;
   }
   
   public static function getTemplate()
   {
-    if (!self::$initialized) self::initialize();
-    self::$phase = 'view';
-    return self::$template;
+    if (!static::$initialized) static::initialize();
+    static::$phase = 'view';
+    return static::$template;
   }
 
   public static function getParameters()
   {
-  	if (!self::$initialized) self::initialize();
-    if (!self::$parameters) return array();
-  	else return self::$parameters;
+  	if (!static::$initialized) static::initialize();
+    if (!static::$parameters) return array();
+  	else return static::$parameters;
   }
   
   public static function getPhase()
   {
-  	return self::$phase;
+  	return static::$phase;
   }
 }

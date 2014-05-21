@@ -100,10 +100,14 @@ class Router
         $parameters = array_slice($parts, $i, count($parts)-$i);
         if (count($parameters)>count($parameterNames)) static::redirect(static::getUrl());
         $parameters = array_map('urldecode', $parameters);
-        if (count($parameters)<count($parameterNames))  
-          for ($i=count($parameters); $i<count($parameterNames); $i++) 
+        if (count($parameters)<count($parameterNames)) { 
+          for ($i=count($parameters); $i<count($parameterNames); $i++) { 
         	array_push($parameters,null);
-        static::$parameters = array_combine($parameterNames, $parameters);
+          }
+        }
+        if (count($parameterNames)){
+          static::$parameters = array_combine($parameterNames, $parameters);
+        }
       }      
       if (Debugger::$enabled) {
         $method = static::$method;

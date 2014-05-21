@@ -94,6 +94,7 @@ class Router
       if (count($matches)==0) $matches = glob($root.$dir.$view.'($*).php');
       if (count($matches)==0) static::$action = false;
       if (count($matches)>1) static::error('Mutiple actions matched: '.implode(', ',$matches));
+      static::$parameters = array();
       if (count($matches)==1) {
       	static::$action = $matches[0];
       	$parameterNames = static::extractParameterNames($matches[0],$root,$dir,$view);
@@ -118,7 +119,7 @@ class Router
         $actionFile = static::$action;
         $templateFile = static::$template;
         $parameters = array();
-        $parameters['url'] = static::$parameters===null?:array();
+        $parameters['url'] = static::$parameters;
         $parameters['get'] = $_GET;
         $parameters['post'] = $_POST;
         Debugger::set('router',compact('method','csrfOk','request','routed','url','dir','view','template','viewFile','actionFile','templateFile','parameters'));

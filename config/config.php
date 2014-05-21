@@ -3,8 +3,7 @@ namespace MindaPHP\Config;
 
 class Router
 {
-  public static $viewRoot     = '../views';
-  public static $actionRoot   = '../actions';
+  public static $pageRoot     = '../pages';
   public static $templateRoot = '../templates';
 }
 

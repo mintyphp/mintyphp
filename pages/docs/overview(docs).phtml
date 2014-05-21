@@ -42,16 +42,17 @@ file you will edit.</p>
 
 <h2>Default routing</h2>
 
-<p>The view files (in the "views" folder) have an URL on which they can be reached. They may
-reside in a sub-folder and their filename is constructed like this: "{name}.{template}.php".
+<p>The page files (in the "pages" folder) have an URL on which they can be reached. They may
+reside in a sub-folder and their filename is constructed like this: "hello(default).phtml".
+In this example the "name" is set to the value "hello" and the "template" is set to "default".
 Both the folder path and the "name" segment are part of the URL. Files with the name "index"
 can be used to serve the directory URL.</p>
 
-<p>The array returned by "Router::getParameters()" can be used to get access to anything provided
-after the URL. This means that when you access the URL "/customers/23", the router will match the
-"customers" page and set the first element to "23". This behavior can be turned off on a per page
-basis by calling the "Router::parameterless()" function. This will guarantee a consistent URL,
-which is useful when using relative links.</p>
+<p>The "phtml" files can have a corresponding "php" file. The filename is constructed like this:
+"customers($id).php". This means that when you access the URL "/customers/23", the router will match the
+"customers" page and PHP variable "$id" is set to "23". If you provide too many arguments the page will
+automatically reload without the extra params. If you provide not enough parameters, then all
+parameters will be set to "" (empty string).</p>
 
 <p>The router has a "addRoute" method, that allows you to map certain URL's to other URL's. A
 simple redirect that most projects have is that the "/" URL is redirected to some page in the

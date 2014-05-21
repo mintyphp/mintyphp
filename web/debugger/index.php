@@ -67,7 +67,7 @@ class DebugView
 			$html[] ='<h4>Routed</h4>';
 			$html[] ='<div class="well well-sm">'.$method.' '.htmlentities($request['router']['routed']).'</div>';
 		}
-		$path = $request['router']['dir'].$request['router']['view'].'.'.$request['router']['template'].'.php';
+		$path = $request['router']['dir'].$request['router']['view'].'('.$request['router']['template'].').phtml';
 		$html[] ='<h4>Target</h4>';
 		$html[] ='<div class="well well-sm">'.$method.' '.htmlentities($path).'</div>';
 		$html[] ='<h4>Files</h4>';

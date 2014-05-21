@@ -13,11 +13,9 @@ bool    Auth::logout()                      Action          Logging out      Pub
 bool    Auth::register($username,$password) Action          Adding users     Public
         Router::addRoute($req,$loc)         Router Config   Routing          Public
         Router::redirect($url)              Action          Redirection      Public
-array   Router::getParameters()             Action          User input       Public
 string  Session::getCsrfInput()             Template/View   Form security    Public
 =====================================================================================================
 bool    Loader::register($path,$namespace)  Loader Config   Loading classes  Advanced
-        Router::parameterless()             Action          Redirection      Medium
 string  Router::getContent()                Template        Create template  Medium
 integer DB::id()                            Action          Database inserts Medium
 </pre>

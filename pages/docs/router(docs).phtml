@@ -21,13 +21,6 @@ It does also show the redirected target, not the entered URL.</p>
 <h2>Template</h2>
 <pre>Router::getTemplate()</pre>
 <p>This gets the path to the template file that is loaded. For example on this page it returns: <?php var_dump(Router::getTemplate()); ?>.
-<h2>Parameters</h2>
-<pre>Router::getParameters()</pre>
-<p>This gets the parameters effective parameters. See also the "parameterless" function below.</p>
 <h2>Redirect</h2>
 <pre>Router::redirect($url)</pre>
 <p>This "redirect" function redirects directly to another URL.</p>
-<h2>Parameterless</h2>
-<pre>Router::parameterless()</pre>
-<p>By putting "&lt;?php Router::parameterless() ?&gt;" in the first line of the action you can force a redirect to the parameterless variant
-of the page.</p>

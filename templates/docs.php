@@ -1,4 +1,3 @@
-<?php Router::parameterless() ?>
 <!DOCTYPE html>
 <html>
   <head>

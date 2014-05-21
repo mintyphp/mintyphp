@@ -17,6 +17,7 @@ Session::start();
 // Load the action into body
 ob_start();
 if (Router::getAction()) {
+	extract(Router::getParameters());
 	require Router::getAction();
 }
 if (ob_get_contents()) {

@@ -9,8 +9,7 @@ class Router
   protected static $request = null;
   protected static $script = null;
   
-  public static $viewRoot = '../views';
-  public static $actionRoot = '../actions';
+  public static $pageRoot = '../pages';
   public static $templateRoot = '../templates';
   public static $allowGet = false;
   
@@ -51,14 +50,6 @@ class Router
     return $string;
   }
   
-  public static function parameterless()
-  {
-  	if (!static::$initialized) static::initialize();
-    if (static::getRequest()!=static::getUrl()) {
-  		static::redirect(static::getUrl());
-  	}
-  }
-  
   public static function redirect($url,$permanent=false)
   {
   	if (!static::$initialized) static::initialize();
@@ -71,42 +62,49 @@ class Router
   
   protected static function route()
   {
-    $root = static::$viewRoot;
+    $root = static::$pageRoot;
     $dir = '/';
 
     $request = static::removePrefix(static::$request,static::$script?:'');
-    $getOk = strpos($request, '?')===false;
+    $questionMarkPosition = strpos($request,'?');
+    $hasGet = $questionMarkPosition===false;
+    if (!$hasGet) $request = substr($request,0,$questionMarkPosition);
     $parts = explode('/',ltrim($request,'/'));
     foreach ($parts as $i=>$part) {
       static::$url = $dir.$part;
-      if (strpos($part,'?')!==false) {
-        $part = substr($part,0,strpos($part,'?'));
-        $i=count($parts);
-      } else if ($part && file_exists($root.$dir.$part) && is_dir($root.$dir.$part)) {
+      if ($part && file_exists($root.$dir.$part) && is_dir($root.$dir.$part)) {
         $dir .= $part.'/';
         if ($i==count($parts)-1) $part = '';
         else continue;
       } 
       if (!$part) $part = 'index';
-      $matches = glob($root.$dir.$part.'.*.php');
-      if (count($matches)==0) $matches = glob($root.$dir.'index.*.php');
+      $matches = glob($root.$dir.$part.'(*).phtml');
+      if (count($matches)==0) $matches = glob($root.$dir.'index(*).phtml');
       else $i++;
       $csrfOk = static::$method=='GET'?true:Session::checkCsrfToken();
-      if (!$csrfOk) { $matches = glob($root.'/403.*.php'); $dir='/'; $i=count($parts); }
-      if (!static::$allowGet && !$getOk) { $matches = glob($root.'/405.*.php'); $dir='/'; $i=count($parts); }
-      if (count($matches)==0) { $matches = glob($root.'/404.*.php'); $dir='/'; $i=count($parts); }
+      if (!$csrfOk) { $matches = glob($root.'/403(*).phtml'); $dir='/'; $i=count($parts); }
+      if (!static::$allowGet && !$hasGet) { $matches = glob($root.'/405(*).phtml'); $dir='/'; $i=count($parts); }
+      if (count($matches)==0) { $matches = glob($root.'/404(*).phtml'); $dir='/'; $i=count($parts); }
       if (count($matches)==0) static::error('Could not find 404');
       if (count($matches)>1) static::error('Mutiple views matched: '.implode(', ',$matches));
       list($view,$template) = static::extractParts($matches[0],$root,$dir);
-      static::$view = static::$viewRoot.$dir.$view.'.'.$template.'.php';
-      static::$action = static::$actionRoot.$dir.$view.'.php';
-      if (!file_exists(static::$action)) static::$action = false;
+      static::$view = static::$pageRoot.$dir.$view.'('.$template.').phtml';
       static::$template = $template!='none'?static::$templateRoot.'/'.$template.'.php':false;
-      static::$parameters = array();
-      for ($p=$i;$p<count($parts);$p++) {
-        if (strpos($parts[$p],'?')!==false) break;
-        static::$parameters[] = urldecode($parts[$p]);
-      }
+      $matches = glob($root.$dir.$view.'().php');
+      if (count($matches)==0) $matches = glob($root.$dir.$view.'($*).php');
+      if (count($matches)==0) static::$action = false;
+      if (count($matches)>1) static::error('Mutiple actions matched: '.implode(', ',$matches));
+      if (count($matches)==1) {
+      	static::$action = $matches[0];
+      	$parameterNames = static::extractParameterNames($matches[0],$root,$dir,$view);
+        $parameters = array_slice($parts, $i, count($parts)-$i);
+        if (count($parameters)>count($parameterNames)) static::redirect(static::getUrl());
+        $parameters = array_map('urldecode', $parameters);
+        if (count($parameters)<count($parameterNames))  
+          for ($i=count($parameters); $i<count($parameterNames); $i++) 
+        	array_push($parameters,null);
+        static::$parameters = array_combine($parameterNames, $parameters);
+      }      
       if (Debugger::$enabled) {
         $method = static::$method;
         $routed = $request!=$_SERVER['REQUEST_URI']?$request:false;
@@ -116,7 +114,7 @@ class Router
         $actionFile = static::$action;
         $templateFile = static::$template;
         $parameters = array();
-        $parameters['url'] = static::$parameters;
+        $parameters['url'] = static::$parameters===null?:array();
         $parameters['get'] = $_GET;
         $parameters['post'] = $_POST;
         Debugger::set('router',compact('method','csrfOk','request','routed','url','dir','view','template','viewFile','actionFile','templateFile','parameters'));
@@ -165,15 +163,26 @@ class Router
   {
     if (!static::$initialized) static::initialize();
     $match = static::removePrefix($match,$root.$dir);
-    $parts = explode('.',$match);
+    $parts = preg_split('/\(|\)/', $match);
     array_pop($parts);
     $template = array_pop($parts);
-    $action = implode('.',$parts);
-    if (!$action) static::error('Could not extract action from filename: '.$match);
     if (!$template) static::error('Could not extract template from filename: '.$match);
+    $action = array_pop($parts);
+    if (!$action) static::error('Could not extract action from filename: '.$match);
     return array($action,$template);
   }
 
+  protected static function extractParameterNames($match,$root,$dir,$view)
+  {
+  	if (!static::$initialized) static::initialize();
+  	$match = static::removePrefix($match,$root.$dir.$view);
+  	$parts = preg_split('/\(|\)/', $match);
+  	array_pop($parts);
+  	$parameterNames = array_pop($parts);
+  	$parts = preg_match_all('/,?(\$([^,\)]+))+/', $parameterNames, $matches);
+  	return $matches[2];
+  }
+  
   public static function getView()
   {
     if (!static::$initialized) static::initialize();

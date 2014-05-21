@@ -51,8 +51,8 @@ can be used to serve the directory URL.</p>
 <p>The "phtml" files can have a corresponding "php" file. The filename is constructed like this:
 "customers($id).php". This means that when you access the URL "/customers/23", the router will match the
 "customers" page and PHP variable "$id" is set to "23". If you provide too many arguments the page will
-automatically reload without the extra params. If you provide not enough parameters, then all
-parameters will be set to "" (empty string).</p>
+automatically reload without the extra params. If you provide not enough parameters, then the missing
+parameters will be set to NULL.</p>
 
 <p>The router has a "addRoute" method, that allows you to map certain URL's to other URL's. A
 simple redirect that most projects have is that the "/" URL is redirected to some page in the

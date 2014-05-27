@@ -70,8 +70,6 @@ class Router
     $request = static::removePrefix(static::$request,static::$script?:'');
     $request = static::removePrefix($request,static::$baseUrl);
 
-    //var_dump($root,$request);die();
-    
     $questionMarkPosition = strpos($request,'?');
     $hasGet = $questionMarkPosition===false;
     if (!$hasGet) $request = substr($request,0,$questionMarkPosition);
@@ -149,7 +147,7 @@ class Router
   {
   	if (!static::$initialized) static::initialize();
   	foreach (static::$routes as $destinationPath => $sourcePath) {
-	  	if (rtrim(static::$request,'/') == static::$baseUrl . rtrim($sourcePath,'/')) {
+  		if (rtrim(static::$request,'/') == rtrim(static::$baseUrl . $sourcePath,'/')) {
 	  		static::$request = static::$baseUrl . $destinationPath;
 	  		static::route();
 	  		break;

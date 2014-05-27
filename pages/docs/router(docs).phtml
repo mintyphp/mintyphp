@@ -12,6 +12,9 @@ to update the URL in the address bar you should use the "redirect" function.</p>
 <pre>Router::getUrl()</pre>
 <p>With this call you can find the effective routed URL. This does not contain parameters and/or trailing slashes.
 It does also show the redirected target, not the entered URL.</p>
+<pre>Router::getBaseUrl()</pre>
+<p>With this call you can find the routed URL prefix. When not loaded in a subdirectory this should be "/".
+It can be configured in the "config/config.php" file in the "Router" section.</p>
 <h2>View</h2>
 <pre>Router::getView()</pre>
 <p>This gets the path to the view file that is loaded. For example on this page it returns: <?php var_dump(Router::getView()); ?>.

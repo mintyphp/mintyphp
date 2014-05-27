@@ -98,8 +98,8 @@ class DB
     }
     if (func_num_args() > 1) {
       $args = array_slice(func_get_args(), 1);
-      foreach ($args as $i => $arg) {
-      	if ($i>0) $args[$i] = & $arg;
+      foreach (array_keys($args) as $i) {
+      	if ($i>0) $args[$i] = & $args[$i];
       }
       call_user_func_array(array($query, 'bind_param'),$args);
     }

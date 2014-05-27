@@ -9,6 +9,7 @@ class Router
   protected static $request = null;
   protected static $script = null;
   
+  public static $baseUrl = '/';
   public static $pageRoot = '../pages';
   public static $templateRoot = '../templates';
   public static $allowGet = false;
@@ -53,6 +54,7 @@ class Router
   public static function redirect($url,$permanent=false)
   {
   	if (!static::$initialized) static::initialize();
+  	$url = static::$baseUrl . $url;
     if (Debugger::$enabled) {
   		Debugger::set('redirect',$url);
   		Debugger::end('redirect');
@@ -64,8 +66,12 @@ class Router
   {
     $root = static::$pageRoot;
     $dir = '/';
-
+  	
     $request = static::removePrefix(static::$request,static::$script?:'');
+    $request = static::removePrefix($request,static::$baseUrl);
+
+    //var_dump($root,$request);die();
+    
     $questionMarkPosition = strpos($request,'?');
     $hasGet = $questionMarkPosition===false;
     if (!$hasGet) $request = substr($request,0,$questionMarkPosition);
@@ -143,8 +149,8 @@ class Router
   {
   	if (!static::$initialized) static::initialize();
   	foreach (static::$routes as $destinationPath => $sourcePath) {
-	  	if (rtrim(static::$request,'/') == rtrim($sourcePath,'/')) {
-	  		static::$request = $destinationPath;
+	  	if (rtrim(static::$request,'/') == static::$baseUrl . rtrim($sourcePath,'/')) {
+	  		static::$request = static::$baseUrl . $destinationPath;
 	  		static::route();
 	  		break;
 	  	}

@@ -88,7 +88,7 @@ class Debugger
       $parts[] = round($request['duration']*1000).' ms ';
       $parts[] = round($request['memory']/1000000).' MB';
     }
-    $html.= implode(' - ',$parts).' - <a href="/debugger/">debugger</a>';
+    $html.= implode(' - ',$parts).' - <a href="debugger/">debugger</a>';
     $html.= '</div></div>';
     echo $html;
   }

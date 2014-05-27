@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <base href="<?php echo MindaPHP\Config\Router::$baseUrl; ?>">
     <title>MindaPHP Documentation</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/img/favicon.ico">
-    <link href="/css/default.css" rel="stylesheet">
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <link href="css/default.css" rel="stylesheet">
   </head>
   <body>
-    <a href="https://github.com/mevdschee/MindaPHP"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/img/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+    <a href="https://github.com/mevdschee/MindaPHP"><img style="position: absolute; top: 0; right: 0; border: 0;" src="img/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
 
         <div class="title">
             <div class="logo">
-                <img src="/img/mindaphp_logo.png" alt="MindaPHP logo">
+                <img src="img/mindaphp_logo.png" alt="MindaPHP logo">
                 MindaPHP - Documentation
             </div>
         </div>
         <div class="menu">
             <p>
-                <a href="/">&lt;&lt; Back</a>
+                <a href="">&lt;&lt; Back</a>
             </p>
             <p>
-                <a href="/docs">Overview</a><br/>
-                <a href="/docs/structure">Structure</a><br/>
-                <a href="/docs/functions">Functions</a><br/>
-                <a href="/docs/router">Router</a><br/>
-                <a href="/docs/database">Database</a><br/>
-                <a href="/docs/session">Session</a><br/>
-                <a href="/docs/authenticate">Authenticate</a><br/>
-                <a href="/docs/api">API</a><br/>
-                <a href="/docs/webservers">Webservers</a><br/>
+                <a href="docs">Overview</a><br/>
+                <a href="docs/structure">Structure</a><br/>
+                <a href="docs/functions">Functions</a><br/>
+                <a href="docs/router">Router</a><br/>
+                <a href="docs/database">Database</a><br/>
+                <a href="docs/session">Session</a><br/>
+                <a href="docs/authenticate">Authenticate</a><br/>
+                <a href="docs/api">API</a><br/>
+                <a href="docs/webservers">Webservers</a><br/>
             </p>
         </div>
         <div class="body">

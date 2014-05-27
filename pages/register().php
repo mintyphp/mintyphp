@@ -18,6 +18,6 @@ if (isset($_POST['username']))
   }
   else
   { Auth::login($username, $password);
-    Router::redirect("/admin");
+    Router::redirect("admin");
   }
 }

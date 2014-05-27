@@ -5,7 +5,7 @@
 <p>Call this function to authenticate a user, example:</p>
 <pre>
 if (Auth::login($username, $password)) {
-  Router::redirect("/admin");
+  Router::redirect("admin");
 } else {
   $error = "Username/password not valid";
 }
@@ -15,7 +15,7 @@ if (Auth::login($username, $password)) {
 <p>Call this function to de-authenticate a user, example:</p>
 <pre>
 Auth::logout();
-Router::redirect("/login");
+Router::redirect("login");
 </pre>
 <h2>Register</h2>
 <pre>Auth::register($username,$password)</pre>
@@ -23,7 +23,7 @@ Router::redirect("/login");
 <pre>
 if (Auth::register($username, $password)) {
   Auth::login($username, $password);
-  Router::redirect("/admin");
+  Router::redirect("admin");
 } else { 
   $error = "User can not be registered";
 }

@@ -277,19 +277,20 @@ Session::start();
 <!DOCTYPE html>
 <html>
   <head>
+    <base href="<?php echo MindaPHP\Config\Router::$baseUrl; ?>">
     <title>MindaPHP Debugger</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/debugger/img/favicon.ico">
+    <link rel="shortcut icon" href="debugger/img/favicon.ico">
     <!-- Bootstrap -->
-    <link href="/debugger/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/debugger/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
-    <link href="/debugger/css/font-awesome.min.css" rel="stylesheet">
+    <link href="debugger/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="debugger/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+    <link href="debugger/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="/debugger/js/jquery.min.js"></script>
+    <script src="debugger/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/debugger/js/bootstrap.min.js"></script>
+    <script src="debugger/js/bootstrap.min.js"></script>
     
   </head>
   <body>
@@ -298,7 +299,7 @@ Session::start();
     <div class="row">
       <div class="col-md-4">
         <h3>
-          <img src="/debugger/img/mindaphp_logo_22x24.png" alt="MindaPHP logo" style="float:left; margin-right:10px;">
+          <img src="debugger/img/mindaphp_logo_22x24.png" alt="MindaPHP logo" style="float:left; margin-right:10px;">
           MindaPHP Debugger
         </h3>
       </div>

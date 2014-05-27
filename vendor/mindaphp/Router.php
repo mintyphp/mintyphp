@@ -229,4 +229,9 @@ class Router
   {
   	return static::$phase;
   }
+  
+  public static function getBaseUrl()
+  {
+  	return static::$baseUrl;
+  }
 }

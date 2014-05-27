@@ -277,7 +277,7 @@ Session::start();
 <!DOCTYPE html>
 <html>
   <head>
-    <base href="<?php echo MindaPHP\Config\Router::$baseUrl; ?>">
+    <base href="<?php echo Router::getBaseUrl(); ?>">
     <title>MindaPHP Debugger</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

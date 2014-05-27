@@ -202,7 +202,7 @@ class DebugView
 			$html[] = '<table class="table"><thead>';
 			$html[] = '<tr><th>#</th><th>Table</th><th>Field</th><th>Value</th></tr>';
 			$html[] = '</thead><tbody>';
-			foreach ($query[$type] as $i=>$tables) {
+			if ($query[$type]) foreach ($query[$type] as $i=>$tables) {
 				$f=0;
 				$fc=array_sum(array_map("count", $tables));
 				foreach ($tables as $table=>$fields) {

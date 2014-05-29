@@ -75,7 +75,7 @@ class Router
     
     $request = static::removePrefix(static::$request,static::$script?:'');
     $request = static::removePrefix($request,static::$baseUrl);
-    if (static::$original===null) static::$original = '/'.$request;
+    if (static::$original===null) static::$original = $request;
     
     $questionMarkPosition = strpos($request,'?');
     $hasGet = $questionMarkPosition===false;
@@ -117,7 +117,7 @@ class Router
         	array_push($parameters,null);
           }
         }
-        if (count($parameterNames)){
+        if (!$redirect && count($parameterNames)){
           static::$parameters = array_combine($parameterNames, $parameters);
         }
       }      
@@ -125,7 +125,7 @@ class Router
     }
     if (Debugger::$enabled) {
     	$method = static::$method;
-    	$request = static::$original;
+    	$request = '/'.static::$original;
     	$url = '/'.$dir.$view;
     	$viewFile = static::$view;
     	$actionFile = static::$action;
@@ -137,7 +137,7 @@ class Router
     	Debugger::set('router',compact('method','csrfOk','request','url','dir','view','template','viewFile','actionFile','templateFile','parameters'));
     	Debugger::set('status',$status);
     }
-    if ($redirect) static::redirect($url);
+    if ($redirect) static::redirect(static::getUrl());
   }
 
   public static function getUrl()

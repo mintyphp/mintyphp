@@ -9,17 +9,11 @@ class DebugView
 	static function getRequestCaption($request)
 	{
 		$parts = array();
-		$parts[] = date('H:i:s',$request['start']);
-		$parts[] = strtolower($request['router']['method']).' '.htmlentities($request['router']['url']);
-
-		if (!isset($request['type'])) {
-			$parts[] ='???';
-		} else {
-			$parts[] = $request['type'];
-			$parts[] = round($request['duration']*1000).' ms ';
-			$parts[] = round($request['memory']/1000000).' MB';
+		if (isset($request['type'])) {
+			$parts[] = '<span class="badge pull-right">'.$request['status'].'</span>';
 		}
-		return implode(' - ',$parts);
+		$parts[] = '<small>'.htmlentities($request['router']['method'].' '.$request['router']['request']).'</small>';
+		return implode(' ',$parts);
 	}
 
 	static function getRequestList()
@@ -60,16 +54,8 @@ class DebugView
 		if ($request['router']['method']=='POST' && !$request['router']['csrfOk']) {
 			$html[] ='<div class="alert alert-danger"><strong>Error:</strong> CSRF token validation failed</div>';
 		}
-		$method = $request['router']['method'];
 		$html[] ='<h4>Request</h4>';
-		$html[] ='<div class="well well-sm">'.$method.' '.htmlentities($request['router']['request']).'</div>';
-		if ($request['router']['routed']) {
-			$html[] ='<h4>Routed</h4>';
-			$html[] ='<div class="well well-sm">'.$method.' '.htmlentities($request['router']['routed']).'</div>';
-		}
-		$path = $request['router']['dir'].$request['router']['view'].'('.$request['router']['template'].').phtml';
-		$html[] ='<h4>Target</h4>';
-		$html[] ='<div class="well well-sm">'.$method.' '.htmlentities($path).'</div>';
+		$html[] ='<div class="well well-sm">'.htmlentities($request['router']['method'].' '.$request['router']['request']).'</div>';
 		$html[] ='<h4>Files</h4>';
 		$html[] ='<table class="table"><tbody>';
 		$html[] ='<tr><th>Action</th><td>'.($request['router']['actionFile']?:'<em>None</em>').'</td></tr>';
@@ -108,7 +94,7 @@ class DebugView
 	{
 		$html = array();
 		$html[] ='<div class="tab-pane" id="debug-request-'.$requestId.'-execution">';
-		$html[] ='<h4>Result</h4>';
+		$html[] ='<div class="row"><div class="col-md-10"><h4>Result</h4>';
 		$html[] ='<div class="well well-sm">';
 		if (!isset($request['type'])) {
 			$html[] = '???';
@@ -119,6 +105,13 @@ class DebugView
 		} elseif ($request['type']=='redirect') {
 			$html[] = htmlspecialchars('Redirected to: '.$request['redirect']);
 		}
+		$html[] ='</div>';
+		$html[] ='</div>';
+		$html[] ='<div class="col-md-2"><h4>Code</h4>';
+		$html[] ='<div class="well well-sm">';
+		$html[] =htmlspecialchars($request['status']);
+		$html[] ='</div>';
+		$html[] ='</div>';
 		$html[] ='</div>';
 		list($time,$micro) = explode('.',$request['start']);
 		$time = date('H:i:s',$time).'.'.substr($micro,0,3);

@@ -84,7 +84,6 @@ class Debugger
     if (!isset($request['type'])) {
       $parts[] ='???';
     } else {
-      $parts[] = $request['type'];
       $parts[] = round($request['duration']*1000).' ms ';
       $parts[] = round($request['memory']/1000000).' MB';
     }

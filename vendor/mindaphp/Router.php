@@ -82,7 +82,6 @@ class Router
     if (!$hasGet) $request = substr($request,0,$questionMarkPosition);
     $parts = explode('/',$request);
     foreach ($parts as $i=>$part) {
-      static::$url = $dir.$part;
       if ($part && file_exists($root.$dir.$part) && is_dir($root.$dir.$part)) {
         $dir .= $part.'/';
         if ($i==count($parts)-1) $part = '';
@@ -99,6 +98,7 @@ class Router
       if (count($matches)==0) static::error('Could not find 404');
       if (count($matches)>1) static::error('Mutiple views matched: '.implode(', ',$matches));
       list($view,$template) = static::extractParts($matches[0],$root,$dir);
+      static::$url = $dir.$view;
       static::$view = static::$pageRoot.$dir.$view.'('.$template.').phtml';
       static::$template = $template!='none'?static::$templateRoot.$template.'.php':false;
       $matches = glob($root.$dir.$view.'().php');
@@ -126,7 +126,7 @@ class Router
     if (Debugger::$enabled) {
     	$method = static::$method;
     	$request = '/'.static::$original;
-    	$url = '/'.$dir.$view;
+    	$url = '/'.static::$url;
     	$viewFile = static::$view;
     	$actionFile = static::$action;
     	$templateFile = static::$template;

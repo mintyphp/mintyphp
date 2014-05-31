@@ -278,17 +278,16 @@ Session::start();
     <!-- Bootstrap -->
     <link href="debugger/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="debugger/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
-    <link href="debugger/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="debugger/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="debugger/js/bootstrap.min.js"></script>
-    
+
   </head>
   <body>
   <div class="container">
-  
+
     <div class="row">
       <div class="col-md-4">
         <h3>
@@ -297,7 +296,7 @@ Session::start();
         </h3>
       </div>
     </div>
-    
+
     <div class="row">
       <div class="col-md-4">
         <?php echo DebugView::getRequestList(); ?>
@@ -321,8 +320,8 @@ Session::start();
         <script>
         $(function () {
           var classes=[];
-          $('#debug-request-<?php echo $last; ?> a[data-toggle="tab"]').each(function (e) { 
-            classes.push($(this).attr('class')); 
+          $('#debug-request-<?php echo $last; ?> a[data-toggle="tab"]').each(function (e) {
+            classes.push($(this).attr('class'));
           });
           $(classes).each(function (i,c) {
         	$('a[data-toggle="tab"].'+c).on('shown.bs.tab', function (e) {
@@ -335,7 +334,7 @@ Session::start();
         </script>
       </div>
     </div>
-    
+
   </div>
 </body>
 </html>

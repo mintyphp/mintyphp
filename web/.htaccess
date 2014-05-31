@@ -1,5 +1,5 @@
-php_flag display_startup_errors on
-php_flag display_errors on
+#php_flag display_startup_errors on
+#php_flag display_errors on
 
 <IfModule mod_rewrite.c>
     RewriteEngine On

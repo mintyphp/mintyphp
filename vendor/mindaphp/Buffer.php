@@ -36,6 +36,7 @@ class Buffer
 	
 	public static function get($name)
 	{
+		if (!isset(static::$data[$name])) return false;
 		return static::$data[$name];
 	}
 	

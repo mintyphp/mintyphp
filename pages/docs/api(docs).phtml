@@ -16,6 +16,9 @@ bool    Auth::register($username,$password) Action          Adding users     Pub
 string  Session::getCsrfInput()             Template/View   Form security    Public
 =====================================================================================================
 bool    Loader::register($path,$namespace)  Loader Config   Loading classes  Advanced
-string  Router::getContent()                Template        Create template  Medium
+        Buffer::set($name,$string)          Template        Create template  Medium
+string  Buffer::get($name)                  Template        Create template  Medium
+        Buffer::start($name)                Template        Create template  Medium
+        Buffer::end($name)                  Template        Create template  Medium
 integer DB::id()                            Action          Database inserts Medium
 </pre>

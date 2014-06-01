@@ -2,7 +2,7 @@
 <html>
   <head>
     <base href="<?php echo Router::getBaseUrl(); ?>">
-    <title>MindaPHP</title>
+    <title>MindaPHP - <?php echo Buffer::get('title'); ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/favicon.ico">
@@ -33,7 +33,7 @@
     </p>
   </div>
   <div class="body">
-    <?php echo Router::getContent(); ?>
+    <?php echo Buffer::get('html'); ?>
   </div>
 </body>
 </html>

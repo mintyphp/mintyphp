@@ -18,7 +18,6 @@ class Router
   protected static $url = null;
   protected static $view = null;
   protected static $action = null;
-  protected static $content = null;
   protected static $template = null;
   protected static $parameters = null;
   
@@ -205,18 +204,6 @@ class Router
     if (!static::$initialized) static::initialize();
     static::$phase = 'view';
     return static::$view;
-  }
-  
-  public static function setContent($content)
-  {
-  	if (!static::$initialized) static::initialize();
-  	static::$content = $content;
-  }
-  
-  public static function getContent()
-  {
-  	if (!static::$initialized) static::initialize();
-  	return static::$content;
   }
   
   public static function getTemplate()

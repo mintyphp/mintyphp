@@ -26,6 +26,7 @@
                 <a href="docs/structure">Structure</a><br/>
                 <a href="docs/functions">Functions</a><br/>
                 <a href="docs/router">Router</a><br/>
+                <a href="docs/buffer">Buffer</a><br/>
                 <a href="docs/database">Database</a><br/>
                 <a href="docs/session">Session</a><br/>
                 <a href="docs/authenticate">Authenticate</a><br/>
@@ -34,7 +35,7 @@
             </p>
         </div>
         <div class="body">
-            <?php echo Router::getContent(); ?>
+            <?php echo Buffer::get('html'); ?>
         </div>
 </body>
 </html>

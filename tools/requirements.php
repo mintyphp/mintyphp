@@ -26,12 +26,14 @@ if (!file_exists('config/config.php')) {
 	file_put_contents('config/config.php',$config);
 }
 if (!file_exists('config/config.php')) {
+	echo "ERROR: Could not write 'config/config.php'\n";
 	exit(1);
 }
 if (!file_exists('tools/adminer.php')) {
 	file_put_contents('tools/adminer.php',file_get_contents('http://adminer.org/latest.php'));
 }
 if (!file_exists('tools/adminer.php')) {
+	echo "ERROR: Could not write 'tools/adminer.php'\n";
 	exit(1);
 }
 exit(0);

@@ -21,12 +21,13 @@ foreach ($paths as $path) {
     $hash = sha1($data);
     $old = sha1(file_get_contents($filename));
     if ($old!=$hash) {
-      if ($size && preg_match('/<\?php/', $data)) {
-        $updated++;
+      if ((preg_match('\.php$', $filename) && $size && preg_match('/<\?php/', $data)) ||
+          (preg_match('.htaccess$', $filename) && $size)) {
+      	$updated++;
         file_put_contents($filename, $data);
         $version = substr($hash, 0, 10);
         echo "$filename ($version)\n";
-      } else {
+      } else {      
         echo "$filename (ERROR)\n";
       }
     }

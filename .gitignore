@@ -1,3 +1,5 @@
 .buildpath
 .project
 .settings
+tools/adminer.php
+config/config.php

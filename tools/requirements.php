@@ -1,7 +1,6 @@
 <?php
 if (!file_exists('config/config.php')) {
 	$config = file_get_contents('config/config.php.template');
-	// {{BASE_URL}}
 	$questions = array(
 	  array('BASE_URL','What is URL path of the application?','/',function($i){ 
 		if ($i=='/') return $i; 

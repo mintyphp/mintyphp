@@ -1,4 +1,16 @@
 <?php
+if (!defined('PHP_VERSION_ID')) {
+	$version = explode('.', PHP_VERSION);
+	define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
+}
+if (PHP_VERSION_ID < 50300) {
+	echo "ERROR: PHP 5.3 or higher required\n";
+	exit(1);
+}
+if (!function_exists('mysqli_connect')) {
+	echo "ERROR: MySQLi extension not found\n";
+	exit(1);
+}
 if (!file_exists('config/config.php')) {
 	$config = file_get_contents('config/config.php.template');
 	$questions = array(
@@ -20,10 +32,6 @@ if (!file_exists('config/config.php')) {
 		echo "[$n/$c] $question [$default] ";
 		$parameters[$name] = trim(fgets(STDIN))?:$default;
 	}
-	if (!function_exists('mysqli_connect')) {
-		echo "ERROR: MySQLi extension not found\n";
-		exit(1);
-	} 
 	$mysqli = new mysqli($parameters['DB_HOST'], $parameters['DB_USER'], $parameters['DB_PASS']);
 	if ($mysqli->connect_error) {
 	    echo "ERROR: MySQL connect: ($mysqli->connect_errno) $mysqli->connect_error\n";

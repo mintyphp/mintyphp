@@ -43,7 +43,7 @@ if (!file_exists('config/config.php')) {
 		}
 		echo "INFO: MySQL database created\n";
 	    $host = $parameters['DB_HOST']=='localhost'?'localhost':'%';
-		$pass = sha1(rand() . time(true) . $parameters['DB_NAME']);
+		$pass = base64_encode(sha1(rand() . time(true) . $parameters['DB_NAME'], true));  
 		$sql = "CREATE USER '$parameters[DB_NAME]'@'$host' IDENTIFIED BY '$pass';";
 		if (!$result = $mysqli->query($sql)) {
 			echo "ERROR: MySQL user create: $mysqli->error\n";

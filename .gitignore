@@ -1,5 +1,6 @@
 .buildpath
 .project
 .settings
+composer.phar
 tools/adminer.php
 config/config.php

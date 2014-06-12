@@ -3,7 +3,7 @@ namespace MindaPHP\Config;
 
 class Router
 {
-  public static $baseUrl      = '{{BASE_URL}}';
+  public static $baseUrl      = '{{BASE_URL}}'; // default: '/'
   public static $pageRoot     = '../pages/';
   public static $templateRoot = '../templates/';
 }
@@ -15,11 +15,11 @@ class Session
 
 class DB
 {
-  public static $host     = '{{DB_HOST}}';
-  public static $username = '{{DB_USER}}';
-  public static $password = '{{DB_PASS}}';
-  public static $database = '{{DB_NAME}}';
-  public static $port     = {{DB_PORT}};
+  public static $host     = '{{DB_HOST}}'; // default: 'localhost'
+  public static $username = '{{DB_USER}}'; // default: 'mindaphp'
+  public static $password = '{{DB_PASS}}'; // choose a strong password
+  public static $database = '{{DB_NAME}}'; // default: 'mindaphp'
+  public static $port     = {{DB_PORT}};   // default: 3306
 }
 
 class Auth

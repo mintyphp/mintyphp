@@ -7,7 +7,10 @@ $paths = array(
   'web/.htaccess',
   'web/index.php',
   'web/debugger/index.php',
-  'vendor/mindaphp/*.php'
+  'vendor/mindaphp/*.php',
+  'tools/requirements.php',
+  'tools/server.php',
+  'tools/update.php'
 );
 foreach ($paths as $path) {
   foreach (glob($path) as $filename) {
@@ -21,8 +24,8 @@ foreach ($paths as $path) {
     $hash = sha1($data);
     $old = sha1(file_get_contents($filename));
     if ($old!=$hash) {
-      if ((preg_match('\.php$', $filename) && $size && preg_match('/<\?php/', $data)) ||
-          (preg_match('.htaccess$', $filename) && $size)) {
+      if ((preg_match('/\.php$/', $filename) && $size && preg_match('/<\?php/', $data)) ||
+          (preg_match('/\.htaccess$/', $filename) && $size)) {
       	$updated++;
         file_put_contents($filename, $data);
         $version = substr($hash, 0, 10);

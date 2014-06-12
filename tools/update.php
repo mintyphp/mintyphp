@@ -14,6 +14,7 @@ $paths = array(
 );
 foreach ($paths as $path) {
   foreach (glob($path) as $filename) {
+  	echo '.';
     $files++;
     $data = @file_get_contents($source.$filename);
     if ($data===false) {
@@ -29,9 +30,9 @@ foreach ($paths as $path) {
       	$updated++;
         file_put_contents($filename, $data);
         $version = substr($hash, 0, 10);
-        echo "$filename ($version)\n";
+        echo "\n$filename ($version)\n";
       } else {      
-        echo "$filename (ERROR)\n";
+        echo "\n$filename (ERROR)\n";
       }
     }
   }

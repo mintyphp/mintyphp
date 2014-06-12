@@ -1,28 +1,91 @@
 <?php
 if (!file_exists('config/config.php')) {
 	$config = file_get_contents('config/config.php.template');
-	$c = 6;
 	// {{BASE_URL}}
-	printf("[1/$c] What is URL path of the application? [/] ");
-	$url = parse_url(trim(fgets(STDIN)));
-	if (!trim($url['path'], '/')) $url = '/';
-	else $url = '/'.trim($url['path'], '/').'/';
-	$config = str_replace('{{BASE_URL}}', $url, $config);
-	// {{DB_HOST}}
-	printf("[2/$c] What is the MySQL hostname? [localhost] ");
-	$config = str_replace('{{DB_HOST}}', trim(fgets(STDIN))?:'localhost', $config);
-	// {{DB_USER}}
-	printf("[3/$c] What is the MySQL username? [root] ");
-	$config = str_replace('{{DB_USER}}', trim(fgets(STDIN))?:'root', $config);
-	// {{DB_PASS}}
-	printf("[4/$c] What is the MySQL password? [] ");
-	$config = str_replace('{{DB_PASS}}', trim(fgets(STDIN))?:'', $config);
-	// {{DB_NAME}}
-	printf("[5/$c] What is the MySQL database? [mindaphp] ");
-	$config = str_replace('{{DB_NAME}}', trim(fgets(STDIN))?:'mindaphp', $config);
-	// {{DB_PORT}}
-	printf("[6/$c] What is the MySQL port? [3306] ");
-	$config = str_replace('{{DB_PORT}}', trim(fgets(STDIN))?:'3306', $config);
+	$questions = array(
+	  array('BASE_URL','What is URL path of the application?','/',function($i){ 
+		if ($i=='/') return $i; 
+		$u=parse_url($i); return '/'.trim($u['path'], '/').'/'; 
+	  }),
+	  array('DB_HOST','What is the MySQL hostname?','localhost',null),
+	  array('DB_USER','What is the MySQL username?','root',null),
+	  array('DB_PASS','What is the MySQL password?','',null),
+	  array('DB_NAME','What is the MySQL database?','mindaphp',null),
+	  array('DB_PORT','What is the MySQL port?','3306',null),
+	);
+	$parameters = array();
+	$c = count($questions);
+	foreach ($questions as $i=>$q) {
+		$n = $i+1;
+		list($name,$question,$default,$filter) = $q;
+		echo "[$n/$c] $question [$default] ";
+		$parameters[$name] = trim(fgets(STDIN))?:$default;
+	}
+	if (!defined('mysqli')) 
+	$mysqli = new mysqli($parameters['DB_HOST'], $parameters['DB_USER'], $parameters['DB_PASS']);
+	if ($mysqli->connect_error) {
+	    echo "ERROR: MySQL connect: ($mysqli->connect_errno) $mysqli->connect_error\n";
+	    exit(1);
+	}
+	echo "INFO: MySQL connected\n";
+	$sql = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$parameters[DB_NAME]';";
+	if (!$result = $mysqli->query($sql)) {
+		echo "ERROR: MySQL database check: $mysqli->error\n";
+		exit(1);
+	} elseif (!$result->num_rows) {
+		if ($parameters['DB_USER'] != 'root') {
+			echo "ERROR: MySQL database not found: $parameters[DB_NAME]\n";
+	    	exit(1);
+		}
+		$sql = "CREATE DATABASE `$parameters[DB_NAME]` COLLATE 'utf8_bin';";
+		if (!$result = $mysqli->query($sql)) {
+			echo "ERROR: MySQL database create: $mysqli->error\n";
+			exit(1);
+		}
+		echo "INFO: MySQL database created\n";
+	    $host = $parameters['DB_HOST']=='localhost'?'localhost':'%';
+		$pass = sha1(rand() . time(true) . $parameters['DB_NAME']);
+		$sql = "CREATE USER '$parameters[DB_NAME]'@'$host' IDENTIFIED BY '$pass';";
+		if (!$result = $mysqli->query($sql)) {
+			echo "ERROR: MySQL user create: $mysqli->error\n";
+			exit(1);
+		}
+		echo "INFO: MySQL user created\n";
+	    $sql = "GRANT ALL PRIVILEGES ON `$parameters[DB_NAME]`.* TO '$parameters[DB_NAME]'@'$host';";
+		if (!$result = $mysqli->query($sql)) {
+			echo "ERROR: MySQL grant user: $mysqli->error\n";
+			exit(1);
+		}
+		echo "INFO: MySQL user granted\n";
+	    $parameters['DB_USER'] = $parameters['DB_NAME'];
+		$parameters['DB_PASS'] = $pass;
+	}
+    $sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$parameters[DB_NAME]' AND TABLE_NAME = 'users';";
+	if (!$result = $mysqli->query($sql)) {
+		echo "ERROR: MySQL table check: $mysqli->error\n";
+		exit(1);
+	} elseif (!$result->num_rows) {
+		$sql = <<<END_OF_SQL
+CREATE TABLE `$parameters[DB_NAME]`.`users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) COLLATE utf8_bin NOT NULL,
+  `password` varchar(255) COLLATE utf8_bin NOT NULL,
+  `salt` varchar(255) COLLATE utf8_bin NOT NULL,
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+END_OF_SQL;
+		if (!$mysqli->query($sql)) {
+			echo "ERROR: MySQL create table: $mysqli->error\n";
+			exit(1);
+		}
+		echo "INFO: MySQL table created\n";
+	}
+	$mysqli->close();
+	foreach ($parameters as $key => $value) {
+	  $config = str_replace('{{'.$key.'}}', $value, $config);
+	}
 	file_put_contents('config/config.php',$config);
 }
 if (!file_exists('config/config.php')) {
@@ -30,6 +93,7 @@ if (!file_exists('config/config.php')) {
 	exit(1);
 }
 if (!file_exists('tools/adminer.php')) {
+	echo "INFO: File 'adminer.php' not found, downloading...\n";
 	file_put_contents('tools/adminer.php',file_get_contents('http://adminer.org/latest.php'));
 }
 if (!file_exists('tools/adminer.php')) {

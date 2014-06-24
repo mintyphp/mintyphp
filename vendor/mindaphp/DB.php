@@ -16,7 +16,7 @@ class DB
   
   protected static function connect()
   {
-  	if (Router::getPhase()!='action') {
+  	if (class_exists('Router',false) && Router::getPhase()!='action') {
   		static::error('Database can only be used in MindaPHP action');
   	}
     if (!static::$mysqli) {
@@ -41,6 +41,17 @@ class DB
       $result = $result[$key];
     }
     return $result;
+  }
+  
+  public static function ql($query)
+  {
+  	$result = forward_static_call_array('DB::q', func_get_args());
+  	$list = array();
+  	foreach ($result as $record) {
+  		$table = array_shift(array_keys($record));
+  		$list[array_shift($record[$table])] = array_pop($record[$table]);
+  	}
+  	return $list;
   }
     
   public static function q1($query)

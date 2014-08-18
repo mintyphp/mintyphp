@@ -193,22 +193,30 @@ class DebugView
 		} else {
 			$html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-query-'.$queryId.'-'.$type.'">';
 			$html[] = '<table class="table"><thead>';
-			$html[] = '<tr><th>#</th><th>Table</th><th>Field</th><th>Value</th></tr>';
-			$html[] = '</thead><tbody>';
-			if ($query[$type]) foreach ($query[$type] as $i=>$tables) {
-				$f=0;
-				$fc=array_sum(array_map("count", $tables));
-				foreach ($tables as $table=>$fields) {
-					$t=0;
-					$tc=count($fields);
-					foreach ($fields as $field=>$value) {
-						$rowCell = $f?'':'<td rowspan="'.$fc.'">'.($i+1).'</td>';
-						$tableCell = $t?'':'<td rowspan="'.$tc.'">'.$table.'</td>';
-						$html[] = '<tr>'.$rowCell.$tableCell.'<td>'.$field.'</td><td>'.var_export($value,true).'</td></tr>';
-						$t++;
-						$f++;
+			if (is_int($query[$type])) {
+				$html[] = '<tr><th>Field</th><th>Value</th></tr>';
+				$html[] = '</thead><tbody>';
+				$html[] = '<tr><td>Affected rows</td><td>'.$query[$type].'</td></tr>';
+			} else if (is_array($query[$type])) {
+				$html[] = '<tr><th>#</th><th>Table</th><th>Field</th><th>Value</th></tr>';
+				$html[] = '</thead><tbody>';
+				foreach ($query[$type] as $i=>$tables) {
+					$f=0;
+					$fc=array_sum(array_map("count", $tables));
+					foreach ($tables as $table=>$fields) {
+						$t=0;
+						$tc=count($fields);
+						foreach ($fields as $field=>$value) {
+							$rowCell = $f?'':'<td rowspan="'.$fc.'">'.($i+1).'</td>';
+							$tableCell = $t?'':'<td rowspan="'.$tc.'">'.$table.'</td>';
+							$html[] = '<tr>'.$rowCell.$tableCell.'<td>'.$field.'</td><td>'.var_export($value,true).'</td></tr>';
+							$t++;
+							$f++;
+						}
 					}
 				}
+			} else {
+				$html[] = '</thead><tbody>';
 			}
 			$html[] = '</tbody>';
 			$html[] = '</table></div>';

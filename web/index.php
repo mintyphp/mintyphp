@@ -17,7 +17,7 @@ Session::start();
 // Load the action into body
 
 ob_start();
-if (file_exists(Router::getTemplateAction())) {
+if (Router::getTemplateAction()) {
 	require Router::getTemplateAction();
 }
 if (ob_get_contents()) {

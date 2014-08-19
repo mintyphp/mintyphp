@@ -210,14 +210,16 @@ class Router
   {
     if (!static::$initialized) static::initialize();
     static::$phase = 'view';
-    return static::$template.'.phtml';
+    $filename = static::$template.'.phtml';
+    return file_exists($filename)?$filename:false;
   }
 
   public static function getTemplateAction()
   {
   	if (!static::$initialized) static::initialize();
   	static::$phase = 'action';
-  	return static::$template.'.php';
+    $filename = static::$template.'.php';
+    return file_exists($filename)?$filename:false;
   }
   
   

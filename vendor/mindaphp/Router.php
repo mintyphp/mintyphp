@@ -99,7 +99,7 @@ class Router
       list($view,$template) = static::extractParts($matches[0],$root,$dir);
       static::$url = $dir.$view;
       static::$view = static::$pageRoot.$dir.$view.'('.$template.').phtml';
-      static::$template = $template!='none'?static::$templateRoot.$template.'.php':false;
+      static::$template = $template!='none'?static::$templateRoot.$template:false;
       $matches = glob($root.$dir.$view.'().php');
       if (count($matches)==0) $matches = glob($root.$dir.$view.'($*).php');
       if (count($matches)==0) static::$action = false;
@@ -206,13 +206,21 @@ class Router
     return static::$view;
   }
   
-  public static function getTemplate()
+  public static function getTemplateView()
   {
     if (!static::$initialized) static::initialize();
     static::$phase = 'view';
-    return static::$template;
+    return static::$template.'.phtml';
   }
 
+  public static function getTemplateAction()
+  {
+  	if (!static::$initialized) static::initialize();
+  	static::$phase = 'action';
+  	return static::$template.'.php';
+  }
+  
+  
   public static function getParameters()
   {
   	if (!static::$initialized) static::initialize();

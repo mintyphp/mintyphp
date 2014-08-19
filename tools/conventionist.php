@@ -35,8 +35,8 @@ END_OF_STR;
   }
 
   private static function check()
-  { $tables = DB::q("SELECT TABLE_NAME,TABLE_TYPE,ENGINE,TABLE_COLLATION FROM information_schema.TABLES WHERE table_schema=DATABASE() AND table_name NOT like '%_history' AND table_name NOT like 'history'");
-    $foreign_keys = DB::ql("select concat(table_name, '.', column_name) as 'foreign_key', concat(referenced_table_name, '.', referenced_column_name) as 'references' from information_schema.key_column_usage where referenced_table_name is not null and table_schema=DATABASE()");
+  { $tables = Query::records("SELECT TABLE_NAME,TABLE_TYPE,ENGINE,TABLE_COLLATION FROM information_schema.TABLES WHERE table_schema=DATABASE() AND table_name NOT like '%_history' AND table_name NOT like 'history'");
+    $foreign_keys = Query::pairs("select concat(table_name, '.', column_name) as 'foreign_key', concat(referenced_table_name, '.', referenced_column_name) as 'references' from information_schema.key_column_usage where referenced_table_name is not null and table_schema=DATABASE()");
     $errors = array();
     $fieldsets = array();
     $tableNames = array();
@@ -46,7 +46,7 @@ END_OF_STR;
     }
     for ($i=0;$i<count($tableNames);$i++)
     { $table = $tables[$i]['TABLE_NAME'];
-      $fields=DB::q("SELECT COLUMN_NAME,COLUMN_KEY,EXTRA FROM information_schema.COLUMNS WHERE table_schema=DATABASE() and table_name = ?",$table);
+      $fields=Query::records("SELECT COLUMN_NAME,COLUMN_KEY,EXTRA FROM information_schema.COLUMNS WHERE table_schema=DATABASE() and table_name = ?",$table);
       foreach ($fields as $j=>$field)
       { $fields[$j] = $field['COLUMNS'];
       }
@@ -57,8 +57,8 @@ END_OF_STR;
       if (!preg_match('/^[a-z_]+$/',$table,$matches))
       { $errors[] = array('type'=>'warning','table'=>$table,'message'=>'invalid table name');
       }
-      if ($tables[$i]['TABLE_TYPE']=="BASE TABLE" && $tables[$i]['ENGINE']!="InnoDB")
-      { $errors[] = array('type'=>'error','table'=>$table,'message'=>'type must be InnoDB');
+      if ($tables[$i]['TABLE_TYPE']=="BASE TABLE" && $tables[$i]['ENGINE']!="InnoQuery")
+      { $errors[] = array('type'=>'error','table'=>$table,'message'=>'type must be InnoQuery');
       }
       if (!preg_match('/^utf8/i',$tables[$i]['TABLE_COLLATION'],$matches))
       { $errors[] = array('type'=>'warning','table'=>$table,'message'=>'collation should be utf8');

@@ -16,7 +16,7 @@ class Auth
 		  static::$usernameField,
 		  static::$saltField,
 		  static::$passwordField);
-	  $user = DB::q1($query,$username,$password);
+	  $user = Query::one($query,$username,$password);
 	  if ($user) $_SESSION['user'] = $user['users'];
 	  return $user;
 	}
@@ -38,7 +38,7 @@ class Auth
 	    static::$passwordField,
 		  static::$saltField,
 		  static::$createdField);
-	  $success = DB::q($query,$username,$salt,$password,$salt);
+	  $success = Query::records($query,$username,$salt,$password,$salt);
 	  return $success;
 	}
 	

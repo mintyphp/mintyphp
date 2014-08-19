@@ -1,9 +1,9 @@
 <?php
 namespace MindaPHP;
 
-class DBError extends \Exception {};
+class QueryError extends \Exception {};
 
-class DB
+class Query
 {
 	public static $host=null;
 	public static $username=null;
@@ -30,12 +30,12 @@ class DB
     
   protected static function error($message)
   {
-    throw new DBError($message);
+    throw new QueryError($message);
   }
    
-  public static function qv($query)
+  public static function value($query)
   {
-  	$result = forward_static_call_array('DB::q1', func_get_args());
+  	$result = forward_static_call_array('Query::one', func_get_args());
     while (is_array($result)) {
       $key = array_shift(array_keys($result));
       $result = $result[$key];
@@ -43,9 +43,9 @@ class DB
     return $result;
   }
   
-  public static function ql($query)
+  public static function pairs($query)
   {
-  	$result = forward_static_call_array('DB::q', func_get_args());
+  	$result = forward_static_call_array('Query::records', func_get_args());
   	$list = array();
   	foreach ($result as $record) {
   		$table = array_shift(array_keys($record));
@@ -54,43 +54,43 @@ class DB
   	return $list;
   }
     
-  public static function q1($query)
+  public static function one($query)
   {
     $args = func_get_args();
     if (func_num_args() > 1) {
       array_splice($args,1,0,array(str_repeat('s', count($args)-1)));
     }
-    return forward_static_call_array('DB::qt1', $args);
+    return forward_static_call_array('Query::one_t', $args);
   }
     
-  private static function qt1($query)
+  private static function one_t($query)
   {
-    $result = forward_static_call_array('DB::qt', func_get_args());
+    $result = forward_static_call_array('Query::records_t', func_get_args());
     if (isset($result[0])) return $result[0];
     return $result;
   }
     
-  public static function q($query)
+  public static function records($query)
   {
     $args = func_get_args();
     if (func_num_args() > 1) {
       array_splice($args,1,0,array(str_repeat('s', count($args)-1)));
     }
-    return forward_static_call_array('DB::qt', $args);
+    return forward_static_call_array('Query::records_t', $args);
   }
    
-  private static function qt($query)
+  private static function records_t($query)
   {
     if (!Debugger::$enabled) {
-      return forward_static_call_array('DB::_qt', func_get_args());
+      return forward_static_call_array('Query::_records_t', func_get_args());
     }
     $time = microtime(true);
-    $result = forward_static_call_array('DB::_qt', func_get_args());
+    $result = forward_static_call_array('Query::_records_t', func_get_args());
     $duration = microtime(true)-$time;
     $arguments = func_get_args();
     if (strtoupper(substr(trim($query), 0, 6))=='SELECT') {
       $arguments[0] = 'explain '.$query;
-      $explain = forward_static_call_array('DB::_qt', $arguments);
+      $explain = forward_static_call_array('Query::_records_t', $arguments);
     } else {
       $explain = false;
     }
@@ -100,7 +100,7 @@ class DB
     return $result;
   }
     
-  private static function _qt($query)
+  private static function _records_t($query)
   {
     static::connect();
   	$query = static::$mysqli->prepare($query);

@@ -7,12 +7,10 @@ class Session
 {
   public static $sessionName        = 'mindaphp';
   public static $csrfSessionKey     = 'csrf_token';
-  public static $flashMessageKey    = 'flash_messages';
   
   protected static $initialized = false;
   protected static $started = false;
   protected static $ended = false;
-  protected static $flashMessages = array();
   
   protected static function initialize()
   {
@@ -36,10 +34,6 @@ class Session
   	session_name(static::$sessionName);
   	session_start();
   	static::$started = true;
-  	if (isset($_SESSION[static::$flashMessageKey])) {
-  		static::$flashMessages = $_SESSION[static::$flashMessageKey];
-  		unset($_SESSION[static::$flashMessageKey]);
-  	}
   	if (Debugger::$enabled) {
   		if (!isset($_SESSION[Debugger::$sessionKey])) {
   			$_SESSION[Debugger::$sessionKey] = array();
@@ -79,13 +73,4 @@ class Session
   	echo '<input type="hidden" name="'.static::$csrfSessionKey.'" value="'.$_SESSION[static::$csrfSessionKey].'"/>';
   }
   
-  public static function getFlashMessages()
-  {
-  	return static::$flashMessages;
-  }
-  
-  public static function addFlashMessage($message)
-  {
-  	$_SESSION[static::$flashMessageKey][] = $message;
-  }
 }

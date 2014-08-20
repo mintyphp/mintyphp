@@ -5,10 +5,12 @@ Type    Function                            Location        Purpose          Lev
 =====================================================================================================
         e($variable)                        Template/View   Output           Public
         d($variable)                        Everywhere      Debugging        Public
-array   Query::records($sql,...)                     Action          Database query   Public
-array   Query::one($sql,...)                    Action          Database query   Public
-array   Query::pairs($sql,...)                    Action          Database query   Public
-string  Query::value($sql,...)                    Action          Database query   Public
+array   Query::records($sql,...)            Action          Database query   Public
+array   Query::one($sql,...)                Action          Database query   Public
+array   Query::pairs($sql,...)              Action          Database query   Public
+string  Query::value($sql,...)              Action          Database query   Public
+integer Query::insert($sql,...)             Action          Database query   Public
+integer Query::update($sql,...)             Action          Database query   Public
 bool    Auth::login($username,$password)    Action          Logging in       Public
 bool    Auth::logout()                      Action          Logging out      Public
 bool    Auth::register($username,$password) Action          Adding users     Public
@@ -21,5 +23,4 @@ bool    Loader::register($path,$namespace)  Loader Config   Loading classes  Adv
 string  Buffer::get($name)                  Template        Create template  Medium
         Buffer::start($name)                Template        Create template  Medium
         Buffer::end($name)                  Template        Create template  Medium
-integer Query::id()                            Action          Database inserts Medium
 </pre>

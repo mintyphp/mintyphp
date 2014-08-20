@@ -23,17 +23,19 @@ $users = Query::records('select * from users');
 $query = 'select * from users where username = ? and sha1(concat(salt,?)) = password limit 1';
 $user = Query::one($query,$username,$password);
 </pre>
-<h2>Insert id</h2>
-<pre>Query::id()</pre>
-<p>Returns the "insert id" from the last executed SQL query. Example:</p>
+<h2>Insert</h2>
+<pre>Query::insert()</pre>
+<p>Executes SQL "INSERT" statement and returns the "insert id" from the last executed SQL query. Example:</p>
 <pre>
 $query = 'insert into users (username,password,salt,created) values (?,sha1(concat(?,?)),?,NOW())';
-$success = Query::records($query,$username,$salt,$password,$salt);
-if ($success) {
-  $userId = Query::id();
-} else {
-  $userId = false;
-}
+$userId = Query::insert($query,$username,$salt,$password,$salt);
+</pre>
+<h2>Update</h2>
+<pre>Query::insert()</pre>
+<p>Executes SQL "UPDATE" statement and returns the "affected rows" from the last executed SQL query. Example:</p>
+<pre>
+$query = 'update users set username = ? where id = ?';
+$affectedRows = Query::update($query,$username,$userId);
 </pre>
 <h2>Raw engine access</h2>
 <pre>Query::handle()</pre>

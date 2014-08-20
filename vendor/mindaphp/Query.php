@@ -105,7 +105,7 @@ class Query
     static::connect();
   	$query = static::$mysqli->prepare($query);
     if (!$query) {
-      return static::error(static::$mysqli->error,false);
+      return static::error(static::$mysqli->error);
     }
     if (func_num_args() > 1) {
       $args = array_slice(func_get_args(), 1);
@@ -116,7 +116,7 @@ class Query
     }
     $query->execute();
     if ($query->errno) {
-      return static::error(mysqli_error(static::$mysqli),false);
+      return static::error(static::$mysqli->error);
     }
     if ($query->affected_rows > -1) {
       return $query->affected_rows;
@@ -144,9 +144,19 @@ class Query
     return $result;
   }
  
-  public static function id()
+  public static function insert($query)
   {
+    $result = forward_static_call_array('Query::records_t', func_get_args());
+    if (!is_int($result)) return static::error('Query::insert should not return result');
+    if (!$result) return false;
     return static::$mysqli->insert_id;
+  }
+  
+  public static function update($query)
+  {
+  	$result = forward_static_call_array('Query::records_t', func_get_args());
+  	if (!is_int($result)) return static::error('Query::update should not return result');
+  	return $result;
   }
     
   // Undocumented

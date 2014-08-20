@@ -35,11 +35,10 @@ class Auth
 	  $query = sprintf('insert into `%s` (`%s`,`%s`,`%s`,`%s`) values (?,sha1(concat(?,?)),?,NOW())',
 		  static::$usersTable,
 		  static::$usernameField,
-	    static::$passwordField,
+	      static::$passwordField,
 		  static::$saltField,
 		  static::$createdField);
-	  $success = Query::records($query,$username,$salt,$password,$salt);
-	  return $success;
+	  return Query::insert($query,$username,$salt,$password,$salt)!==false;
 	}
 	
 }

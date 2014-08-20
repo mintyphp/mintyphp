@@ -171,6 +171,11 @@ class Query
     if (!is_int($result)) return false;
   	return $result;
   }
+  
+  public static function delete($query)
+  {
+  	return forward_static_call_array('Query::update', func_get_args());
+  }
     
   // Undocumented
   public static function handle()

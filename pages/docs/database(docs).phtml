@@ -31,11 +31,18 @@ $query = 'insert into users (username,password,salt,created) values (?,sha1(conc
 $userId = Query::insert($query,$username,$salt,$password,$salt);
 </pre>
 <h2>Update</h2>
-<pre>Query::insert()</pre>
+<pre>Query::update()</pre>
 <p>Executes SQL "UPDATE" statement and returns the "affected rows" from the last executed SQL query. Example:</p>
 <pre>
 $query = 'update users set username = ? where id = ?';
 $affectedRows = Query::update($query,$username,$userId);
+</pre>
+<h2>Delete</h2>
+<pre>Query::delete()</pre>
+<p>Executes SQL "DELETE" statement and returns the "affected rows" from the last executed SQL query. Example:</p>
+<pre>
+$query = 'delete from users where username = ?';
+$affectedRows = Query::delete($query,$username);
 </pre>
 <h2>Raw engine access</h2>
 <pre>Query::handle()</pre>

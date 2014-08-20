@@ -147,7 +147,11 @@ class Query
  
   public static function insert($query)
   {
-    $result = forward_static_call_array('Query::records_t', func_get_args());
+    $args = func_get_args();
+    if (func_num_args() > 1) {
+      array_splice($args,1,0,array(str_repeat('s', count($args)-1)));
+    }
+    $result = forward_static_call_array('Query::records_t', $args);
     if (!is_int($result)) return false;
     if (!$result) return false;
     return static::$mysqli->insert_id;
@@ -155,8 +159,12 @@ class Query
   
   public static function update($query)
   {
-  	$result = forward_static_call_array('Query::records_t', func_get_args());
-  	if (!is_int($result)) return false;
+  	$args = func_get_args();
+    if (func_num_args() > 1) {
+      array_splice($args,1,0,array(str_repeat('s', count($args)-1)));
+    }
+    $result = forward_static_call_array('Query::records_t', $args);
+    if (!is_int($result)) return false;
   	return $result;
   }
     

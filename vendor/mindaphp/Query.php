@@ -83,7 +83,11 @@ class Query
   private static function records_t($query)
   {
     if (!Debugger::$enabled) {
-      return forward_static_call_array('Query::_records_t', func_get_args());
+      try {
+        return forward_static_call_array('Query::_records_t', func_get_args());
+      } catch (QueryError $e) {
+        return false;
+      }
     }
     $time = microtime(true);
     $result = forward_static_call_array('Query::_records_t', func_get_args());

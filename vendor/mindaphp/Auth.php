@@ -18,7 +18,7 @@ class Auth
 		  static::$passwordField);
 	  $user = Query::one($query,$username,$password);
 	  if ($user) {
-	  	session_regenerate_id();
+	  	session_regenerate_id(true);
 	  	$_SESSION['user'] = $user['users'];
 	  }
 	  return $user;
@@ -29,7 +29,7 @@ class Auth
 	  if (!isset($_SESSION['user'])) return false;
 	  unset($_SESSION['user']);
 	  unset($_SESSION['csrf_token']);
-	  session_regenerate_id();
+	  session_regenerate_id(true);
 	  return true;
 	}
 	

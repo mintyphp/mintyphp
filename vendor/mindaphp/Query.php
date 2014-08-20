@@ -36,17 +36,15 @@ class Query
   public static function value($query)
   {
   	$result = forward_static_call_array('Query::one', func_get_args());
-    while (is_array($result)) {
-      $key = array_shift(array_keys($result));
-      $result = $result[$key];
-    }
-    return $result;
+    if (!is_array($result)) return false;
+    return $result[array_shift(array_keys($result))];
   }
   
   public static function pairs($query)
   {
   	$result = forward_static_call_array('Query::records', func_get_args());
-  	$list = array();
+  	if (!is_array($result)) return false;
+    $list = array();
   	foreach ($result as $record) {
   		$table = array_shift(array_keys($record));
   		$list[array_shift($record[$table])] = array_pop($record[$table]);
@@ -66,8 +64,9 @@ class Query
   private static function one_t($query)
   {
     $result = forward_static_call_array('Query::records_t', func_get_args());
+    if (!is_array($result)) return false;
     if (isset($result[0])) return $result[0];
-    return $result;
+    return $result[array_shift(array_keys($result))];
   }
     
   public static function records($query)
@@ -76,7 +75,9 @@ class Query
     if (func_num_args() > 1) {
       array_splice($args,1,0,array(str_repeat('s', count($args)-1)));
     }
-    return forward_static_call_array('Query::records_t', $args);
+    $result = forward_static_call_array('Query::records_t', $args);
+    if (!is_array($result)) return false;
+    return $result;
   }
    
   private static function records_t($query)
@@ -147,7 +148,7 @@ class Query
   public static function insert($query)
   {
     $result = forward_static_call_array('Query::records_t', func_get_args());
-    if (!is_int($result)) return static::error('Query::insert should not return result');
+    if (!is_int($result)) return false;
     if (!$result) return false;
     return static::$mysqli->insert_id;
   }
@@ -155,7 +156,7 @@ class Query
   public static function update($query)
   {
   	$result = forward_static_call_array('Query::records_t', func_get_args());
-  	if (!is_int($result)) return static::error('Query::update should not return result');
+  	if (!is_int($result)) return false;
   	return $result;
   }
     

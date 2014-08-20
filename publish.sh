@@ -1,2 +1,2 @@
 #!/bin/bash
-rsync -axv --delete --exclude='.git' . server.nlware.com:public_html
+rsync -axv --delete --exclude='.git' . lx55.nlware.com:public_html

@@ -35,9 +35,11 @@ class DB
    
   public static function selectValue($query)
   {
-    $result = forward_static_call_array('DB::selectOne', func_get_args());
-    if (!is_array($result)) return false;
-    return $result[array_shift(array_keys($result))];
+    $record = forward_static_call_array('DB::selectOne', func_get_args());
+    if (!is_array($record)) return false;
+    $firstTable = array_shift($record);
+    if (!is_array($firstTable)) return false;
+    return array_shift($firstTable);
   }
 
   
@@ -48,7 +50,9 @@ class DB
     $list = array();
     foreach ($result as $record) {
       if (!is_array($record)) return false;
-      $list[] = $record[array_shift(array_keys($record))];
+      $firstTable = array_shift($record);
+      if (!is_array($firstTable)) return false;
+      $list[] = array_shift($firstTable);
     }
     return $list;
   }
@@ -59,8 +63,8 @@ class DB
     if (!is_array($result)) return false;
     $list = array();
     foreach ($result as $record) {
-      $table = array_shift(array_keys($record));
-      $list[array_shift($record[$table])] = array_pop($record[$table]);
+      $firstTable = array_shift($record);
+      $list[array_shift($firstTable)] = array_shift($firstTable);
     }
     return $list;
   }
@@ -77,6 +81,7 @@ class DB
   private static function selectOneTyped($query)
   {
     $result = forward_static_call_array('DB::selectTyped', func_get_args());
+    d($result);
     if (!is_array($result)) return false;
     if (isset($result[0])) return $result[0];
     return $result[array_shift(array_keys($result))];

@@ -13,13 +13,13 @@ class Session
   public static $sessionName = 'mindaphp';
 }
 
-class Query
+class DB
 {
-  public static $host     = '{{Query_HOST}}'; // default: 'localhost'
-  public static $username = '{{Query_USER}}'; // default: 'mindaphp'
-  public static $password = '{{Query_PASS}}'; // choose a strong password
-  public static $database = '{{Query_NAME}}'; // default: 'mindaphp'
-  public static $port     = {{Query_PORT}};   // default: 3306
+  public static $host     = '{{DB_HOST}}'; // default: 'localhost'
+  public static $username = '{{DB_USER}}'; // default: 'mindaphp'
+  public static $password = '{{DB_PASS}}'; // choose a strong password
+  public static $database = '{{DB_NAME}}'; // default: 'mindaphp'
+  public static $port     = {{DB_PORT}};   // default: 3306
 }
 
 class Auth

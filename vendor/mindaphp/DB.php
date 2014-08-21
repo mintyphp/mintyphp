@@ -1,24 +1,24 @@
 <?php
 namespace MindaPHP;
 
-class QueryError extends \Exception {};
+class DBError extends \Exception {};
 
-class Query
+class DB
 {
-	public static $host=null;
-	public static $username=null;
-	public static $password=null;
-	public static $database=null;
-	public static $port=null;
-	public static $socket=null;
-	
+  public static $host=null;
+  public static $username=null;
+  public static $password=null;
+  public static $database=null;
+  public static $port=null;
+  public static $socket=null;
+  
   protected static $mysqli = null;
   
   protected static function connect()
   {
-  	if (class_exists('Router',false) && Router::getPhase()!='action') {
-  		static::error('Database can only be used in MindaPHP action');
-  	}
+    if (class_exists('Router',false) && Router::getPhase()!='action') {
+      static::error('Database can only be used in MindaPHP action');
+    }
     if (!static::$mysqli) {
       $reflect = new \ReflectionClass('mysqli');
       $args = array(static::$host,static::$username,static::$password,static::$database,static::$port,static::$socket);
@@ -30,72 +30,85 @@ class Query
     
   protected static function error($message)
   {
-    throw new QueryError($message);
+    throw new DBError($message);
   }
    
-  public static function value($query)
+  public static function selectValue($query)
   {
-  	$result = forward_static_call_array('Query::one', func_get_args());
+    $result = forward_static_call_array('DB::selectOne', func_get_args());
     if (!is_array($result)) return false;
     return $result[array_shift(array_keys($result))];
   }
+
   
-  public static function pairs($query)
+  public static function selectValues($query)
   {
-  	$result = forward_static_call_array('Query::records', func_get_args());
-  	if (!is_array($result)) return false;
+    $result = forward_static_call_array('DB::select', func_get_args());
+    if (!is_array($result)) return false;
     $list = array();
-  	foreach ($result as $record) {
-  		$table = array_shift(array_keys($record));
-  		$list[array_shift($record[$table])] = array_pop($record[$table]);
-  	}
-  	return $list;
+    foreach ($result as $record) {
+      if (!is_array($record)) return false;
+      $list[] = $record[array_shift(array_keys($record))];
+    }
+    return $list;
+  }
+  
+  public static function selectPairs($query)
+  {
+    $result = forward_static_call_array('DB::select', func_get_args());
+    if (!is_array($result)) return false;
+    $list = array();
+    foreach ($result as $record) {
+      $table = array_shift(array_keys($record));
+      $list[array_shift($record[$table])] = array_pop($record[$table]);
+    }
+    return $list;
   }
     
-  public static function one($query)
+  public static function selectOne($query)
   {
     $args = func_get_args();
     if (func_num_args() > 1) {
       array_splice($args,1,0,array(str_repeat('s', count($args)-1)));
     }
-    return forward_static_call_array('Query::one_t', $args);
+    return forward_static_call_array('DB::selectOneTyped', $args);
   }
     
-  private static function one_t($query)
+  private static function selectOneTyped($query)
   {
-    $result = forward_static_call_array('Query::records_t', func_get_args());
+    $result = forward_static_call_array('DB::selectTyped', func_get_args());
     if (!is_array($result)) return false;
     if (isset($result[0])) return $result[0];
     return $result[array_shift(array_keys($result))];
   }
     
-  public static function records($query)
+  public static function select($query)
   {
     $args = func_get_args();
     if (func_num_args() > 1) {
       array_splice($args,1,0,array(str_repeat('s', count($args)-1)));
     }
-    $result = forward_static_call_array('Query::records_t', $args);
+    $result = forward_static_call_array('DB::selectTyped', $args);
     if (!is_array($result)) return false;
     return $result;
   }
    
-  private static function records_t($query)
+  private static function selectTyped($query)
   {
     if (!Debugger::$enabled) {
       try {
-        return forward_static_call_array('Query::_records_t', func_get_args());
-      } catch (QueryError $e) {
+        return forward_static_call_array('DB::selectTypedInternal', func_get_args());
+      } catch (DBError $e) {
         return false;
       }
     }
     $time = microtime(true);
-    $result = forward_static_call_array('Query::_records_t', func_get_args());
+    $result = forward_static_call_array('DB::selectTypedInternal', func_get_args());
     $duration = microtime(true)-$time;
     $arguments = func_get_args();
     if (strtoupper(substr(trim($query), 0, 6))=='SELECT') {
       $arguments[0] = 'explain '.$query;
-      $explain = forward_static_call_array('Query::_records_t', $arguments);
+      $explain = forward_static_call_array('DB::selectTypedInternal', $arguments);
     } else {
       $explain = false;
     }
@@ -105,17 +118,17 @@ class Query
     return $result;
   }
     
-  private static function _records_t($query)
+  private static function selectTypedInternal($query)
   {
     static::connect();
-  	$query = static::$mysqli->prepare($query);
+    $query = static::$mysqli->prepare($query);
     if (!$query) {
       return static::error(static::$mysqli->error);
     }
     if (func_num_args() > 1) {
       $args = array_slice(func_get_args(), 1);
       foreach (array_keys($args) as $i) {
-      	if ($i>0) $args[$i] = & $args[$i];
+        if ($i>0) $args[$i] = & $args[$i];
       }
       call_user_func_array(array($query, 'bind_param'),$args);
     }
@@ -155,7 +168,7 @@ class Query
     if (func_num_args() > 1) {
       array_splice($args,1,0,array(str_repeat('s', count($args)-1)));
     }
-    $result = forward_static_call_array('Query::records_t', $args);
+    $result = forward_static_call_array('DB::selectTyped', $args);
     if (!is_int($result)) return false;
     if (!$result) return false;
     return static::$mysqli->insert_id;
@@ -163,18 +176,18 @@ class Query
   
   public static function update($query)
   {
-  	$args = func_get_args();
+    $args = func_get_args();
     if (func_num_args() > 1) {
       array_splice($args,1,0,array(str_repeat('s', count($args)-1)));
     }
-    $result = forward_static_call_array('Query::records_t', $args);
+    $result = forward_static_call_array('DB::selectTyped', $args);
     if (!is_int($result)) return false;
-  	return $result;
+    return $result;
   }
   
   public static function delete($query)
   {
-  	return forward_static_call_array('Query::update', func_get_args());
+    return forward_static_call_array('DB::update', func_get_args());
   }
     
   // Undocumented

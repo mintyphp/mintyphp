@@ -16,7 +16,7 @@ class Auth
 		  static::$usernameField,
 		  static::$saltField,
 		  static::$passwordField);
-	  $user = Query::one($query,$username,$password);
+	  $user = DB::selectOne($query,$username,$password);
 	  if ($user) {
 	  	session_regenerate_id(true);
 	  	$_SESSION['user'] = $user['users'];
@@ -42,7 +42,7 @@ class Auth
 	      static::$passwordField,
 		  static::$saltField,
 		  static::$createdField);
-	  return Query::insert($query,$username,$salt,$password,$salt)!==false;
+	  return DB::insert($query,$username,$salt,$password,$salt)!==false;
 	}
 	
 }

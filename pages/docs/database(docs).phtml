@@ -1,49 +1,47 @@
 <h1>Database</h1>
-<p>This class provides 4 public methods and the parameters are:</p>
-<p>These functions can be statically accessed from the global "Query" class.</p>
-<h2>Query</h2>
-<pre>Query::records($sql,$arg1,$arg2,...)</pre>
-<p>Executes SQL containing "?" symbols. Every questionmark must be matched by an extra argument. Example:</p>
+<p>This class provides 8 public methods and the parameters are:</p>
+<p>These functions can be statically accessed from the global "DB" class.</p>
+<h2>Select</h2>
+<pre>DB::select($sql,$arg1,$arg2,...)</pre>
+<p>Executes SQL containing "?" symbols. Every questionmark must be matched by an extra argument. 
+The following query retrieves all users that have an username starting with a 'M':</p>
 <pre>
-$query = 'insert into users (username,password,salt,created) values (?,sha1(concat(?,?)),?,NOW())';
-$success = Query::records($query,$username,$salt,$password,$salt);
+$users = DB::select('select * from users where username LIKE ?','M%');
 </pre>
-<p>Or when you want to iterate over records:</p>
+<p>In the view (.phtml) file we can then print yhe usernames in a list using:</p>  
 <pre>
-$users = Query::records('select * from users');
-
 &lt;?php foreach ($users as $user): ?&gt;
 &lt;li&gt;&lt;?php e($user['username']); ?&gt;&lt;/li&gt;
 &lt;?php endforeach; ?&gt;
 </pre>
-<h2>Query one</h2>
-<pre>Query::one($sql,$arg1,$arg2,...)</pre>
+<p>Or when you want to iterate over records:</p>
+<pre>
+</pre>
+<h2>Select one</h2>
+<pre>DB::selectOne($sql,$arg1,$arg2,...)</pre>
 <p>Same as "records", but only returns the first record or false. Example:</p>
 <pre>
 $query = 'select * from users where username = ? and sha1(concat(salt,?)) = password limit 1';
-$user = Query::one($query,$username,$password);
+$user = DB::selectOne($query,$username,$password);
 </pre>
 <h2>Insert</h2>
-<pre>Query::insert()</pre>
+<pre>DB::insert()</pre>
 <p>Executes SQL "INSERT" statement and returns the "insert id" from the last executed SQL query. Example:</p>
 <pre>
 $query = 'insert into users (username,password,salt,created) values (?,sha1(concat(?,?)),?,NOW())';
-$userId = Query::insert($query,$username,$salt,$password,$salt);
+$userId = DB::insert($query,$username,$salt,$password,$salt);
 </pre>
 <h2>Update</h2>
-<pre>Query::update()</pre>
+<pre>DB::update()</pre>
 <p>Executes SQL "UPDATE" statement and returns the "affected rows" from the last executed SQL query. Example:</p>
 <pre>
 $query = 'update users set username = ? where id = ?';
-$affectedRows = Query::update($query,$username,$userId);
+$affectedRows = DB::update($query,$username,$userId);
 </pre>
 <h2>Delete</h2>
-<pre>Query::delete()</pre>
+<pre>DB::delete()</pre>
 <p>Executes SQL "DELETE" statement and returns the "affected rows" from the last executed SQL query. Example:</p>
 <pre>
 $query = 'delete from users where username = ?';
-$affectedRows = Query::delete($query,$username);
+$affectedRows = DB::delete($query,$username);
 </pre>
-<h2>Raw engine access</h2>
-<pre>Query::handle()</pre>
-<p>Returns the handle to the (e.g. MySQLi) engine. You normally do not need this.</p>

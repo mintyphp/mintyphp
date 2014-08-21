@@ -18,11 +18,11 @@ if (!file_exists('config/config.php')) {
 		if ($i=='/') return $i; 
 		$u=parse_url($i); return '/'.trim($u['path'], '/').'/'; 
 	  }),
-	  array('Query_HOST','What is the MySQL hostname?','localhost',null),
-	  array('Query_USER','What is the MySQL username?','root',null),
-	  array('Query_PASS','What is the MySQL password?','',null),
-	  array('Query_NAME','What is the MySQL database?','mindaphp',null),
-	  array('Query_PORT','What is the MySQL port?','3306',null),
+	  array('DB_HOST','What is the MySQL hostname?','localhost',null),
+	  array('DB_USER','What is the MySQL username?','root',null),
+	  array('DB_PASS','What is the MySQL password?','',null),
+	  array('DB_NAME','What is the MySQL database?','mindaphp',null),
+	  array('DB_PORT','What is the MySQL port?','3306',null),
 	);
 	$parameters = array();
 	$c = count($questions);
@@ -32,51 +32,51 @@ if (!file_exists('config/config.php')) {
 		echo "[$n/$c] $question [$default] ";
 		$parameters[$name] = trim(fgets(STDIN))?:$default;
 	}
-	$mysqli = new mysqli($parameters['Query_HOST'], $parameters['Query_USER'], $parameters['Query_PASS']);
+	$mysqli = new mysqli($parameters['DB_HOST'], $parameters['DB_USER'], $parameters['DB_PASS']);
 	if ($mysqli->connect_error) {
 	    echo "ERROR: MySQL connect: ($mysqli->connect_errno) $mysqli->connect_error\n";
 	    exit(1);
 	}
 	echo "INFO: MySQL connected\n";
-	$sql = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$parameters[Query_NAME]';";
+	$sql = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$parameters[DB_NAME]';";
 	if (!$result = $mysqli->query($sql)) {
 		echo "ERROR: MySQL database check: $mysqli->error\n";
 		exit(1);
 	} elseif (!$result->num_rows) {
-		if ($parameters['Query_USER'] != 'root') {
-			echo "ERROR: MySQL database not found: $parameters[Query_NAME]\n";
+		if ($parameters['DB_USER'] != 'root') {
+			echo "ERROR: MySQL database not found: $parameters[DB_NAME]\n";
 	    	exit(1);
 		}
-		$sql = "CREATE DATABASE `$parameters[Query_NAME]` COLLATE 'utf8_bin';";
+		$sql = "CREATE DATABASE `$parameters[DB_NAME]` COLLATE 'utf8_bin';";
 		if (!$result = $mysqli->query($sql)) {
 			echo "ERROR: MySQL database create: $mysqli->error\n";
 			exit(1);
 		}
 		echo "INFO: MySQL database created\n";
-	    $host = $parameters['Query_HOST']=='localhost'?'localhost':'%';
-		$pass = base64_encode(sha1(rand() . time(true) . $parameters['Query_NAME'], true));  
-		$sql = "CREATE USER '$parameters[Query_NAME]'@'$host' IDENTIFIED BY '$pass';";
+	    $host = $parameters['DB_HOST']=='localhost'?'localhost':'%';
+		$pass = base64_encode(sha1(rand() . time(true) . $parameters['DB_NAME'], true));  
+		$sql = "CREATE USER '$parameters[DB_NAME]'@'$host' IDENTIFIED BY '$pass';";
 		if (!$result = $mysqli->query($sql)) {
 			echo "ERROR: MySQL user create: $mysqli->error\n";
 			exit(1);
 		}
 		echo "INFO: MySQL user created\n";
-	    $sql = "GRANT ALL PRIVILEGES ON `$parameters[Query_NAME]`.* TO '$parameters[Query_NAME]'@'$host';";
+	    $sql = "GRANT ALL PRIVILEGES ON `$parameters[DB_NAME]`.* TO '$parameters[DB_NAME]'@'$host';";
 		if (!$result = $mysqli->query($sql)) {
 			echo "ERROR: MySQL grant user: $mysqli->error\n";
 			exit(1);
 		}
 		echo "INFO: MySQL user granted\n";
-	    $parameters['Query_USER'] = $parameters['Query_NAME'];
-		$parameters['Query_PASS'] = $pass;
+	    $parameters['DB_USER'] = $parameters['DB_NAME'];
+		$parameters['DB_PASS'] = $pass;
 	}
-    $sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$parameters[Query_NAME]' AND TABLE_NAME = 'users';";
+    $sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$parameters[DB_NAME]' AND TABLE_NAME = 'users';";
 	if (!$result = $mysqli->query($sql)) {
 		echo "ERROR: MySQL table check: $mysqli->error\n";
 		exit(1);
 	} elseif (!$result->num_rows) {
 		$sql = <<<END_OF_SQL
-CREATE TABLE `$parameters[Query_NAME]`.`users` (
+CREATE TABLE `$parameters[DB_NAME]`.`users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_bin NOT NULL,
   `password` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE `$parameters[Query_NAME]`.`users` (
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoQuery DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 END_OF_SQL;
 		if (!$mysqli->query($sql)) {
 			echo "ERROR: MySQL create table: $mysqli->error\n";

@@ -229,7 +229,7 @@ class DebugView
 		$html = array();
 		$html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-queries">';
 		$html[] = '<table class="table"><thead>';
-		$html[] = '<tr><th>Query</th><th>Duration</th></tr>';
+		$html[] = '<tr><th>DB</th><th>Duration</th></tr>';
 		$html[] = '</thead><tbody>';
 		$count = 0;
 		$total = 0;
@@ -287,7 +287,7 @@ Session::start();
     <link href="debugger/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="debugger/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- jDB (necessary for Bootstrap's JavaScript plugins) -->
     <script src="debugger/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="debugger/js/bootstrap.min.js"></script>

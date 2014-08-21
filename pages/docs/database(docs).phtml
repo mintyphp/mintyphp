@@ -8,14 +8,11 @@ The following query retrieves all users that have an username starting with a 'M
 <pre>
 $users = DB::select('select * from users where username LIKE ?','M%');
 </pre>
-<p>In the view (.phtml) file we can then print yhe usernames in a list using:</p>  
+<p>In the view (.phtml) file we can iterate over records and print the usernames in a HTML list using:</p>  
 <pre>
 &lt;?php foreach ($users as $user): ?&gt;
 &lt;li&gt;&lt;?php e($user['username']); ?&gt;&lt;/li&gt;
 &lt;?php endforeach; ?&gt;
-</pre>
-<p>Or when you want to iterate over records:</p>
-<pre>
 </pre>
 <h2>Select one</h2>
 <pre>DB::selectOne($sql,$arg1,$arg2,...)</pre>

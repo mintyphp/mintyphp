@@ -81,7 +81,6 @@ class DB
   private static function selectOneTyped($query)
   {
     $result = forward_static_call_array('DB::selectTyped', func_get_args());
-    d($result);
     if (!is_array($result)) return false;
     if (isset($result[0])) return $result[0];
     return $result[array_shift(array_keys($result))];

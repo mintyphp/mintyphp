@@ -11,6 +11,7 @@ class DB
   public static $database=null;
   public static $port=null;
   public static $socket=null;
+  public static $error=null;
   
   protected static $mysqli = null;
   
@@ -30,6 +31,7 @@ class DB
     
   protected static function error($message)
   {
+  	static::$error = $message;
     throw new DBError($message);
   }
    
@@ -83,7 +85,7 @@ class DB
     $result = forward_static_call_array('DB::selectTyped', func_get_args());
     if (!is_array($result)) return false;
     if (isset($result[0])) return $result[0];
-    return $result[array_shift(array_keys($result))];
+    return $result;
   }
     
   public static function select($query)

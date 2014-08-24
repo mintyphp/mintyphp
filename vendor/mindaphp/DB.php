@@ -31,8 +31,7 @@ class DB
     
   protected static function error($message)
   {
-  	static::$error = $message;
-    throw new DBError($message);
+  	throw new DBError($message);
   }
    
   public static function selectValue($query)
@@ -103,8 +102,10 @@ class DB
   {
     if (!Debugger::$enabled) {
       try {
+        static::$error = false;
         return forward_static_call_array('DB::selectTypedInternal', func_get_args());
       } catch (DBError $e) {
+        static::$error = $e->getMessage();
         return false;
       }
     }

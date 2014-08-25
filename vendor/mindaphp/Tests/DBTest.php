@@ -73,6 +73,61 @@ class DBTest extends \PHPUnit_Framework_TestCase
 		$this->assertNotFalse($result, 'insert post failed 2: '.DB::$error);
 	}	
 	
+	public function testSelectPosts()
+	{
+		$result = DB::select("SELECT * FROM `posts`;");
+		$this->assertEquals(2, count($result));
+		$this->assertEquals('posts', array_shift(array_keys($result[0])));
+		$this->assertEquals('id', array_shift(array_keys(array_shift($result[0]))));
+		$result = DB::select("SELECT * FROM `posts`,`users` WHERE posts.user_id = users.id and users.username = 'test1';");
+		$this->assertEquals(2, count($result));
+		$this->assertEquals(array('posts','users'), array_keys($result[0]));
+		$this->assertEquals('id', array_shift(array_keys($result[0]['posts'])));
+		$this->assertEquals('test1', $result[0]['users']['username']);
+		$result = DB::select("some bogus query;");
+		$this->assertEquals(false, $result);
+	}
+	
+	public function testSelectOne()
+	{
+		$result = DB::selectOne("SELECT * FROM `posts` limit 1;");
+		$this->assertEquals('posts', array_shift(array_keys($result)));
+		$this->assertEquals('id', array_shift(array_keys(array_shift($result))));
+		$result = DB::selectOne("SELECT * FROM `posts` WHERE slug like 'm%' limit 1;");
+		$this->assertEquals(array(), $result);
+		$result = DB::selectOne("some bogus query;");
+		$this->assertEquals(false, $result);
+	}
+	
+	public function testSelectValues()
+	{
+		$result = DB::selectValues("SELECT username FROM `users`;");
+		$this->assertEquals(array('test1','test2'), $result);
+		$result = DB::selectValues("SELECT username FROM `users` WHERE username like 'm%' limit 1;");
+		$this->assertEquals(array(), $result);
+		$result = DB::selectValues("some bogus query;");
+		$this->assertEquals(false, $result);
+	}
+	
+	public function testSelectValue()
+	{
+		$result = DB::selectValue("SELECT username FROM `users` limit 1;");
+		$this->assertEquals('test1', $result);
+		$result = DB::selectValue("SELECT username FROM `users` WHERE username like 'm%' limit 1;");
+		$this->assertEquals(false, $result);
+		$result = DB::selectValue("some bogus query;");
+		$this->assertEquals(false, $result);
+	}
+	
+	public function testQuery()
+	{
+		$result = DB::query("SELECT * FROM `posts` limit 1;");
+		$this->assertEquals(true, $result);
+		$result = DB::query("some bogus query;");
+		$this->assertEquals(false, $result);
+	}
+		
+		
 	public function testDeletePosts()
 	{
 		$result = DB::delete('DELETE FROM `posts`;');

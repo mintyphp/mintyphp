@@ -129,6 +129,7 @@ class DBTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $result);
 		$result = DB::query("some bogus query;");
 		$this->assertEquals(false, $result);
+		$this->assertTrue(is_string(DB::$error));
 	}
 		
 		

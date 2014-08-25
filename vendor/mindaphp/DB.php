@@ -196,7 +196,12 @@ class DB
   {
     return forward_static_call_array('DB::update', func_get_args());
   }
-    
+
+  public static function query($query)
+  {
+  	return forward_static_call_array('DB::update', func_get_args())!==false;
+  }
+  
   // Undocumented
   public static function handle()
   {
@@ -204,16 +209,4 @@ class DB
     return static::$mysqli;
   }
   
-  // Undocumented
-  public static function options()
-  {
-    return call_user_func_array(array(static::$mysqli, 'options'), func_get_args());
-  }
-   
-  // Undocumented
-  public static function close()
-  {
-    return static::$mysqli->close();
-  }
-
 }

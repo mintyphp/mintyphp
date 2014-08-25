@@ -61,16 +61,20 @@ class DBTest extends \PHPUnit_Framework_TestCase
 	{
 		$result = DB::insert("INSERT INTO `users` (`id`, `username`, `password`, `salt`, `created`) VALUES (NULL, 'test1', 'c32ac6310706acdadea74c901c3f08fe06c44c61', 'd7e8541887cb9b3461d7364e4e7c8b7d', '2014-05-28 22:58:22');");
 		$this->assertNotFalse($result, 'insert user failed 1: '.DB::$error);
+		$this->assertEquals(1, $result);
 		$result = DB::insert("INSERT INTO `users` (`id`, `username`, `password`, `salt`, `created`) VALUES (NULL, 'test2', 'c32ac6310706acdadea74c901c3f08fe06c44c61', 'd7e8541887cb9b3461d7364e4e7c8b7d', '2014-05-28 22:58:22');");
 		$this->assertNotFalse($result, 'insert user failed 2: '.DB::$error);
+		$this->assertEquals(2, $result);
 	}
 	
 	public function testInsertPosts()
 	{
 		$result = DB::insert("INSERT INTO `posts` (`id`, `slug`, `tags`, `title`, `content`, `created`, `published`, `user_id`) VALUES (NULL, '2014-08-test1', '', 'test', 'test', '0000-00-00 00:00:00', NULL, 1);");
 		$this->assertNotFalse($result, 'insert post failed 1: '.DB::$error);
+		$this->assertEquals(1, $result);
 		$result = DB::insert("INSERT INTO `posts` (`id`, `slug`, `tags`, `title`, `content`, `created`, `published`, `user_id`) VALUES (NULL, '2014-08-test2', '', 'test', 'test', '0000-00-00 00:00:00', NULL, 1);");
 		$this->assertNotFalse($result, 'insert post failed 2: '.DB::$error);
+		$this->assertEquals(2, $result);
 	}	
 	
 	public function testSelectPosts()
@@ -79,7 +83,7 @@ class DBTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(2, count($result));
 		$this->assertEquals('posts', array_shift(array_keys($result[0])));
 		$this->assertEquals('id', array_shift(array_keys(array_shift($result[0]))));
-		$result = DB::select("SELECT * FROM `posts`,`users` WHERE posts.user_id = users.id and users.username = 'test1';");
+		$result = DB::select("SELECT * FROM `posts`, `users` WHERE posts.user_id = users.id and users.username = 'test1';");
 		$this->assertEquals(2, count($result));
 		$this->assertEquals(array('posts','users'), array_keys($result[0]));
 		$this->assertEquals('id', array_shift(array_keys($result[0]['posts'])));
@@ -132,12 +136,14 @@ class DBTest extends \PHPUnit_Framework_TestCase
 	{
 		$result = DB::delete('DELETE FROM `posts`;');
 		$this->assertNotFalse($result, 'delete posts failed: '.DB::$error);
+		$this->assertEquals(2, $result);
 	}
 	
 	public function testDeleteUsers()
 	{
 		$result = DB::delete('DELETE FROM `users`;');
 		$this->assertNotFalse($result, 'delete users failed: '.DB::$error);
+		$this->assertEquals(2, $result);
 	}
 		
 	

@@ -8,6 +8,7 @@ $paths = array(
   'web/index.php',
   'web/debugger/index.php',
   'vendor/mindaphp/*.php',
+  'vendor/mindaphp/Tests/*.php',
   'tools/conventionist.php',
   'tools/requirements.php',
   'tools/server.php',

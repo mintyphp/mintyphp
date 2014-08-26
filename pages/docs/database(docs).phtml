@@ -42,3 +42,10 @@ $affectedRows = DB::update($query,$username,$userId);
 $query = 'delete from users where username = ?';
 $affectedRows = DB::delete($query,$username);
 </pre>
+<h2>Query</h2>
+<pre>DB::query()</pre>
+<p>Executes other SQL statements and returns a boolean indicating success (true) or failure (false). Example:</p>
+<pre>
+$query = 'drop table users';
+$success = DB::query($query);
+</pre>

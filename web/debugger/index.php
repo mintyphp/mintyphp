@@ -44,6 +44,22 @@ class DebugView
 		return implode("\n",$html);
 	}
 
+	static function flattenParameters ($array, $prefix = '') {
+		$result = array();
+		foreach($array as $key=>$value) {
+			if ($prefix) {
+				$key = '['.$key.']';
+			}
+			if(is_array($value)) {
+				$result = $result + static::flattenParameters($value, $prefix . $key);
+			}
+			else {
+				$result[$prefix . $key] = $value;
+			}
+		}
+		return $result;
+	}
+	
 	static function getRoutingTabPane($requestId,$request)
 	{
 		$html = array();
@@ -73,6 +89,7 @@ class DebugView
 		if (count($request['router']['parameters']['get'])) {
 			$html[] ='<h4>$_GET</h4>';
 			$html[] ='<table class="table"><tbody>';
+			$request['router']['parameters']['get'] = static::flattenParameters($request['router']['parameters']['get']);
 			foreach ($request['router']['parameters']['get'] as $k=>$v) {
 				$html[] ='<tr><th>'.htmlspecialchars($k).'</th><td>'.htmlspecialchars($v).'</td></tr>';
 			}
@@ -81,6 +98,7 @@ class DebugView
 		if (count($request['router']['parameters']['post'])) {
 			$html[] ='<h4>$_POST</h4>';
 			$html[] ='<table class="table"><tbody>';
+			$request['router']['parameters']['post'] = static::flattenParameters($request['router']['parameters']['post']);
 			foreach ($request['router']['parameters']['post'] as $k=>$v) {
 				$html[] ='<tr><th>'.htmlspecialchars($k).'</th><td>'.htmlspecialchars($v).'</td></tr>';
 			}

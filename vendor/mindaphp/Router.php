@@ -23,7 +23,7 @@ class Router
   
   protected static $routes = array();
   
-  protected static $initialized = false;
+  public static $initialized = false;
   protected static $phase = 'init';
   
   protected static function initialize()

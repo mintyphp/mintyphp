@@ -48,10 +48,10 @@ class Session
   	}
   	if (!$buffer_valid && @is_readable('/dev/urandom')) {
   		$f = fopen('/dev/urandom', 'r');
-  		$read = PasswordCompat\binary\_strlen($buffer);
+  		$read = $strlen($buffer);
   		while ($read < $raw_csrf_len) {
   			$buffer .= fread($f, $raw_csrf_len - $read);
-  			$read = PasswordCompat\binary\_strlen($buffer);
+  			$read = $strlen($buffer);
   		}
   		fclose($f);
   		if ($read >= $raw_csrf_len) {

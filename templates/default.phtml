@@ -26,7 +26,7 @@
     <p>
       <?php $username = isset($_SESSION['user'])?$_SESSION['user']['username']:false ?>
       <?php if ($username): ?>
-        <a href="logout">Logout "<?php echo $username; ?>"</a>
+        <a href="logout">Logout "<?php e($username); ?>"</a>
       <?php else: ?>
         <a href="login">Login</a>
       <?php endif; ?>

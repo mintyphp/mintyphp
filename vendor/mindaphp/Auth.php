@@ -35,7 +35,7 @@ class Auth
     
     static function register($username,$password)
     {
-      $salt = md5($username.time());
+      $salt = bin2hex(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM));
       $query = sprintf('insert into `%s` (`%s`,`%s`,`%s`,`%s`) values (?,sha2(concat(?,?),512),?,NOW())',
           static::$usersTable,
           static::$usernameField,

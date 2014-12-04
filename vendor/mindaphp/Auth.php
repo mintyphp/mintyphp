@@ -5,7 +5,6 @@ class Auth
 {
     static $usersTable    = 'users';
     static $usernameField = 'username';
-    static $saltField     = 'salt';
     static $passwordField = 'password';
     static $createdField  = 'created';
         

@@ -9,6 +9,5 @@
     }
     ],
     "require": {
-        "ircmaxell/password-compat": "*"
     }
 }

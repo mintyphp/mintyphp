@@ -49,5 +49,5 @@ class Auth
 
 // for compatibility in PHP 5.3
 if (!function_exists('password_verify')) {
-    include __DIR__."/../ircmaxell/password-compat/lib/password.php";
+    include __DIR__."/password_compat.inc";
 }

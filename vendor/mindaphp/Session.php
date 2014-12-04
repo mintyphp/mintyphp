@@ -23,7 +23,15 @@ class Session
   protected static function setCsrfToken()
   {
   	if (isset($_SESSION[static::$csrfSessionKey])) return;
-  		
+  	
+  	$strlen = function($binary_string) {
+  		if (function_exists('mb_strlen')) {
+  			return mb_strlen($binary_string, '8bit');
+  		}
+  		return strlen($binary_string);
+  	};
+  	
+  	$raw_salt_len = 16; 
   	$buffer = '';
   	$buffer_valid = false;
   	if (function_exists('mcrypt_create_iv') && !defined('PHALANGER')) {
@@ -50,8 +58,8 @@ class Session
   			$buffer_valid = true;
   		}
   	}
-  	if (!$buffer_valid || PasswordCompat\binary\_strlen($buffer) < $raw_salt_len) {
-  		$bl = PasswordCompat\binary\_strlen($buffer);
+  	if (!$buffer_valid || $strlen($buffer) < $raw_salt_len) {
+  		$bl = $strlen($buffer);
   		for ($i = 0; $i < $raw_salt_len; $i++) {
   			if ($i < $bl) {
   				$buffer[$i] = $buffer[$i] ^ chr(mt_rand(0, 255));

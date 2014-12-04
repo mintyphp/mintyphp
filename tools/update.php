@@ -4,6 +4,7 @@ $updated = 0;
 $source = "https://raw.github.com/mevdschee/MindaPHP/master/";
 $paths = array(
   '.htaccess',
+  'composer.json',
   'web/.htaccess',
   'web/index.php',
   'web/debugger/index.php',

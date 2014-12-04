@@ -18,15 +18,15 @@ $users = DB::select('select * from users where username LIKE ?','M%');
 <pre>DB::selectOne($sql,$arg1,$arg2,...)</pre>
 <p>Same as "records", but only returns the first record or false. Example:</p>
 <pre>
-$query = 'select * from users where username = ? and sha1(concat(salt,?)) = password limit 1';
-$user = DB::selectOne($query,$username,$password);
+$query = 'select * from users where username = ? limit 1';
+$user = DB::selectOne($query,$username);
 </pre>
 <h2>Insert</h2>
 <pre>DB::insert()</pre>
 <p>Executes SQL "INSERT" statement and returns the "insert id" from the last executed SQL query. Example:</p>
 <pre>
-$query = 'insert into users (username,password,salt,created) values (?,sha1(concat(?,?)),?,NOW())';
-$userId = DB::insert($query,$username,$salt,$password,$salt);
+$query = 'insert into users (username,password,created) values (?,?,NOW())';
+$userId = DB::insert($query,$username,$password);
 </pre>
 <h2>Update</h2>
 <pre>DB::update()</pre>

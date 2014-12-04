@@ -77,8 +77,8 @@ the PHP memory limit (streaming output).</p>
 <h2>Authentication</h2>
 
 <p>A basic example for registering users and logging them in is included. This example shows
-some security best practises. It uses session cookies and stores sha1 hashed passwords that are
-secured with a md5 salt.</p>
+some security best practises. It uses session cookies and stores bcrypt hashed passwords that are
+secured with a salt using "password_hash" and "password_verify".</p>
 
 <h2>Security</h2>
 

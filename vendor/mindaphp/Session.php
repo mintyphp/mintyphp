@@ -23,7 +23,7 @@ class Session
   protected static function setCsrfToken()
   {
   	if (!isset($_SESSION[static::$csrfSessionKey])) {
-  		$_SESSION[static::$csrfSessionKey] = rand(0, PHP_INT_MAX);
+  		$_SESSION[static::$csrfSessionKey] = bin2hex(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM));
   	}
   }
   

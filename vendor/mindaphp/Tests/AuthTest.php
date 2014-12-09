@@ -9,8 +9,8 @@ class AuthTest extends \PHPUnit_Framework_TestCase
     
     public static function setUpBeforeClass()
     {
+        DBTest::setUpBeforeClass();
         self::$db = new DBTest();
-        self::$db->setup();
         self::$db->testDropUsersBefore();
         self::$db->testCreateUsers();
     }

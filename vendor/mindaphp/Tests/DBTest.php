@@ -5,7 +5,7 @@ use MindaPHP\DB;
 
 class DBTest extends \PHPUnit_Framework_TestCase
 {
-    protected function setUp()
+    public static function setUpBeforeClass()
     {    
         DB::$username = 'mindaphp_test';
         DB::$password = 'mindaphp_test';

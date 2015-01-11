@@ -47,7 +47,7 @@ class Auth
     
     static function update($username,$password)
     {
-    	$query = sprintf('update `%s` (`%s`) values (?) where `%s`=?',
+    	$query = sprintf('update `%s` set `%s`=? where `%s`=?',
     			static::$usersTable,
     			static::$passwordField,
     			static::$usernameField);

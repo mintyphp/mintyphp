@@ -45,6 +45,16 @@ class Auth
       return DB::insert($query,$username,$password);
     }
     
+    static function update($username,$password)
+    {
+    	$query = sprintf('update `%s` (`%s`) values (?) where `%s`=?',
+    			static::$usersTable,
+    			static::$passwordField,
+    			static::$usernameField);
+    	$password = password_hash($password, PASSWORD_DEFAULT);
+    	return DB::insert($query,$username,$password);
+    }
+    
 }
 
 // for compatibility in PHP 5.3

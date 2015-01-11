@@ -52,7 +52,7 @@ class Auth
     			static::$passwordField,
     			static::$usernameField);
     	$password = password_hash($password, PASSWORD_DEFAULT);
-    	return DB::insert($query,$username,$password);
+    	return DB::update($query,$username,$password);
     }
     
 }

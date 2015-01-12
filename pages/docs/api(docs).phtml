@@ -16,6 +16,8 @@ integer DB::delete($sql,...)                Action          Database query   Pub
 bool    Auth::login($username,$password)    Action          Logging in       Public
 bool    Auth::logout()                      Action          Logging out      Public
 bool    Auth::register($username,$password) Action          Adding users     Public
+        Flash::set($type,$message)          Action          Flash message    Public
+array   Flash::get()                        Action          Flash message    Public
         Router::addRoute($req,$loc)         Router Config   Routing          Public
         Router::redirect($url)              Action          Redirection      Public
 string  Session::getCsrfInput()             Template/View   Form security    Public
@@ -26,3 +28,4 @@ string  Buffer::get($name)                  Template        Create template  Med
         Buffer::start($name)                Template        Create template  Medium
         Buffer::end($name)                  Template        Create template  Medium
 </pre>
+<p>NB: If Location is 'Action', this means the calls should only be made from a '.php' file. 'View' and 'Template' have a '.phtml' extension.</p>

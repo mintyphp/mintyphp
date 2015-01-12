@@ -1,5 +1,8 @@
 <h1>Flash</h1>
 <p>The instance is stored in the global "Flash" class.</p>
+<p>Typical usage is that a page does something and then redirects or reloads.
+To show the status of the action on the next page 'flash messages' are used.
+They are typically represented in the view with a green yellow or red bar with a message inside.</p>  
 <h2>set</h2>
 <pre>Flash::set($type,$message)</pre>
 <p>This stores a flash message of the specified type in the session. Example:</p>

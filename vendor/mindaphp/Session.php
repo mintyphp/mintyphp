@@ -115,6 +115,7 @@ class Session
   public static function getCsrfInput()
   {
   	if (!static::$initialized) static::initialize();
+  	static::setCsrfToken();
   	echo '<input type="hidden" name="'.static::$csrfSessionKey.'" value="'.$_SESSION[static::$csrfSessionKey].'"/>';
   }
   

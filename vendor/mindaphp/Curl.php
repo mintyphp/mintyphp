@@ -46,7 +46,7 @@ class Curl
 			$options = json_encode(static::$options);
 			$headers = json_encode(static::$headers);
 			$data = json_encode($data);
-			Debugger::add('calls',compact('duration','method','url','data','options','headers','status','result'));
+			Debugger::add('api_calls',compact('duration','method','url','data','options','headers','status','result'));
 		}
 		
 		return $status;

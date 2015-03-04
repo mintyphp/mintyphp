@@ -39,6 +39,7 @@ class DebugView
 		$html[] ='<li><a class="debug-request-execution" href="#debug-request-'.$i.'-execution" data-toggle="tab">Execution</a></li>';
 		$html[] ='<li><a class="debug-request-session" href="#debug-request-'.$i.'-session" data-toggle="tab">Session</a></li>';
 		$html[] ='<li><a class="debug-request-queries" href="#debug-request-'.$i.'-queries" data-toggle="tab">Queries</a></li>';
+		$html[] ='<li><a class="debug-request-queries" href="#debug-request-'.$i.'-api_calls" data-toggle="tab">API calls</a></li>';
 		$html[] ='<li><a class="debug-request-logging" href="#debug-request-'.$i.'-logging" data-toggle="tab">Logging</a></li>';
 		$html[] ='</ul>';
 		return implode("\n",$html);
@@ -186,7 +187,7 @@ class DebugView
 		$html[] ='</ul>';
 		return implode("\n",$html);
 	}
-
+	
 	static function getQueriesTabPaneTabPane($requestId,$query,$queryId,$type)
 	{
 		$html = array();
@@ -276,6 +277,55 @@ class DebugView
 		return implode("\n",$html);
 	}
 
+	static function getApiCallsTabPaneTabList($requestId,$i,$options,$headers)
+	{
+		$html = array();
+		$html[] ='<ul class="nav nav-pills">';
+		$html[] ='<li class="active"><a href="#debug-request-'.$requestId.'-api_calls-'.$i.'-info" data-toggle="tab">Info</a></li>';
+		$options = $options?'<span class="badge pull-right">'.$options.'</span>':'';
+		$html[] ='<li><a href="#debug-request-'.$requestId.'-api_calls-'.$i.'-options" data-toggle="tab">Options'.$options.'</a></li>';
+		$headers = $headers?'<span class="badge pull-right">'.$headers.'</span>':'';
+		$html[] ='<li><a href="#debug-request-'.$requestId.'-api_calls-'.$i.'-headers" data-toggle="tab">Headers'.$headers.'</a></li>';
+		$html[] ='<li><a href="#debug-request-'.$requestId.'-api_calls-'.$i.'-result" data-toggle="tab">Result</a></li>';
+		$html[] ='</ul>';
+		return implode("\n",$html);
+	}
+	
+	static function getApiCallsTabPane($requestId,$request)
+	{
+		$html = array();
+		$html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-api_calls">';
+		$html[] = '<table class="table"><thead>';
+		$html[] = '<tr><th>URL</th><th>Duration</th></tr>';
+		$html[] = '</thead><tbody>';
+		$count = 0;
+		$total = 0;
+		foreach ($request['api_calls'] as $i=>$call) {
+			$count++;
+			$total+= $call['duration'];
+			$html[] = '<tr>';
+			$html[] = '<td><a href="#" onclick="$(\'#debug-request-'.$requestId.'-query-'.$i.'\').toggle(); return false;">'.$call['method'].' '.$call['url'].'</a> ('.$call['status'].')';
+			$html[] = '<td>'.sprintf('%.2f ms',$call['duration']*1000).'</td>';
+			$html[] = '</tr>';
+			$html[] = '<tr style="display:none;" id="debug-request-'.$requestId.'-query-'.$i.'"><td colspan="5">';
+	
+			$html[] = static::getApiCallsTabPaneTabList($requestId,$i,count($call['options']),count($call['headers']));
+			$html[] = '<div class="tab-content">';
+			//$html[] = static::getQueriesTabPaneTabPane($requestId,$call,$i,'info');
+			//$html[] = static::getQueriesTabPaneTabPane($requestId,$call,$i,'options');
+			//$html[] = static::getQueriesTabPaneTabPane($requestId,$call,$i,'headers');
+			//$html[] = static::getQueriesTabPaneTabPane($requestId,$call,$i,'result');
+			$html[] = '</div>';
+	
+			$html[] = '</td></tr>';
+		}
+		$html[] = '<tr><td><strong>'.$count.' queries</strong></td>';
+		$html[] = '<td>'.sprintf('%.2f ms',$total*1000).'</td></tr>';
+		$html[] = '</tbody></table>';
+		$html[] = '</div>';
+		return implode("\n",$html);
+	}
+	
 	static function getLoggingTabPane($requestId,$request)
 	{
 		$html = array();
@@ -338,6 +388,7 @@ Session::start();
               <?php echo DebugView::getExecutionTabPane($i,$request); ?>
               <?php echo DebugView::getSessionTabPane($i,$request); ?>
               <?php echo DebugView::getQueriesTabPane($i,$request); ?>
+              <?php echo DebugView::getApiCallsTabPane($i,$request); ?>
               <?php echo DebugView::getLoggingTabPane($i,$request); ?>
             </div>
           </div>

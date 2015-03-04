@@ -6,7 +6,7 @@ class CurlError extends \Exception {};
 
 class Curl
 {
-	public static $options = array('CURLOPT_FOLLOWLOCATION'=>true,'CURLOPT_USERAGENT'=>'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:36.0) Gecko/20100101 Firefox/36.0');
+	public static $options = array();
 	public static $headers = array();
 	public static $cookies = false;
 	

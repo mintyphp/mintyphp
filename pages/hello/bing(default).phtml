@@ -1,0 +1,13 @@
+<h1>Hello Bing</h1>
+<form method="post">
+Search<br/>
+<input name="q" value="<?php e($query); ?>"/><br/>
+<br/>
+<input type="submit"/>
+<?php Session::getCsrfInput(); ?>
+</form>
+<ol>
+<?php foreach ($results as $result): ?>
+<li><a href="<?php e($result['link']); ?>"><?php e($result['text']); ?></a></li>
+<?php endforeach; ?>
+</ol>

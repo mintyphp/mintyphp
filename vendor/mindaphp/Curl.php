@@ -6,23 +6,40 @@ class CurlError extends \Exception {};
 
 class Curl
 {
-	public static $options = array();
+	public static $options = array('CURLOPT_FOLLOWLOCATION'=>true,'CURLOPT_USERAGENT'=>'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:36.0) Gecko/20100101 Firefox/36.0');
 	public static $headers = array();
+	public static $cookies = false;
 	
-	protected static function exec($method,$url,$data=array()) {
+	public static function call($method,$url,$data,&$result) {
 
 		if (Debugger::$enabled) {
 			$time = microtime(true);
 		}
 		
 		$ch = curl_init();
-		
+
+		if (static::$cookies) {
+			$cookieJar = tempnam(sys_get_temp_dir(),"curl_cookies-");
+			if (isset($_SESSION['curl_cookies'])) {
+				file_put_contents($cookieJar, $_SESSION['curl_cookies']);
+			}
+			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieJar);
+			curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieJar);
+		}
+				
 		static::setOptions($ch,$method,$url,$data);
 		
 		$result = curl_exec($ch);
 		$status = curl_getinfo ($ch,CURLINFO_HTTP_CODE);
 				
 		curl_close($ch);
+		
+		if (static::$cookies) {
+			$_SESSION['curl_cookies'] = file_get_contents($cookieJar);
+			unlink($cookieJar);
+		} else {
+			unset($_SESSION['curl_cookies']);
+		}
 		
 		if (Debugger::$enabled) {
 			$duration = microtime(true)-$time;
@@ -32,7 +49,7 @@ class Curl
 			Debugger::add('calls',compact('duration','method','url','data','options','headers','status','result'));
 		}
 		
-		return array($status,$result);
+		return $status;
 	}
 	
 	protected static function setOptions($ch,$method,$url,$data) {
@@ -58,7 +75,7 @@ class Curl
 				break;
 			case 'GET':
 				curl_setopt($ch, CURLOPT_HTTPGET, true);
-				$url .= $data;
+				$url .= '?'.$data;
 				$data = '';
 				break;
 			case 'POST':

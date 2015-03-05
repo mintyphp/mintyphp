@@ -43,16 +43,15 @@ class Curl
 		
 		if (Debugger::$enabled) {
 			$duration = microtime(true)-$time;
-			$options = json_encode(static::$options);
-			$headers = json_encode(static::$headers);
-			$data = json_encode($data);
+			$options = static::$options;
+			$headers = static::$headers;
 			Debugger::add('api_calls',compact('duration','method','url','data','options','headers','status','result'));
 		}
 		
 		return $status;
 	}
 	
-	protected static function setOptions($ch,$method,$url,$data) {
+	protected static function setOptions($ch,$method,&$url,&$data) {
 		
 		// Set default options
 		foreach (static::$options as $option => $value) {

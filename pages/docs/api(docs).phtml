@@ -13,6 +13,7 @@ array   DB::selectValues($sql,...)          Action          Database query   Pub
 integer DB::insert($sql,...)                Action          Database query   Public
 integer DB::update($sql,...)                Action          Database query   Public
 integer DB::delete($sql,...)                Action          Database query   Public
+integer Curl::call($method,$url,$data,$res) Action          Curl API call    Public
 bool    Auth::login($username,$password)    Action          Logging in       Public
 bool    Auth::logout()                      Action          Logging out      Public
 bool    Auth::register($username,$password) Action          Adding users     Public

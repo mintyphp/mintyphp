@@ -1,0 +1,25 @@
+<h1>Curl</h1>
+<p>This class is for calling a HTTP API using Curl. It provides 1 public method and has 2 public properties.</p>
+<h2>Call</h2>
+<pre>Curl::call($method,$url,$data,$result)</pre>
+<p>Executes Curl call:</p>
+<pre>
+$status = Curl::call('GET','http://www.bing.com/search',array('q'=>$query),$result);
+</pre>
+<p>Note that the $data parameter can either be an array (normally) or a string (for raw POST).
+In the view (.phtml) file we can show the return status (200 for success):</p>  
+<pre>
+&lt;?php e($status); ?&gt;
+</pre>
+<h2>Options</h2>
+<pre>Curl::$options = array();</pre>
+<p>This array hold the Curl options for the next call as defined in the PHP manual.
+This example shows how to enable response headers to be included in the response:</p>
+<pre>Curl::$options['CURLOPT_HEADER'] = true;</pre>
+<h2>Headers</h2>
+<pre>Curl::$headers = array();</pre>
+<p>This array hold the HTTP request headers that Curl will send in the next call.
+This example shows how to set the content type of the POST data for the next request:</p>
+<pre>
+Curl::$headers['Content-Type'] = 'application/json';
+</pre>

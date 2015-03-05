@@ -334,7 +334,7 @@ class DebugView
 				
 			$html[] = '</td></tr>';
 		}
-		$html[] = '<tr><td><strong>'.$count.' queries</strong></td>';
+		$html[] = '<tr><td><strong>'.$count.' API calls</strong></td>';
 		$html[] = '<td>'.sprintf('%.2f ms',$total*1000).'</td></tr>';
 		$html[] = '</tbody></table>';
 		$html[] = '</div>';

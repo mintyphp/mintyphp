@@ -11,8 +11,7 @@ class DB
   public static $database=null;
   public static $port=null;
   public static $socket=null;
-  public static $error=null;
-  
+   
   protected static $mysqli = null;
   
   protected static function connect()
@@ -101,13 +100,7 @@ class DB
   private static function selectTyped($query)
   {
     if (!Debugger::$enabled) {
-      try {
-        static::$error = false;
-        return forward_static_call_array('DB::selectTypedInternal', func_get_args());
-      } catch (DBError $e) {
-        static::$error = $e->getMessage();
-        return false;
-      }
+      return forward_static_call_array('DB::selectTypedInternal', func_get_args());
     }
     $time = microtime(true);
     $result = forward_static_call_array('DB::selectTypedInternal', func_get_args());

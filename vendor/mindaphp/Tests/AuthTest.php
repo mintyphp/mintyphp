@@ -18,7 +18,7 @@ class AuthTest extends \PHPUnit_Framework_TestCase
     public function testRegister()
     {
         $registered = Auth::register('test','test');
-        $this->assertTrue($registered, 'user not registered');
+        $this->assertNotFalse($registered, 'user not registered');
     }
     
     public function testLogin()

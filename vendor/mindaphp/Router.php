@@ -39,7 +39,9 @@ class Router
 
   protected static function error($message)
   {
-  	Debugger::set('status',500);
+  	if (Debugger::$enabled) {
+  		Debugger::set('status',500);
+  	}
     throw new RouterError($message);
   }
 

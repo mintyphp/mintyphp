@@ -138,8 +138,9 @@ class DB
       return static::error(static::$mysqli->error);
     }
     if ($query->affected_rows > -1) {
+      $rows = $query->affected_rows;
       $query->close();
-      return $query->affected_rows;
+      return $rows;
     }
     $params = array();
     $meta = $query->result_metadata();

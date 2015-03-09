@@ -134,9 +134,11 @@ class DB
     }
     $query->execute();
     if ($query->errno) {
+      $query->close();
       return static::error(static::$mysqli->error);
     }
     if ($query->affected_rows > -1) {
+      $query->close();
       return $query->affected_rows;
     }
     $params = array();

@@ -315,9 +315,10 @@ class DebugView
 			$tables['details']['method']=$call['method'];
 			$tables['details']['url']='<a href="'.$url.'" target="_blank">'.$shortUrl.'</a>';
 			$tables['details']['status']=$call['status'];
-			$tables['details']['data']=$call['data']?'<a href="data:text/plain;base64,'.base64_encode($call['data']).'" target="_blank">'.strlen($call['data']).' bytes</a>':'-';
-			$tables['details']['result']=$call['result']?'<a href="data:text/plain;base64,'.base64_encode($call['result']).'" target="_blank">View ('.strlen($call['result']).' bytes)</a>':'-';
-			$tables['details']['duration']=sprintf('%.2f ms',$call['duration']*1000);
+			$tables['details']['data_sent']=$call['data']?'<a href="data:text/plain;base64,'.base64_encode($call['data']).'" target="_blank">'.strlen($call['data']).' bytes</a>':'-';
+			$tables['details']['data_received']=$call['result']?'<a href="data:text/plain;base64,'.base64_encode($call['result']).'" target="_blank">View ('.strlen($call['result']).' bytes)</a>':'-';
+			$tables['timing'] = array_map(function ($v) { return sprintf('%.2f ms',$v*1000); },$call['timing']);
+
 			$tables['options']=$call['options'];
 			$tables['headers']=$call['headers'];
 			foreach ($tables as $table=>$fields) {

@@ -32,6 +32,16 @@ class Curl
 		$result = curl_exec($ch);
 		$status = curl_getinfo ($ch,CURLINFO_HTTP_CODE);
 				
+		if (Debugger::$enabled) {
+			$timing = array();
+			$timing['name_lookup'] = curl_getinfo ($ch,CURLINFO_NAMELOOKUP_TIME);
+			$timing['connect'] = curl_getinfo ($ch,CURLINFO_CONNECT_TIME);
+			$timing['pre_transfer'] = curl_getinfo ($ch,CURLINFO_PRETRANSFER_TIME);
+			$timing['start_transfer'] = curl_getinfo ($ch,CURLINFO_STARTTRANSFER_TIME);
+			$timing['redirect'] = curl_getinfo ($ch,CURLINFO_REDIRECT_TIME);
+			$timing['total'] = curl_getinfo ($ch,CURLINFO_TOTAL_TIME);
+		}
+		
 		curl_close($ch);
 		
 		if (static::$cookies) {
@@ -45,7 +55,7 @@ class Curl
 			$duration = microtime(true)-$time;
 			$options = static::$options;
 			$headers = static::$headers;
-			Debugger::add('api_calls',compact('duration','method','url','data','options','headers','status','result'));
+			Debugger::add('api_calls',compact('duration','method','url','data','options','headers','status','timing','result'));
 		}
 		
 		return $status;

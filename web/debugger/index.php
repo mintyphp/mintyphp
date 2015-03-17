@@ -45,7 +45,8 @@ class DebugView
 		$html[] ='<li><a class="debug-request-execution" href="#debug-request-'.$i.'-execution" data-toggle="tab">Execution</a></li>';
 		$html[] ='<li><a class="debug-request-session" href="#debug-request-'.$i.'-session" data-toggle="tab">Session</a></li>';
 		$html[] ='<li><a class="debug-request-queries" href="#debug-request-'.$i.'-queries" data-toggle="tab">Queries</a></li>';
-		$html[] ='<li><a class="debug-request-queries" href="#debug-request-'.$i.'-api_calls" data-toggle="tab">API calls</a></li>';
+		$html[] ='<li><a class="debug-request-api_calls" href="#debug-request-'.$i.'-api_calls" data-toggle="tab">API calls</a></li>';
+		$html[] ='<li><a class="debug-request-cache" href="#debug-request-'.$i.'-cache" data-toggle="tab">Cache</a></li>';
 		$html[] ='<li><a class="debug-request-logging" href="#debug-request-'.$i.'-logging" data-toggle="tab">Logging</a></li>';
 		$html[] ='</ul>';
 		return implode("\n",$html);
@@ -342,6 +343,19 @@ class DebugView
 		return implode("\n",$html);
 	}
 	
+	static function getCacheTabPane($requestId,$request)
+	{
+		$html = array();
+		$html[] ='<div class="tab-pane" id="debug-request-'.$requestId.'-cache">';
+		$html[] ='<br/><pre>';
+		foreach ($request['cache'] as $cache) {
+			$html[] = var_export($cache,true)."\n";
+		}
+		$html[] ='</pre>';
+		$html[] ='</div>';
+		return implode("\n",$html);
+	}
+	
 	static function getLoggingTabPane($requestId,$request)
 	{
 		$html = array();
@@ -405,6 +419,7 @@ Session::start();
               <?php echo DebugView::getSessionTabPane($i,$request); ?>
               <?php echo DebugView::getQueriesTabPane($i,$request); ?>
               <?php echo DebugView::getApiCallsTabPane($i,$request); ?>
+              <?php echo DebugView::getCacheTabPane($i,$request); ?>
               <?php echo DebugView::getLoggingTabPane($i,$request); ?>
             </div>
           </div>
@@ -417,10 +432,10 @@ Session::start();
             classes.push($(this).attr('class'));
           });
           $(classes).each(function (i,c) {
-        	$('a[data-toggle="tab"].'+c).on('shown.bs.tab', function (e) {
-          	  $('a[data-toggle="tab"].'+c).each(function (e) {
-        	    $(this).tab('show');
-        	  });
+        	$('a[data-toggle="tab"].'+c).on('shown.bs.tab', function () {
+              $('a[data-toggle="tab"].'+c).each(function () {
+            	$(this).tab('show');
+      	      });
             });
           });
         });

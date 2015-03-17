@@ -17,7 +17,7 @@ class Debugger
     static::$initialized = true;
     if (!static::$enabled) return;
     Session::start();
-    static::$request = array('log'=>array(),'queries'=>array(),'api_calls'=>array(),'session'=>array());
+    static::$request = array('log'=>array(),'queries'=>array(),'api_calls'=>array(),'session'=>array(),'cache'=>array());
     $_SESSION[static::$sessionKey][] = &static::$request;
     while (count($_SESSION[static::$sessionKey])>static::$history) array_shift($_SESSION[static::$sessionKey]);
     static::set('start',microtime(true));

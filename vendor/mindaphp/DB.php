@@ -25,6 +25,7 @@ class DB
       while (isset($args[count($args)-1]) && $args[count($args)-1] !== null) array_pop($args);
       static::$mysqli = $reflect->newInstanceArgs($args);
       if (mysqli_connect_errno()) static::error(mysqli_connect_error());
+      if (!static::$mysqli->set_charset("utf8")) static::error(mysqli_connect_error());
     }
   }
     

@@ -1,9 +1,9 @@
 <?php 
 $query = isset($_POST['q'])?$_POST['q']:'';
 
-if (!($results = Cache::get($query))) {
-	$results = array();
-	if ($query) {
+$results = array();
+if ($query) {
+	if (!($results = Cache::get($query))) {
 		if (Curl::call('GET','http://www.bing.com/search',array('q'=>$query),$result)==200) {
 			
 			$dom = new DOMDocument();

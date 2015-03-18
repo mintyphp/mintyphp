@@ -263,7 +263,7 @@ class DebugView
 			$count++;
 			$total+= $query['duration'];
 			$html[] = '<tr>';
-			$html[] = '<td><a href="#" onclick="$(\'#debug-request-'.$requestId.'-query-'.$i.'\').toggle(); return false;">'.$query['query'].'</a>';
+			$html[] = '<td><a href="#" onclick="$(\'#debug-request-'.$requestId.'-query-'.$i.'\').toggle(); return false;">'.$query['query'].'</a></td>';
 			$html[] = '<td>'.sprintf('%.2f ms',$query['duration']*1000).'</td>';
 			$html[] = '</tr>';
 			$html[] = '<tr style="display:none;" id="debug-request-'.$requestId.'-query-'.$i.'"><td colspan="5">';
@@ -303,7 +303,7 @@ class DebugView
 				$shortUrl = $url;
 			}
 			$html[] = '<tr>';
-			$html[] = '<td><a href="#" onclick="$(\'#debug-request-'.$requestId.'-api_call-'.$i.'\').toggle(); return false;">'.$call['method'].' '.$shortUrl.'<span class="badge pull-right">'.$call['status'].'</span></a>';
+			$html[] = '<td><a href="#" onclick="$(\'#debug-request-'.$requestId.'-api_call-'.$i.'\').toggle(); return false;">'.$call['method'].' '.$shortUrl.'<span class="badge pull-right">'.$call['status'].'</span></a></td>';
 			$html[] = '<td>'.sprintf('%.2f ms',$call['duration']*1000).'</td>';
 			$html[] = '</tr>';
 			$html[] = '<tr style="display:none;" id="debug-request-'.$requestId.'-api_call-'.$i.'"><td colspan="5">';
@@ -346,13 +346,26 @@ class DebugView
 	static function getCacheTabPane($requestId,$request)
 	{
 		$html = array();
-		$html[] ='<div class="tab-pane" id="debug-request-'.$requestId.'-cache">';
-		$html[] ='<br/><pre>';
-		foreach ($request['cache'] as $cache) {
-			$html[] = var_export($cache,true)."\n";
+		$html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-cache">';
+		$html[] = '<table class="table"><thead>';
+		$html[] = '<tr><th>Command</th><th>Result</th><th class="">Duration</th></tr>';
+		$html[] = '</thead><tbody>';
+		$count = 0;
+		$total = 0;
+		foreach ($request['cache'] as $i=>$call) {
+			$count++;
+			$total+= $call['duration'];
+			
+			$html[] = '<tr>';
+			$html[] = '<td>'.implode(' ',$call['command']).'</td>';
+			$html[] = '<td>'.$call['return'].'</td>';
+			$html[] = '<td>'.sprintf('%.2f ms',$call['duration']*1000).'</td>';
+			$html[] = '</tr>';
 		}
-		$html[] ='</pre>';
-		$html[] ='</div>';
+		$html[] = '<tr><td colspan="2"><strong>'.$count.' commands</strong></td>';
+		$html[] = '<td>'.sprintf('%.2f ms',$total*1000).'</td></tr>';
+		$html[] = '</tbody></table>';
+		$html[] = '</div>';
 		return implode("\n",$html);
 	}
 	

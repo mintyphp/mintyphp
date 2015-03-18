@@ -357,8 +357,8 @@ class DebugView
 			$total+= $call['duration'];
 			
 			$html[] = '<tr>';
-			$html[] = '<td>'.implode(' ',$call['command']).'</td>';
-			$html[] = '<td>'.$call['return'].'</td>';
+			$html[] = '<td>'.strtoupper($call['command']).' '.implode(' ',$call['arguments']).'</td>';
+			$html[] = '<td>'.$call['result'].'</td>';
 			$html[] = '<td>'.sprintf('%.2f ms',$call['duration']*1000).'</td>';
 			$html[] = '</tr>';
 		}

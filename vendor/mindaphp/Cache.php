@@ -32,11 +32,12 @@ class Cache
     protected static function variable($var) {
     	$type = gettype($var);
     	switch($type) {
-    		case 'boolean': $result = $var?'true':'false'; break;
+    		case 'boolean': $result = $var?'TRUE':'FALSE'; break;
 			case 'integer': $result = $var; break;
-			case 'string': $result = '(string:'.strlen($var).')'; break;
+			case 'NULL': $result = $var; break;
+    		case 'string': $result = '(string:'.strlen($var).')'; break;
 			case 'array': $result = '(array:'.count($var).')'; break;
-    		default: $result = '('.$type.')';
+			default: $result = '('.$type.')';
     	}
     	return $result;
     }
@@ -45,88 +46,94 @@ class Cache
     {
     	if (Debugger::$enabled) $time = microtime(true);
     	if (!static::$memcache) static::initialize();
-    	$result = static::$memcache->add(static::$prefix.$key,$var,0,$expire);
+    	$res = static::$memcache->add(static::$prefix.$key,$var,0,$expire);
     	if (Debugger::$enabled) {
     		$duration = microtime(true)-$time;
-    		$command = array('add',$key,static::variable($var));
-    		if ($expire) $command[]=$expire;
-    		$return = static::variable($result);
-    		Debugger::add('cache',compact('duration','command','return'));
+    		$command = 'add';
+    		$arguments = array($key,static::variable($var));
+    		if ($expire) $arguments[]=$expire;
+    		$result = static::variable($res);
+    		Debugger::add('cache',compact('duration','command','arguments','result'));
     	}    	
-    	return $result;
+    	return $res;
     }
     
     public static function decrement($key,$value=1)
     {
     	if (Debugger::$enabled) $time = microtime(true);
     	if (!static::$memcache) static::initialize();
-    	$result = static::$memcache->decrement(static::$prefix.$key,$value);
+    	$res = static::$memcache->decrement(static::$prefix.$key,$value);
     	if (Debugger::$enabled) {
     		$duration = microtime(true)-$time;
-    		$command = array('decrement',$key);
-    		if ($value>1) $command[]=$value;
-    		$return = static::variable($result);
-    		Debugger::add('cache',compact('duration','command','return'));
+    		$command = 'decrement';
+    		$arguments = array($key);
+    		if ($value>1) $arguments[]=$value;
+    		$result = static::variable($res);
+    		Debugger::add('cache',compact('duration','command','arguments','result'));
     	}
-    	return $result;
+    	return $res;
     }
     
     public static function delete($key)
     {
     	if (Debugger::$enabled) $time = microtime(true);
     	if (!static::$memcache) static::initialize();
-    	$result = static::$memcache->delete(static::$prefix.$key,0);
+    	$res = static::$memcache->delete(static::$prefix.$key,0);
     	if (Debugger::$enabled) {
     		$duration = microtime(true)-$time;
-    		$command = array('delete',$key);
-    		$return = static::variable($result);
-    		Debugger::add('cache',compact('duration','command','return'));
+    		$command = 'delete';
+    		$arguments = array($key);
+    		$result = static::variable($res);
+    		Debugger::add('cache',compact('duration','command','arguments','result'));
     	}
-    	return $result;
+    	return $res;
     }
     
     public static function get($key)
     {
     	if (Debugger::$enabled) $time = microtime(true);
     	if (!static::$memcache) static::initialize();
-    	$result = static::$memcache->get(static::$prefix.$key);
+    	$res = static::$memcache->get(static::$prefix.$key);
     	if (Debugger::$enabled) {
     		$duration = microtime(true)-$time;
-    		$command = array('get',$key);
-    		$return = static::variable($result);
-    		Debugger::add('cache',compact('duration','command','return'));
+    		$command = 'get';
+    		$arguments = array($key);
+    		$result = static::variable($res);
+    		Debugger::add('cache',compact('duration','command','arguments','result'));
     	}
-    	return $result;
+    	return $res;
     }
     
     public static function increment($key,$value=1)
     {
     	if (Debugger::$enabled) $time = microtime(true);
     	if (!static::$memcache) static::initialize();
-    	$result = static::$memcache->increment(static::$prefix.$key,$value);
+    	$res = static::$memcache->increment(static::$prefix.$key,$value);
     	if (Debugger::$enabled) {
     		$duration = microtime(true)-$time;
-    		$command = array('increment',$key);
-    		if ($value>1) $command[]=$value;
-    		$return = static::variable($result);
-    		Debugger::add('cache',compact('duration','command','return'));
+    		$command = 'increment';
+    		$arguments = array($key);
+    		if ($value>1) $arguments[]=$value;
+    		$result = static::variable($res);
+    		Debugger::add('cache',compact('duration','command','arguments','result'));
     	}
-    	return $result;
+    	return $res;
     }
     
     public static function replace($key,$var,$expire=0)
     {
     	if (Debugger::$enabled) $time = microtime(true);
     	if (!static::$memcache) static::initialize();
-    	$result = static::$memcache->replace(static::$prefix.$key,$var,0,$expire);
+    	$res = static::$memcache->replace(static::$prefix.$key,$var,0,$expire);
     	if (Debugger::$enabled) {
     		$duration = microtime(true)-$time;
-    		$command = array('replace',$key,static::variable($var));
-    		if ($expire) $command[]=$expire;
-    		$return = static::variable($result);
-    		Debugger::add('cache',compact('duration','command','return'));
+    		$command = 'replace';
+    		$arguments = array($key,static::variable($var));
+    		if ($expire) $arguments[]=$expire;
+    		$result = static::variable($res);
+    		Debugger::add('cache',compact('duration','command','arguments','result'));
     	}
-    	return $result;
+    	return $res;
      
     }
     
@@ -134,15 +141,16 @@ class Cache
     {
     	if (Debugger::$enabled) $time = microtime(true);
     	if (!static::$memcache) static::initialize();
-    	$result = static::$memcache->set(static::$prefix.$key,$var,0,$expire);
+    	$res = static::$memcache->set(static::$prefix.$key,$var,0,$expire);
     	if (Debugger::$enabled) {
     		$duration = microtime(true)-$time;
-    		$command = array('set',$key,static::variable($var));
-    		if ($expire) $command[]=$expire;
-    		$return = static::variable($result);
-    		Debugger::add('cache',compact('duration','command','return'));
+    		$command = 'set';
+    		$arguments = array($key,static::variable($var));
+    		if ($expire) $arguments[]=$expire;
+    		$result = static::variable($res);
+    		Debugger::add('cache',compact('duration','command','arguments','result'));
     	}
-    	return $result;
+    	return $res;
     }
     
 }

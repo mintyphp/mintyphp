@@ -16,8 +16,8 @@
 <pre>$success = Cache::replace($key,$var,$expire=0)</pre>
 <p>Should be used to replace value of existing item with key. Returns FALSE in the case that an item with such key doesn't exists. For the rest replace() behaves similarly to set(). Returns TRUE on success or FALSE on failure.</p>
 <h2>Increment</h2>
-<pre>Cache::increment($key,$value=1)</pre>
+<pre>$var = Cache::increment($key,$value=1)</pre>
 <p>Increments value of an item by the specified value. If item specified by key was not numeric and cannot be converted to a number, it will change its value to the specified value. Method does not create an item if it doesn't already exist. Returns new items value on success or FALSE on failure.</p>
 <h2>Decrement</h2>
-<pre>Cache::decrement($key,$value=1)</pre>
+<pre>$var = Cache::decrement($key,$value=1)</pre>
 <p>Decrements value of the item by value. Similarly to increment(), current value of the item is being converted to numerical and after that value is subtracted. Method does not create an item if it didn't exist. Returns item's new value on success or FALSE on failure.</p>

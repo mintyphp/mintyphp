@@ -10,6 +10,17 @@ class Curl
 	public static $headers = array();
 	public static $cookies = false;
 	
+	public static function callCached($expire,$method,$url,$data,&$result)
+	{
+		$key = $method.'_'.$url.'_'.json_encode($data);
+		if (!($json = Cache::get($key))) {
+			if (($status=static::call($method, $url, $data, $result))==200) {
+				Cache::set($key,$json,$expire);
+			}
+		}
+		return $status;
+	}
+	
 	public static function call($method,$url,$data,&$result) {
 
 		if (Debugger::$enabled) {

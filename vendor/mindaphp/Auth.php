@@ -27,9 +27,13 @@ class Auth
     
     static function logout()
     {
-      if (!isset($_SESSION['user'])) return false;
-      unset($_SESSION['user']);
-      unset($_SESSION['csrf_token']);
+      if (isset($_SESSION['user'])) {
+        unset($_SESSION['user']);
+      }
+      if (isset($_SESSION['csrf_token'])) {
+        unset($_SESSION['csrf_token']);
+      }
+      $_SESSION = array();
       session_regenerate_id(true);
       return true;
     }

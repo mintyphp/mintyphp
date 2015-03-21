@@ -27,9 +27,9 @@ class Auth
     
     static function logout()
     {
-      if (!isset($_SESSION['user'])) return false;
-      unset($_SESSION['user']);
-      unset($_SESSION['csrf_token']);
+      foreach ($_SESSION as $key=>$value) {
+        if ($key!='debugger') unset($_SESSION[$key]);
+      }
       session_regenerate_id(true);
       return true;
     }

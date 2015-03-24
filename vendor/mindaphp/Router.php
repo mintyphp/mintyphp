@@ -33,8 +33,8 @@ class Router
     static::$method = $_SERVER['REQUEST_METHOD'];
     static::$request = $_SERVER['REQUEST_URI'];
     static::$script = $_SERVER['SCRIPT_NAME'];
-    static::route();
     static::applyRoutes();
+    static::route();
   }
 
   protected static function error($message)
@@ -158,7 +158,6 @@ class Router
   	foreach (static::$routes as $destinationPath => $sourcePath) {
   		if (rtrim(static::$request,'/') == rtrim(static::$baseUrl . $sourcePath,'/')) {
 	  		static::$request = static::$baseUrl . $destinationPath;
-	  		static::route();
 	  		break;
 	  	}
   	}

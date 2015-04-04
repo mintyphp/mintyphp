@@ -314,7 +314,7 @@ class DebugView
 			$tables = array();
 			$tables['details']=array();
 			$tables['details']['method']=$call['method'];
-			$tables['details']['url']='<a href="'.$url.'" target="_blank">'.$shortUrl.'</a>';
+			$tables['details']['url']='<a href="'.$url.'" target="_blank">Visit</a>';
 			$tables['details']['status']=$call['status'];
 			$tables['details']['data_sent']=$call['data']?'<a href="data:text/plain;base64,'.base64_encode($call['data']).'" target="_blank">'.strlen($call['data']).' bytes</a>':'-';
 			$tables['details']['data_received']=$call['result']?'<a href="data:text/plain;base64,'.base64_encode($call['result']).'" target="_blank">View ('.strlen($call['result']).' bytes)</a>':'-';

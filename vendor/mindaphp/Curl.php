@@ -13,10 +13,13 @@ class Curl
 	public static function callCached($expire,$method,$url,$data,&$result)
 	{
 		$key = $method.'_'.$url.'_'.json_encode($data);
-		if (!($json = Cache::get($key))) {
-			if (($status=static::call($method, $url, $data, $result))==200) {
-				Cache::set($key,$json,$expire);
-			}
+		$result = Cache::get($key);
+		if ($result) {
+			return 200;
+		}
+		$status = static::call($method, $url, $data, $result);
+		if ($status==200) {
+			Cache::set($key,$result,$expire);
 		}
 		return $status;
 	}

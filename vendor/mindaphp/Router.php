@@ -239,9 +239,11 @@ class Router
   public static function getBaseUrl()
   {
   	$url = static::$baseUrl;
-  	if (substr($url,0,2)!='//') $url = '//'.$_SERVER['SERVER_NAME'].$url;
-  	$s = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')?'s':'';
-  	$url = "http$s:$url";
+  	if (substr($url,0,4)!='http') {
+  	  if (substr($url,0,2)!='//') $url = '//'.$_SERVER['SERVER_NAME'].$url;
+  	  $s = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')?'s':'';
+  	  $url = "http$s:$url";
+  	}
   	return $url;
   }
 }

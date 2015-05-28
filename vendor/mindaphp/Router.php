@@ -236,9 +236,12 @@ class Router
   	return static::$phase;
   }
   
-  public static function getBaseUrl($full=true)
+  public static function getBaseUrl()
   {
+  	$url = static::$baseUrl;
+  	if (substr($url,0,2)!='//') $url = '//'.$_SERVER['SERVER_NAME'].$url;
   	$s = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')?'s':'';
-  	return ($full?"http$s://".$_SERVER['SERVER_NAME']:'').static::$baseUrl;
+  	$url = "http$s:$url";
+  	return $url;
   }
 }

@@ -11,6 +11,9 @@ require '../config/router.php';
 function e($string) { echo htmlspecialchars($string,ENT_QUOTES,'UTF-8'); }
 function d() { return call_user_func_array('Debugger::debug',func_get_args()); }
 
+// Start the firewall
+Firewall::start();
+
 // Start the session
 Session::start();
 

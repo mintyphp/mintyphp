@@ -13,6 +13,15 @@ class Session
   public static $sessionName = 'mindaphp';
 }
 
+class Firewall
+{
+  public static $concurrency     = 10;
+  public static $spinLockSeconds = 0.15;
+  public static $intervalSeconds = 300;
+  public static $cachePrefix     = 'fw_concurrency_';
+  public static $reverseProxy    = false;
+}
+
 class DB
 {
   public static $host     = '{{DB_HOST}}'; // default: 'localhost'

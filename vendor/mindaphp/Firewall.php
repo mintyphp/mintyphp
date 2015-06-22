@@ -3,9 +3,8 @@ namespace MindaPHP;
 
 class Firewall
 {
-  public static $concurrency=1;
+  public static $concurrency=10;
   public static $spinLockSeconds=0.15;
-  //public static $spinLockSeconds=false;
   public static $intervalSeconds=300;
   public static $cachePrefix='fw_concurrency_';
   public static $reverseProxy=false;

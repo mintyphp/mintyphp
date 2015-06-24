@@ -13,10 +13,11 @@ class DB
   public static $socket=null;
    
   protected static $mysqli = null;
+  protected static $closed = false;
   
   protected static function connect()
   {
-    if (class_exists('Router',false) && Router::getPhase()!='action') {
+    if (static::$closed) {
       static::error('Database can only be used in MindaPHP action');
     }
     if (!static::$mysqli) {
@@ -203,6 +204,15 @@ class DB
     $result = forward_static_call_array('DB::selectTyped', $args);
     if ($result!==false) return true;
     return $result;
+  }
+  
+  public static function close()
+  {
+  	if (static::$mysqli) {
+  	  static::$mysqli->close();
+  	  static::$mysqli = null;
+  	}
+  	static::$closed = true;
   }
   
   // Undocumented

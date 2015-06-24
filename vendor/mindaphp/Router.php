@@ -24,7 +24,6 @@ class Router
   protected static $routes = array();
   
   public static $initialized = false;
-  protected static $phase = 'init';
   
   protected static function initialize()
   {
@@ -172,7 +171,6 @@ class Router
   public static function getAction()
   {
     if (!static::$initialized) static::initialize();
-    static::$phase = 'action';
     return static::$action;
   }
 
@@ -203,14 +201,12 @@ class Router
   public static function getView()
   {
     if (!static::$initialized) static::initialize();
-    static::$phase = 'view';
     return static::$view;
   }
   
   public static function getTemplateView()
   {
     if (!static::$initialized) static::initialize();
-    static::$phase = 'view';
     $filename = static::$template.'.phtml';
     return file_exists($filename)?$filename:false;
   }
@@ -218,7 +214,6 @@ class Router
   public static function getTemplateAction()
   {
   	if (!static::$initialized) static::initialize();
-  	static::$phase = 'action';
     $filename = static::$template.'.php';
     return file_exists($filename)?$filename:false;
   }
@@ -229,11 +224,6 @@ class Router
   	if (!static::$initialized) static::initialize();
     if (!static::$parameters) return array();
   	else return static::$parameters;
-  }
-  
-  public static function getPhase()
-  {
-  	return static::$phase;
   }
   
   public static function getBaseUrl()

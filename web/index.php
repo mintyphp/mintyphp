@@ -47,6 +47,9 @@ else {
 // End the session
 Session::end();
 
+// Close the database connection
+DB::close();
+
 if (Router::getTemplateView()) {
   Buffer::start('html');
   require Router::getView();

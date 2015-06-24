@@ -123,7 +123,9 @@ class Router
     		if (count($matches)==1) {
     			static::$action = $matches[0];
     			$parameterNames = static::extractParameterNames($matches[0],$root,$dir,$view);
-    			$redirect = (count($parameters)>count($parameterNames));
+    			if (count($parameters)>count($parameterNames)) {
+    				$redirect = static::$url.'/'.implode('/',array_slice($parameters, 0, count($parameterNames)));
+    			}
     			$parameters = array_map('urldecode', $parameters);
     			if (count($parameters)<count($parameterNames)) {
     				for ($i=count($parameters); $i<count($parameterNames); $i++) {
@@ -151,7 +153,7 @@ class Router
     	Debugger::set('router',compact('method','csrfOk','request','url','dir','view','template','viewFile','actionFile','templateFile','parameters'));
     	Debugger::set('status',$status);
     }
-    if ($redirect) static::redirect(static::getUrl());
+    if ($redirect) static::redirect($redirect);
   }
 
   public static function getUrl()

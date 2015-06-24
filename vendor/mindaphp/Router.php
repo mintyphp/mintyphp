@@ -78,8 +78,8 @@ class Router
     if (static::$original===null) static::$original = $request;
     
     $questionMarkPosition = strpos($request,'?');
-    $hasGet = $questionMarkPosition===false;
-    if (!$hasGet) $request = substr($request,0,$questionMarkPosition);
+    $hasGet = $questionMarkPosition!==false;
+    if ($hasGet) $request = substr($request,0,$questionMarkPosition);
     $parts = explode('/',$request);
     foreach ($parts as $i=>$part) {
       if ($part && file_exists($root.$dir.$part) && is_dir($root.$dir.$part)) {
@@ -93,7 +93,7 @@ class Router
       else $i++;
       $csrfOk = static::$method=='GET'?true:Session::checkCsrfToken();
       if (!$csrfOk) { $status = 403; $matches = glob($root.'error/forbidden(*).phtml'); $dir=''; $i=count($parts); }
-      if (!static::$allowGet && !$hasGet) { $status = 405; $matches = glob($root.'error/method_not_allowed(*).phtml'); $dir=''; $i=count($parts); }
+      if (!static::$allowGet && $hasGet) { $status = 405; $matches = glob($root.'error/method_not_allowed(*).phtml'); $dir=''; $i=count($parts); }
       if (count($matches)==0) { $status = 404; $matches = glob($root.'error/not_found(*).phtml'); $dir=''; $i=count($parts); }
       if (count($matches)==0) static::error('Could not find 404');
       if (count($matches)>1) static::error('Mutiple views matched: '.implode(', ',$matches));

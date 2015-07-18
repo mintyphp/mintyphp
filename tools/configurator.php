@@ -50,10 +50,12 @@ class Configurator
 		$store = function($class,$name,$value) use (&$config) {
 			foreach ($config[$class] as $i=>$v) {
 				if ($name == $v['name']) {
-					if ($v['type']=='bool') {
+					if (gettype($v['value'])=='boolean') {
 						$config[$class][$i]['value'] = (bool)$value;
-					} else if ($v['type']=='int') {
+					} else if (gettype($v['value'])=='integer') {
 						$config[$class][$i]['value'] = (int)$value;
+					} else if (gettype($v['value'])=='double') {
+						$config[$class][$i]['value'] = (float)$value;
 					} else {
 						$config[$class][$i]['value'] = $value;
 					}
@@ -87,7 +89,7 @@ class Configurator
 				$input = $class.'['.$v['name'].']';
 				$str.= "$name $comment<br/>\n";
 				$value = htmlentities($v['value']);
-				if ($v['type']=='bool') {
+				if (gettype($v['value'])=='boolean') {
 					$str.= '<input type="radio" name="'.$input.'" value="1"'.($value?' checked="checked"':'').'> true';
 					$str.= '<input type="radio" name="'.$input.'" value="0"'.((!$value)?' checked="checked"':'').'> false <br/>';
 				} else {
@@ -113,20 +115,19 @@ class Configurator
 			} else if (preg_match('/^\s*public static \$([a-z]+)\s*=(.*);\s*(\/\/(.*))?$/i', $line, $matches)) {
 				$name = $matches[1];
 				$value = trim($matches[2]);
-				if (is_numeric($value)) {
-					$value = $value+0;
-					$type = 'int';
+				if (is_numeric($value) && strpos($value,'.')!==false) {
+					$value = (float)$value;
+				} else if (is_numeric($value)) {
+					$value = (int)$value;
 				} else if (in_array($value,array('true','false'))) {
 					$value = $value=='true'?:false;
-					$type = 'bool';
 				} else {
 					$value = trim($value,'\'"');
-					$type = 'string';
 				}
 				
 				if (isset($matches[4])) $comment = trim($matches[4]);
 				else $comment = false;
-				$config[$class][] = compact('name','value','comment','type');
+				$config[$class][] = compact('name','value','comment');
 			}
 		}
 		return $config;
@@ -135,7 +136,7 @@ class Configurator
 	public static function generateCode($config)
 	{
 		$export = function($v) {
-			if ($v['type']=='bool') return $v['value']?'true':'false';
+			if (gettype($v['value'])=='boolean') return $v['value']?'true':'false';
 			else return var_export($v['value'],true);
 		};
 		$code = "<?php\n";

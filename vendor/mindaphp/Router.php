@@ -246,7 +246,8 @@ class Router
   {
   	$url = static::$baseUrl;
   	if (substr($url,0,4)!='http') {
-  	  if (substr($url,0,2)!='//') $url = '//'.$_SERVER['SERVER_NAME'].$url;
+	  $port = isset($GLOBALS['mindaphp_tools'])?':'.$_SERVER['SERVER_PORT']:'';
+  	  if (substr($url,0,2)!='//') $url = '//'.$_SERVER['SERVER_NAME'].$port.$url;
   	  $s = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')?'s':'';
   	  $url = "http$s:$url";
   	}

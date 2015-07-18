@@ -88,6 +88,9 @@ class Debugger
       $parts[] = round($request['memory']/1000000).' MB';
     }
     $html.= implode(' - ',$parts).' - <a href="debugger/">debugger</a>';
+    if (isset($GLOBALS['mindaphp_tools']) && is_array($GLOBALS['mindaphp_tools'])) {
+    	foreach ($GLOBALS['mindaphp_tools'] as $tool) $html.= ' - <a href="'.$tool.'">'.substr($tool,1,-4).'</a>';
+    }
     $html.= '</div></div>';
     echo $html;
   }

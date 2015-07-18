@@ -6,7 +6,7 @@ require __DIR__.'/../config/loader.php';
 // Load the config parameters
 require __DIR__.'/../config/config.php';
 
-echo Conventionist::text(); 
+echo Conventionist::html(); 
 
 class Conventionist
 {
@@ -104,7 +104,7 @@ END_OF_STR;
           }
         }
       }
-      if (!$pk) array('type'=>'error','table'=>$table,'field'=>'id','message'=>'must exist');
+      if (!$pk) $errors[] = array('type'=>'error','table'=>$table,'field'=>'id','message'=>'must exist');
     }
     return $errors;
   }

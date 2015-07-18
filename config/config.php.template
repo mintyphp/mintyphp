@@ -3,14 +3,14 @@ namespace MindaPHP\Config;
 
 class Router
 {
-  public static $baseUrl      = '{{BASE_URL}}'; // default: '/'
-  public static $pageRoot     = '../pages/';
-  public static $templateRoot = '../templates/';
+  public static $baseUrl      = '/';             // default: '/'
+  public static $pageRoot     = '../pages/';     // default: '../pages/'
+  public static $templateRoot = '../templates/'; // default: '../templates/'
 }
 
 class Session
 {
-  public static $sessionName = 'mindaphp';
+  public static $sessionName = 'mindaphp'; // default: 'mindaphp'
 }
 
 class Firewall
@@ -24,22 +24,22 @@ class Firewall
 
 class DB
 {
-  public static $host     = '{{DB_HOST}}'; // default: 'localhost'
-  public static $username = '{{DB_USER}}'; // default: 'mindaphp'
-  public static $password = '{{DB_PASS}}'; // choose a strong password
-  public static $database = '{{DB_NAME}}'; // default: 'mindaphp'
-  public static $port     = {{DB_PORT}};   // default: 3306
+  public static $host     = 'localhost'; // default: 'localhost'
+  public static $username = 'root';      // set to 'root' to initialize
+  public static $password = '';          // overwritten during initialization
+  public static $database = 'mindaphp';  // set to project name
+  public static $port     = 3306;        // default: 3306
 }
 
 class Auth
 {
   public static $usersTable    = 'users';    // table that holds the user data
-  public static $usernameField = 'username'; // type varchar, has unique index
-  public static $passwordField = 'password'; // type varchar(40), holds sha1 in hex
+  public static $usernameField = 'username'; // type varchar(255), has unique index
+  public static $passwordField = 'password'; // type varchar(255), holds sha1 in hex
   public static $createdField  = 'created';  // type datetime, optional
 }
 
 class Debugger
 {
-  public static $enabled = true;
+  public static $enabled = true; // enable during development
 }

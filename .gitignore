@@ -3,6 +3,7 @@
 .settings
 composer.phar
 phpunit.phar
-tools/adminer.php
+tools/latest.php
 config/config.php
-vendor
+
+/vendor/

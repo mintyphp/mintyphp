@@ -15,7 +15,11 @@ class Debugger
   {
   	if (static::$initialized) return;
     static::$initialized = true;
-    if (!static::$enabled) return;
+    if (!static::$enabled) {
+    	error_reporting(0);
+    	return;
+    }
+    error_reporting(-1);
     Session::start();
     static::$request = array('log'=>array(),'queries'=>array(),'api_calls'=>array(),'session'=>array(),'cache'=>array());
     $_SESSION[static::$sessionKey][] = &static::$request;
@@ -95,7 +99,7 @@ class Debugger
     echo $html;
   }
   
-  function debug($variable,$strlen=100,$width=25,$depth=10,$i=0,&$objects = array())
+  public static function debug($variable,$strlen=100,$width=25,$depth=10,$i=0,&$objects = array())
   {
   	if (!static::$enabled) return;
   		

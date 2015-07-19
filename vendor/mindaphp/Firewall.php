@@ -11,7 +11,7 @@ class Firewall
   
   protected static $key=false;
   
-  protected function getClientIp()
+  protected static function getClientIp()
   {
   	if (static::$reverseProxy && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
   		$ip = array_pop(explode(',',$_SERVER['HTTP_X_FORWARDED_FOR']));
@@ -22,7 +22,7 @@ class Firewall
   	return $ip;     
   }
   
-  protected function getKey()
+  protected static function getKey()
   {
   	if (!static::$key) {
   		static::$key = static::$cachePrefix.'_'.static::getClientIp();

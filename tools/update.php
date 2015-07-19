@@ -1,42 +1,67 @@
 <?php
 $files = 0;
+$created = 0;
 $updated = 0;
-$source = "https://raw.github.com/mevdschee/MindaPHP/master/";
-$paths = array(
+$url = "https://github.com/mevdschee/MindaPHP/archive/master.zip";
+$zipDir = 'MindaPHP-master/';
+$archive = __DIR__.'/master.zip';
+$path = realpath(__DIR__.'/..');
+$prefixes = array(
   '.htaccess',
   'web/.htaccess',
   'web/index.php',
-  'web/debugger/index.php',
-  'vendor/mindaphp/*.php',
-  'vendor/mindaphp/Tests/*.php',
-  'tools/conventionist.php',
-  'tools/requirements.php',
-  'tools/server.php',
-  'tools/update.php'
+  'web/debugger/',
+  'vendor/mindaphp/',
+  'tools/'
 );
-foreach ($paths as $path) {
-  foreach (glob($path) as $filename) {
-  	echo '.';
-    $files++;
-    $data = @file_get_contents($source.$filename);
-    if ($data===false) {
-      echo "Error loading URL ($source$filename)\n";
-      continue;
-    }
-    $size = strlen($data);
-    $hash = sha1($data);
-    $old = sha1(file_get_contents($filename));
-    if ($old!=$hash) {
-      if ((preg_match('/\.php$/', $filename) && $size && preg_match('/<\?php/', $data)) ||
-          (preg_match('/\.htaccess$/', $filename) && $size)) {
-      	$updated++;
-        file_put_contents($filename, $data);
-        $version = substr($hash, 0, 10);
-        echo "\n$filename ($version)\n";
-      } else {      
-        echo "\n$filename (ERROR)\n";
-      }
-    }
-  }
+
+echo "Downloading: $url\n";
+if (!copy($url,$archive)) die("Error loading URL ($url)\n");
+echo "Unzipping: $archive\n";
+
+$zip = new ZipArchive;
+
+if ($zip->open($archive)!==true) die("Error opening archive ($archive)\n");
+	 
+for($i = 0; $i < $zip->numFiles; $i++) {
+
+	$filename = substr($zip->getNameIndex($i),strlen($zipDir));
+	
+	$match = false;
+	foreach ($prefixes as $prefix) {
+		if (substr($filename,0,strlen($prefix))===$prefix) {
+			$match = true;
+			break;
+		}
+	}
+	if (!$match) continue;
+	
+	$files++;
+	if (file_exists("$path/$filename")) {
+		$old = sha1(file_get_contents("$path/$filename"));
+	} else {
+		$old = false;
+		$created++;
+	}
+	
+	$dir = pathinfo($filename,PATHINFO_DIRNAME);
+	
+	if (substr($filename,-1)=='/') $success = file_exists("$path/$dir") || mkdir("$path/$dir",0755,true);
+	else $success = copy("zip://".$archive."#".$zipDir.$filename, "$path/$filename");
+	
+	if (!$success) {
+		echo "$filename (ERROR)\n";
+	}
+	
+	$new = sha1(file_get_contents("$path/$filename"));
+	
+	if ($old!=$new) {
+		$version = substr($new, 0, 10);
+		if ($old) $updated++;
+		echo "$filename ($version)\n";
+	}
+	
 }
-echo "$files checked $updated updated\n";
+	
+$zip->close();
+echo "$files checked $updated updated $created created\n";

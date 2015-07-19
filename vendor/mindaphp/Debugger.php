@@ -88,7 +88,7 @@ class Debugger
       $parts[] = round($request['memory']/1000000).' MB';
     }
     $html.= implode(' - ',$parts).' - <a href="debugger/">debugger</a>';
-    if (substr($_SERVER['SERVER_SOFTWARE'],0,5)=='PHP 5') {
+    if (substr($_SERVER['SERVER_SOFTWARE'],0,4)=='PHP ') {
     	$html.= ' - <a href="/adminer.php">adminer</a>';
     }
     $html.= '</div></div>';

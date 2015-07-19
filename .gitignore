@@ -4,6 +4,7 @@
 composer.phar
 phpunit.phar
 tools/latest.php
+tools/master.zip
 config/config.php
 
 /vendor/

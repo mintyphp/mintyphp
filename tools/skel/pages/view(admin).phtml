@@ -1,0 +1,23 @@
+<div class="page-header">
+  <h1>View <?php echo $singularize($humanize($table)); ?></h1>
+</div>
+<div>
+<?php foreach ($fields as $field):?>
+	<dl>
+<?php if ($relation = $findBelongsTo($field['COLUMNS']['COLUMN_NAME'])): ?>
+		<dt><?php echo ucfirst($singularize($humanize($relation['KEY_COLUMN_USAGE']['REFERENCED_TABLE_NAME']))); ?></dt>
+<?php else: ?>
+		<dt><?php echo ucfirst($humanize($field['COLUMNS']['COLUMN_NAME'])); ?></dt>
+<?php endif; ?>
+<?php if ($relation = $findBelongsTo($field['COLUMNS']['COLUMN_NAME'])): ?>
+  		<dd><?php echo '<?php' ?> e($<?php echo $relation['KEY_COLUMN_USAGE']['REFERENCED_TABLE_NAME']; ?>[$data['<?php echo $table; ?>']['<?php echo $field['COLUMNS']['COLUMN_NAME']; ?>']]);?></dd>
+<?php else: ?>
+  		<dd><?php echo '<?php' ?> e($data['<?php echo $table; ?>']['<?php echo $field['COLUMNS']['COLUMN_NAME']; ?>']);?></dd>
+<?php endif; ?> 
+  	</dl>
+<?php endforeach; ?>
+</div>
+<p>
+	<a class="btn btn-danger pull-right" href="<?php echo $path; ?>/<?php echo $table; ?>/delete/<?php echo '<?php' ?> e($id); ?>">Delete</a>
+	<a class="btn btn-primary" href="<?php echo $path; ?>/<?php echo $table; ?>/edit/<?php echo '<?php' ?> e($id); ?>">Edit</a>
+</p>

@@ -1,0 +1,9 @@
+<div class="page-header">
+  <h1>Delete <?php echo $singularize($humanize($table)); ?></h1>
+</div>
+<form method="post">
+    <p>Are you sure?</p>
+	<button class="btn btn-danger pull-right" type="submit">Yes</button>
+	<a class="btn btn-primary" href="<?php echo $path; ?>/<?php echo $table; ?>/edit/<?php echo '<?php' ?> e($id); ?>">No</a>
+	<?php echo '<?php' ?> Session::getCsrfInput(); ?>
+</form>

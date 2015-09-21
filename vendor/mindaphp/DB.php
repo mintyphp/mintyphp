@@ -136,8 +136,9 @@ class DB
     }
     $query->execute();
     if ($query->errno) {
+      $error = static::$mysqli->error;
       $query->close();
-      return static::error(static::$mysqli->error);
+      return static::error($error);
     }
     if ($query->affected_rows > -1) {
       $result = $query->affected_rows;

@@ -89,7 +89,7 @@ class Router
     		$parameters = array_slice($parts, $i, count($parts)-$i);
     		
     		if (count($parameters)) { 
-    			$part = array_shift($parameters);  
+    			$part = array_shift($parameters);
     			$matches = glob($root.$dir.$part.'(*).phtml');
     			if (count($matches)==0) {
     				array_unshift($parameters,$part);
@@ -123,8 +123,15 @@ class Router
     		if (count($matches)==1) {
     			static::$action = $matches[0];
     			$parameterNames = static::extractParameterNames($matches[0],$root,$dir,$view);
+    			if (substr(static::$url,-7)=='//index') $redirect = substr(static::$url,0,-7);
+    			if (substr(static::$original,-6)=='/index') $redirect = substr(static::$url,0,-6);
     			if (count($parameters)>count($parameterNames)) {
-    				$redirect = static::$url.'/'.implode('/',array_slice($parameters, 0, count($parameterNames)));
+    				if (substr(static::$url,-6)=='/index') static::$url = substr(static::$url,0,-6);
+    				if (count($parameterNames)) {
+    					$redirect = static::$url.'/'.implode('/',array_slice($parameters, 0, count($parameterNames)));
+    				} else {
+    					$redirect = static::$url;
+    				}    					
     			}
     			$parameters = array_map('urldecode', $parameters);
     			if (count($parameters)<count($parameterNames)) {

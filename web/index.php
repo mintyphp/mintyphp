@@ -17,8 +17,10 @@ Firewall::start();
 // Start the session
 Session::start();
 
-// Load the action into body
+// Analyze the PHP code
+if (Debugger::$enabled) Analyzer::execute();
 
+// Load the action into body
 ob_start();
 if (Router::getTemplateAction()) {
 	require Router::getTemplateAction();

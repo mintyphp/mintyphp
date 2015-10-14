@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <base href="<?php echo Router::getBaseUrl(); ?>">
+    <base href="<?php e(Router::getBaseUrl()); ?>">
     <title>MindaPHP Documentation</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +38,7 @@
             </p>
         </div>
         <div class="body">
-            <?php echo Buffer::get('html'); ?>
+            <?php Buffer::get('html'); ?>
         </div>
 </body>
 </html>

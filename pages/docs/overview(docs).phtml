@@ -63,9 +63,9 @@ project. These routes need to be defined in the "config/router.php" configuratio
 <h2>PHP templating</h2>
 
 <p>The "template" folder holds all templates. Normally the action is executed and the corresponding
-view is rendered. The output is captured and can be retrieved using the "Buffer::get('html')" function.
-A template will "echo" the return value where the rendered view needs to be placed. If you do not want
-to use a template you can use the "none" template. In this case the view will be rendered directly.</p>
+view is rendered. The output is captured and can be printed using the "Buffer::get('html')" function.
+A template will call this where the rendered view needs to be placed. If you do not want to use a
+template you can use the "none" template. In this case the view will be rendered directly.</p>
 
 <h2>Database abstraction layer</h2>
 

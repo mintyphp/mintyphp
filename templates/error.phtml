@@ -1,4 +1,1 @@
-<?php
-  Buffer::set('html','<p style="color:red;">ERROR: '.Buffer::get('html').'</p>');
-  require __DIR__.'/default.phtml';
-?>
+<?php Buffer::start('html'); ?><p style="color:red;">ERROR: <?php Buffer::get('html'); ?></p><?php Buffer::end('html'); require __DIR__.'/default.phtml';

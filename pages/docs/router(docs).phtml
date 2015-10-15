@@ -17,15 +17,15 @@ It does also show the redirected target, not the entered URL.</p>
 It can be configured in the "config/config.php" file in the "Router" section.</p>
 <h2>View</h2>
 <pre>Router::getView()</pre>
-<p>This gets the path to the view file that is loaded. For example on this page it returns: <?php e(Router::getView()); ?>.
+<p>This gets the path to the view file that is loaded. For example on this page it returns: "../pages/docs/router(docs).phtml".
 <h2>Action</h2>
 <pre>Router::getAction()</pre>
-<p>This gets the path to the action file that is loaded. For example on this page it returns: <?php e(Router::getAction()); ?>.
+<p>This gets the path to the action file that is loaded. For example on this page it returns: false.
 <h2>Template</h2>
 <pre>Router::getTemplateView()</pre>
-<p>This gets the path to the template view file that is loaded. For example on this page it returns: <?php e(Router::getTemplateView()); ?>.
+<p>This gets the path to the template view file that is loaded. For example on this page it returns: "../templates/docs.phtml".
 <pre>Router::getTemplateAction()</pre>
-<p>This gets the path to the template action file that is loaded. For example on this page it returns: <?php e(Router::getTemplateAction()); ?>.
+<p>This gets the path to the template action file that is loaded. For example on this page it returns: false.
 <h2>Redirect</h2>
 <pre>Router::redirect($url)</pre>
 <p>This "redirect" function redirects directly to another URL.</p>

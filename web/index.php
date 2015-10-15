@@ -27,7 +27,7 @@ if (Router::getTemplateAction()) {
 }
 if (ob_get_contents()) {
 	ob_end_flush();
-	trigger_error('MindaPHP template action"'.Router::getTemplateAction().'" should not send output.', E_USER_WARNING);
+	trigger_error('MindaPHP template action"'.Router::getTemplateAction().'" should not send output. Error raised ', E_USER_WARNING);
 }
 else {
 	ob_end_clean();
@@ -40,7 +40,7 @@ if (Router::getAction()) {
 }
 if (ob_get_contents()) {
   ob_end_flush();
-  trigger_error('MindaPHP action "'.Router::getAction().'" should not send output.', E_USER_WARNING);
+  trigger_error('MindaPHP action "'.Router::getAction().'" should not send output. Error raised ', E_USER_WARNING);
 }
 else {
   ob_end_clean();

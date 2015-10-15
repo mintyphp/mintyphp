@@ -8,13 +8,13 @@ class Analyzer
     
     public static function execute()
     {
-    	static::check(Router::getTemplateAction());
-    	static::check(Router::getAction());
-    	static::check(Router::getView());
-    	static::check(Router::getTemplateView());
+    	static::check('action',Router::getTemplateAction());
+    	static::check('action',Router::getAction());
+    	static::check('view',Router::getView());
+    	static::check('view',Router::getTemplateView());
     }
     
-    protected static function check($filename)
+    protected static function check($type,$filename)
     {
     	if (!$filename) return;
     	$tokens = token_get_all(file_get_contents($filename));
@@ -22,7 +22,7 @@ class Analyzer
     		if (is_array($token)) {
     			if (in_array(token_name($token[0]),static::$tokens)) {
     				if (in_array($token[1],static::$functions)) {
-    					trigger_error('MindaPHP view "'.$filename.'" should not use "'.htmlentities($token[1]).'" on line '.$token[2].'.', E_USER_WARNING);
+    					trigger_error('MindaPHP '.$type.' "'.$filename.'" should not use "'.htmlentities($token[1]).'" on line '.$token[2].'. Error raised ', E_USER_WARNING);
     				}
     			}
     		}

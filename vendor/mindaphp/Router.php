@@ -14,12 +14,14 @@ class Router
   public static $pageRoot = '../pages/';
   public static $templateRoot = '../templates/';
   public static $allowGet = false;
+  public static $executeRedirect = true;
   
   protected static $url = null;
   protected static $view = null;
   protected static $action = null;
   protected static $template = null;
   protected static $parameters = null;
+  protected static $redirect = null;
   
   protected static $routes = array();
   
@@ -32,6 +34,8 @@ class Router
     static::$method = $_SERVER['REQUEST_METHOD'];
     static::$request = $_SERVER['REQUEST_URI'];
     static::$script = $_SERVER['SCRIPT_NAME'];
+    static::$original = null;
+    static::$redirect = null;
     static::applyRoutes();
     static::route();
   }
@@ -63,7 +67,11 @@ class Router
   		Debugger::set('status',$status);
   		Debugger::end('redirect');
   	}
-  	die(header("Location: $url",true,$permanent?301:302));
+  	if (static::$executeRedirect) {
+  		die(header("Location: $url",true,$permanent?301:302));
+  	} else {
+  		static::$redirect = $url;
+  	}
   }
   
   protected static function route()
@@ -195,6 +203,12 @@ class Router
   {
     if (!static::$initialized) static::initialize();
     return static::$action;
+  }
+  
+  public static function getRedirect()
+  {
+  	if (!static::$initialized) static::initialize();
+  	return static::$redirect;
   }
 
   protected static function extractParts($match,$root,$dir)

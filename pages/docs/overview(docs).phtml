@@ -95,9 +95,9 @@ secured with a salt using "password_hash" and "password_verify".</p>
 <h2>Security</h2>
 
 <p>Protection mechanisms against SQL injection, Cross-Site-Scripting (XSS) and
-Cross-Site-Request-Forgery (CSRF) are provided. In the views one should use the "e()" function
-to escape output to protect against XSS. The forms should use the "post" method and must call
-the "Session::getCsrfInput()" function to protect against CSRF.</p>
+Cross-Site-Request-Forgery (CSRF) are provided. In the views one should use the "e()" or "j()" 
+function to escape output (strings or JSON) to protect against XSS. The forms should use the "post"
+method and must call the "Session::getCsrfInput()" function to protect against CSRF.</p>
 
 <h2>Firewall</h2>
 

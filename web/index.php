@@ -8,6 +8,7 @@ require '../config/config.php';
 // Load the routes
 require '../config/router.php';
 // Register shortcut functions
+function j($object) { echo json_encode($object); }
 function e($string) { echo htmlspecialchars($string,ENT_QUOTES,'UTF-8'); }
 function d() { return call_user_func_array('Debugger::debug',func_get_args()); }
 

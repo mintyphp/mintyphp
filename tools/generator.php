@@ -1,10 +1,12 @@
 <?php
+// Change directory to project root
+chdir(__DIR__.'/..');
 // Use default autoload implementation
-require __DIR__.'/../vendor/mindaphp/Loader.php';
+require 'vendor/mindaphp/Loader.php';
 // Load the libraries
-require __DIR__.'/../config/loader.php';
+require 'config/loader.php';
 // Load the config parameters
-require __DIR__.'/../config/config.php';
+require 'config/config.php';
 
 use MindaPHP\DB;
 
@@ -62,7 +64,7 @@ if (!$tables) {
 		var_dump($fields[0],$belongsTo,$hasMany,$hasAndBelongsToMany);
 		echo '</pre>';
 		
-		$dir = __DIR__.'/../pages/'.$path.'/'.$table;
+		$dir = 'pages/'.$path.'/'.$table;
 		if (!file_exists($dir)) mkdir($dir,0755,true);
 		
 		foreach ($pages as $page) {

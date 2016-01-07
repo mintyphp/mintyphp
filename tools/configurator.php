@@ -1,10 +1,12 @@
 <?php
+// Change directory to project root
+chdir(__DIR__.'/..');
 // Use default autoload implementation
-require __DIR__.'/../vendor/mindaphp/Loader.php';
+require 'vendor/mindaphp/Loader.php';
 // Load the libraries
-require __DIR__.'/../config/loader.php';
+require 'config/loader.php';
 // Load the config parameters
-$filename = __DIR__.'/../config/config.php';
+$filename = 'config/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$code = Configurator::loadCode($filename);

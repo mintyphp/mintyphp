@@ -1,10 +1,12 @@
 <?php
+// Change directory to project root
+chdir(__DIR__.'/..');
 // Use default autoload implementation
-require __DIR__.'/../vendor/mindaphp/Loader.php';
+require 'vendor/mindaphp/Loader.php';
 // Load the libraries
-require __DIR__.'/../config/loader.php';
+require 'config/loader.php';
 // Load the config parameters
-require __DIR__.'/../config/config.php';
+require 'config/config.php';
 
 echo Conventionist::html(); 
 

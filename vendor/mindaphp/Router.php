@@ -11,8 +11,8 @@ class Router
   protected static $script = null;
   
   public static $baseUrl = '/';
-  public static $pageRoot = '../pages/';
-  public static $templateRoot = '../templates/';
+  public static $pageRoot = 'pages/';
+  public static $templateRoot = 'templates/';
   public static $allowGet = false;
   public static $executeRedirect = true;
   

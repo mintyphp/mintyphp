@@ -1,12 +1,14 @@
 <?php
+// Change directory to project root
+chdir(__DIR__.'/..');
 // Use default autoload implementation
-require '../vendor/mindaphp/Loader.php';
+require 'vendor/mindaphp/Loader.php';
 // Load the libraries
-require '../config/loader.php';
+require 'config/loader.php';
 // Load the config parameters
-require '../config/config.php';
+require 'config/config.php';
 // Load the routes
-require '../config/router.php';
+require 'config/router.php';
 // Register shortcut functions
 function j($object) { echo json_encode($object); }
 function e($string) { echo htmlspecialchars($string,ENT_QUOTES,'UTF-8'); }

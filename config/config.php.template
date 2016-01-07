@@ -3,9 +3,9 @@ namespace MindaPHP\Config;
 
 class Router
 {
-  public static $baseUrl      = '/';             // default: '/'
-  public static $pageRoot     = '../pages/';     // default: '../pages/'
-  public static $templateRoot = '../templates/'; // default: '../templates/'
+  public static $baseUrl      = '/';          // default: '/'
+  public static $pageRoot     = 'pages/';     // default: 'pages/'
+  public static $templateRoot = 'templates/'; // default: 'templates/'
 }
 
 class Session

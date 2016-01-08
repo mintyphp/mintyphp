@@ -91,8 +91,8 @@ class Session
   {
   	if (!static::$initialized) static::initialize();
   	if (static::$ended) return;
-  	if (!Debugger::$enabled)  session_write_close();
   	static::$ended = true;
+  	if (!Debugger::$enabled) session_write_close();
   	if (Debugger::$enabled) Debugger::logSession('after');
   	if (Debugger::$enabled) {
   		$session = $_SESSION;

@@ -20,8 +20,8 @@ class Debugger
     	return;
     }
     error_reporting(-1);
-    Session::start();
     static::$request = array('log'=>array(),'queries'=>array(),'api_calls'=>array(),'session'=>array(),'cache'=>array());
+    Session::start();
     $_SESSION[static::$sessionKey][] = &static::$request;
     while (count($_SESSION[static::$sessionKey])>static::$history) array_shift($_SESSION[static::$sessionKey]);
     static::set('start',microtime(true));
@@ -31,7 +31,7 @@ class Debugger
   
   public static function logSession($title)
   {
-  	if (!static::$initialized) static::initialize();
+	if (!static::$initialized) static::initialize();
     $session = array();
     foreach ($_SESSION as $k=>$v) {
       if ($k=='debugger') $v=true;

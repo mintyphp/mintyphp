@@ -22,6 +22,7 @@ bool    Auth::register($username,$password) Action          Adding users     Pub
 array   Flash::get()                        Action          Flash message    Public
         Router::addRoute($req,$loc)         Router Config   Routing          Public
         Router::redirect($url)              Action          Redirection      Public
+        Router::json($object)               View            JSON             Public
 string  Session::getCsrfInput()             Template/View   Form security    Public
 =====================================================================================================
 bool    Loader::register($path,$namespace)  Loader Config   Loading classes  Advanced

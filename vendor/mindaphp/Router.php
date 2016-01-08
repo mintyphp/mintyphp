@@ -74,6 +74,15 @@ class Router
   	}
   }
   
+  public static function json($object)
+  {
+  	if (Debugger::$enabled) {
+  		Debugger::end('json');
+  	}
+	header('Content-Type: application/json');
+	die(json_encode($object));
+  }
+  
   protected static function route()
   {
     $root = static::$pageRoot;

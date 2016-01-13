@@ -9,8 +9,6 @@ $zipDir = 'MindaPHP-master/';
 $archive = 'tools/master.zip';
 $path = realpath('.');
 $prefixes = array(
-  '.htaccess',
-  'web/.htaccess',
   'web/index.php',
   'web/debugger/',
   'vendor/mindaphp/',

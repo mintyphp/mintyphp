@@ -1,6 +1,6 @@
 <h1>Router</h1>
 <p>The instance is stored in the global "Router" class.</p>
-<h2>Redirect</h2>
+<h2>Routes</h2>
 <pre>Router::addRoute($request, $location)</pre>
 <p>This should be called from the router configuration (in "config/router.php"). Typically this is used to route
 the empty requested URL "/" to a specific location. It does not update the URL in the address bar. If you do want
@@ -17,13 +17,13 @@ It does also show the redirected target, not the entered URL.</p>
 It can be configured in the "config/config.php" file in the "Router" section.</p>
 <h2>View</h2>
 <pre>Router::getView()</pre>
-<p>This gets the path to the view file that is loaded. For example on this page it returns: "../pages/docs/router(docs).phtml".
+<p>This gets the path to the view file that is loaded. For example on this page it returns: "pages/docs/router(docs).phtml".
 <h2>Action</h2>
 <pre>Router::getAction()</pre>
 <p>This gets the path to the action file that is loaded. For example on this page it returns: false.
 <h2>Template</h2>
 <pre>Router::getTemplateView()</pre>
-<p>This gets the path to the template view file that is loaded. For example on this page it returns: "../templates/docs.phtml".
+<p>This gets the path to the template view file that is loaded. For example on this page it returns: "templates/docs.phtml".
 <pre>Router::getTemplateAction()</pre>
 <p>This gets the path to the template action file that is loaded. For example on this page it returns: false.
 <h2>Redirect</h2>

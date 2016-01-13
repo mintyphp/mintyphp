@@ -60,7 +60,7 @@ class Router
   public static function redirect($url,$permanent=false)
   {
   	if (!static::$initialized) static::initialize();
-    $url = static::$baseUrl . $url;
+    $url = parse_url($url, PHP_URL_HOST)?$url:static::$baseUrl.$url;
     $status = $permanent?301:302;
   	if (Debugger::$enabled) {
   		Debugger::set('redirect',$url);

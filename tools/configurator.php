@@ -166,7 +166,7 @@ class Configurator
 	{
 		$parameters = array();
 		foreach ($config as $class => &$variables) {
-			foreach ($variables as $v) {
+			foreach ($variables as &$v) {
 				$parameters[$class.'_'.$v['name']] = &$v['value'];
 			}
 		}

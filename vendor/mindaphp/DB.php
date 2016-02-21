@@ -145,6 +145,7 @@ class DB
       $query->close();
       return $result;
     }
+    $query->store_result();
     $params = array();
     $meta = $query->result_metadata();
     while ($field = $meta->fetch_field()) {

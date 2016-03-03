@@ -69,7 +69,7 @@ class DebugView
 		}
 		return $result;
 	}
-	
+
 	static function getRoutingTabPane($requestId,$request)
 	{
 		$html = array();
@@ -196,7 +196,7 @@ class DebugView
 		$html[] ='</ul>';
 		return implode("\n",$html);
 	}
-	
+
 	static function getQueriesTabPaneTabPane($requestId,$query,$queryId,$type)
 	{
 		$html = array();
@@ -309,7 +309,7 @@ class DebugView
 			$html[] = '<td>'.sprintf('%.2f ms',$call['duration']*1000).'</td>';
 			$html[] = '</tr>';
 			$html[] = '<tr style="display:none;" id="debug-request-'.$requestId.'-api_call-'.$i.'"><td colspan="5">';
-	
+
 			$html[] = '<table class="table"><thead>';
 			$html[] = '<tr><th>Category</th><th>Key</th><th>Value</th></tr>';
 			$html[] = '</thead><tbody>';
@@ -335,7 +335,7 @@ class DebugView
 			}
 			$html[] = '</tbody>';
 			$html[] = '</table>';
-				
+
 			$html[] = '</td></tr>';
 		}
 		$html[] = '<tr><td><strong>'.$count.' API calls</strong></td>';
@@ -344,7 +344,7 @@ class DebugView
 		$html[] = '</div>';
 		return implode("\n",$html);
 	}
-	
+
 	static function getCacheTabPane($requestId,$request)
 	{
 		$html = array();
@@ -357,7 +357,7 @@ class DebugView
 		foreach ($request['cache'] as $i=>$call) {
 			$count++;
 			$total+= $call['duration'];
-			
+
 			$html[] = '<tr>';
 			$html[] = '<td>'.strtoupper($call['command']).' '.implode(' ',$call['arguments']).'</td>';
 			$html[] = '<td>'.$call['result'].'</td>';
@@ -370,7 +370,7 @@ class DebugView
 		$html[] = '</div>';
 		return implode("\n",$html);
 	}
-	
+
 	static function getLoggingTabPane($requestId,$request)
 	{
 		$html = array();
@@ -385,6 +385,7 @@ class DebugView
 	}
 }
 Debugger::$enabled = false;
+Session::$enabled = true;
 // Start the session
 Session::start();
 ?>

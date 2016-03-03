@@ -56,12 +56,12 @@ DB::close();
 
 if (Router::getTemplateView()) {
   Buffer::start('html');
-  require Router::getView();
+  if (Router::getView()) require Router::getView();
   // Show developer toolbar
   if (Debugger::$enabled) Debugger::toolbar();
   Buffer::end('html');
   // Load body into template
   require Router::getTemplateView();
 } else { // Handle the 'none' template case
-  require Router::getView();
+	if (Router::getView()) require Router::getView();
 }

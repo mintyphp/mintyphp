@@ -9,24 +9,24 @@ class Router
   protected static $original = null;
   protected static $request = null;
   protected static $script = null;
-  
+
   public static $baseUrl = '/';
   public static $pageRoot = 'pages/';
   public static $templateRoot = 'templates/';
   public static $allowGet = false;
   public static $executeRedirect = true;
-  
+
   protected static $url = null;
   protected static $view = null;
   protected static $action = null;
   protected static $template = null;
   protected static $parameters = null;
   protected static $redirect = null;
-  
+
   protected static $routes = array();
-  
+
   public static $initialized = false;
-  
+
   protected static function initialize()
   {
     if (static::$initialized) return;
@@ -53,10 +53,10 @@ class Router
     if (substr($string,0,strlen($prefix))==$prefix) {
       $string = substr($string,strlen($prefix));
     }
-  
+
     return $string;
   }
-  
+
   public static function redirect($url,$permanent=false)
   {
   	if (!static::$initialized) static::initialize();
@@ -73,94 +73,191 @@ class Router
   		static::$redirect = $url;
   	}
   }
-  
+
   public static function json($object)
   {
   	if (Debugger::$enabled) {
   		Debugger::end('json');
   	}
-	header('Content-Type: application/json');
-	die(json_encode($object));
+    header('Content-Type: application/json');
+    die(json_encode($object));
   }
-  
+
+  protected static function extractParts($root,$dir,$match)
+  {
+    $view = false;
+    $template = false;
+    $action = false;
+    $parameters = false;
+
+    $filename = basename($match);
+    $parts = preg_split('/\(|\)/', $filename);
+    $extension = array_pop($parts);
+    if ($extension=='.phtml') {
+      $template = array_pop($parts);
+      $view = array_pop($parts);
+      $matches = glob($root.$dir.$view.'(*).php');
+      if (count($matches)>0) {
+        $filename = basename($matches[0]);
+        $parts = preg_split('/\(|\)/', $filename);
+        $extension = array_pop($parts);
+        $parameters = array_pop($parts);
+        preg_match_all('/,?(\$([^,\)]+))+/', $parameters, $matches);
+        $parameters = $matches[2];
+        $action = array_pop($parts);
+      }
+    }
+    else {
+      $parameters = array_pop($parts);
+      preg_match_all('/,?(\$([^,\)]+))+/', $parameters, $matches);
+      $parameters = $matches[2];
+      $action = array_pop($parts);
+      $matches = glob($root.$dir.$action.'(*).phtml');
+      if (count($matches)>0) {
+        $filename = basename($matches[0]);
+        $parts = preg_split('/\(|\)/', $filename);
+        $extension = array_pop($parts);
+        $template = array_pop($parts);
+        $view = array_pop($parts);
+      }
+    }
+    return array($view,$template,$action,$parameters);
+  }
+
+  protected static function routeFile($templateRoot,$root,$dir,$path,$parameters)
+  {
+    $redirect = false;
+
+    list($view,$template,$action,$parameterNames) = static::extractParts($root,$dir,$path);
+
+    if ($view) $url = $dir.$view;
+    else $url = $dir.$action;
+
+    if ($view) {
+      static::$view = $root.$dir.$view.'('.$template.').phtml';
+      static::$template = $template=='none'?false:$templateRoot.$template;
+    } else {
+      static::$view = false;
+      static::$template = false;
+    }
+
+    if ($action) {
+      if (!count($parameterNames)) static::$action = $root.$dir.$action.'().php';
+      else static::$action = $root.$dir.$action.'($'.implode(',$',$parameterNames).').php';
+
+      if (substr($url,-7)=='//index') $redirect = substr($url,0,-7);
+      if (substr(static::$original,-6)=='/index') $redirect = substr($url,0,-6);
+      if (count($parameters)>count($parameterNames)) {
+        if (substr($url,-6)=='/index') $url = substr($url,0,-6);
+        if (count($parameterNames)) {
+          $redirect = $url.'/'.implode('/',array_slice($parameters, 0, count($parameterNames)));
+        } else {
+          $redirect = $url;
+        }
+      }
+      $parameters = array_map('urldecode', $parameters);
+      if (count($parameters)<count($parameterNames)) {
+        for ($i=count($parameters); $i<count($parameterNames); $i++) {
+          array_push($parameters,null);
+        }
+      }
+      if (!$redirect && count($parameterNames)){
+        static::$parameters = array_combine($parameterNames, $parameters);
+      } else {
+        static::$parameters = array();
+      }
+    } else {
+      static::$action = false;
+      static::$parameters = array();
+    }
+
+    static::$url = $url;
+
+    return $redirect;
+  }
+
+  protected static function routeDir($csrfOk,$getOk,$templateRoot,$root,$dir,$parameters)
+  {
+    $status = 200;
+    $matches = array();
+
+    // route 403
+    if (!$csrfOk) {
+      $status = 403;
+      $dir = 'error/';
+      $matches = glob($root.$dir.'forbidden(*).phtml');
+      if (count($matches)==0) {
+        $matches = glob($root.$dir.'forbidden(*).php');
+      }
+    }
+    // route 405
+    elseif (!$getOk) {
+      $status = 405;
+      $dir = 'error/';
+      $matches = glob($root.$dir.'method_not_allowed(*).phtml');
+      if (count($matches)==0) {
+        $matches = glob($root.$dir.'method_not_allowed(*).php');
+      }
+    }
+    // normal route
+    else {
+      if (count($parameters)) {
+        $part = array_shift($parameters);
+        $matches = glob($root.$dir.$part.'(*).phtml');
+        if (count($matches)==0) {
+          $matches = glob($root.$dir.$part.'(*).php');
+        }
+        if (count($matches)==0) {
+          array_unshift($parameters,$part);
+        }
+      }
+      if (count($matches)==0) {
+        $matches = glob($root.$dir.'index(*).phtml');
+        if (count($matches)==0) {
+          $matches = glob($root.$dir.'index(*).php');
+        }
+      }
+    }
+    // route 404
+    if (count($matches)==0) {
+      $status = 404;
+      $dir = 'error/';
+      $matches = glob($root.$dir.'not_found(*).phtml');
+      if (count($matches)==0) {
+        $matches = glob($root.$dir.'not_found(*).php');
+      }
+      if (count($matches)==0) {
+        static::error('Could not find 404');
+      }
+    }
+    return array($status,static::routeFile($templateRoot,$root,$dir,$matches[0],$parameters));
+  }
+
   protected static function route()
   {
     $root = static::$pageRoot;
     $dir = '';
     $redirect = false;
-    $status = 200;
-    
+
     $request = static::removePrefix(static::$request,static::$script?:'');
     $request = static::removePrefix($request,static::$baseUrl);
     if (static::$original===null) static::$original = $request;
-    
+
+    $csrfOk = static::$method!='POST'?:Session::checkCsrfToken();
+
     $questionMarkPosition = strpos($request,'?');
     $hasGet = $questionMarkPosition!==false;
     if ($hasGet) $request = substr($request,0,$questionMarkPosition);
-    
+    $getOk = static::$allowGet || !$hasGet;
+
     $parts = explode('/',$request);
     for ($i=count($parts);$i>=0;$i--) {
-    	if ($i==0) $dir = ''; 
+    	if ($i==0) $dir = '';
     	else $dir = implode('/',array_slice($parts, 0, $i)).'/';
     	if (file_exists($root.$dir) && is_dir($root.$dir)) {
     		$parameters = array_slice($parts, $i, count($parts)-$i);
-    		
-    		if (count($parameters)) { 
-    			$part = array_shift($parameters);
-    			$matches = glob($root.$dir.$part.'(*).phtml');
-    			if (count($matches)==0) {
-    				array_unshift($parameters,$part);
-    				$matches = glob($root.$dir.'index(*).phtml');
-    			}
-    		} else { 
-    			$matches = glob($root.$dir.'index(*).phtml');
-    		}
-    		
-    		$csrfOk = static::$method=='GET'?true:Session::checkCsrfToken();
-    		if (!$csrfOk) {
-    			$status = 403; $matches = glob($root.'error/forbidden(*).phtml'); $dir=''; $i=count($parts);
-    		}
-    		if (!static::$allowGet && $hasGet) {
-    			$status = 405; $matches = glob($root.'error/method_not_allowed(*).phtml'); $dir=''; $i=count($parts);
-    		}
-    		if (count($matches)==0) {
-    			$status = 404; $matches = glob($root.'error/not_found(*).phtml'); $dir=''; $i=count($parts);
-    		}
-    		if (count($matches)==0) static::error('Could not find 404');
-    		if (count($matches)>1) static::error('Mutiple views matched: '.implode(', ',$matches));
-    		list($view,$template) = static::extractParts($matches[0],$root,$dir);
-    		static::$url = $dir.$view;
-    		static::$view = static::$pageRoot.$dir.$view.'('.$template.').phtml';
-    		static::$template = $template!='none'?static::$templateRoot.$template:false;
-    		$matches = glob($root.$dir.$view.'().php');
-    		if (count($matches)==0) $matches = glob($root.$dir.$view.'($*).php');
-    		if (count($matches)==0) static::$action = false;
-    		if (count($matches)>1) static::error('Mutiple actions matched: '.implode(', ',$matches));
-    		static::$parameters = array();
-    		if (count($matches)==1) {
-    			static::$action = $matches[0];
-    			$parameterNames = static::extractParameterNames($matches[0],$root,$dir,$view);
-    			if (substr(static::$url,-7)=='//index') $redirect = substr(static::$url,0,-7);
-    			if (substr(static::$original,-6)=='/index') $redirect = substr(static::$url,0,-6);
-    			if (count($parameters)>count($parameterNames)) {
-    				if (substr(static::$url,-6)=='/index') static::$url = substr(static::$url,0,-6);
-    				if (count($parameterNames)) {
-    					$redirect = static::$url.'/'.implode('/',array_slice($parameters, 0, count($parameterNames)));
-    				} else {
-    					$redirect = static::$url;
-    				}    					
-    			}
-    			$parameters = array_map('urldecode', $parameters);
-    			if (count($parameters)<count($parameterNames)) {
-    				for ($i=count($parameters); $i<count($parameterNames); $i++) {
-    					array_push($parameters,null);
-    				}
-    			}
-    			if (!$redirect && count($parameterNames)){
-    				static::$parameters = array_combine($parameterNames, $parameters);
-    			}
-    		}
-    		break;
+        list($status,$redirect) = static::routeDir($csrfOk,$getOk,static::$templateRoot,$root,$dir,$parameters);
+        break;
     	}
     }
     if (Debugger::$enabled) {
@@ -190,7 +287,7 @@ class Router
   {
   	static::$routes[$destinationPath] = $sourcePath;
   }
-  
+
   protected static function applyRoutes()
   {
   	if (!static::$initialized) static::initialize();
@@ -213,46 +310,23 @@ class Router
     if (!static::$initialized) static::initialize();
     return static::$action;
   }
-  
+
   public static function getRedirect()
   {
   	if (!static::$initialized) static::initialize();
   	return static::$redirect;
   }
 
-  protected static function extractParts($match,$root,$dir)
-  {
-    if (!static::$initialized) static::initialize();
-    $match = static::removePrefix($match,$root.$dir);
-    $parts = preg_split('/\(|\)/', $match);
-    array_pop($parts);
-    $template = array_pop($parts);
-    if (!$template) static::error('Could not extract template from filename: '.$match);
-    $action = array_pop($parts);
-    if (!$action) static::error('Could not extract action from filename: '.$match);
-    return array($action,$template);
-  }
-
-  protected static function extractParameterNames($match,$root,$dir,$view)
-  {
-  	if (!static::$initialized) static::initialize();
-  	$match = static::removePrefix($match,$root.$dir.$view);
-  	$parts = preg_split('/\(|\)/', $match);
-  	array_pop($parts);
-  	$parameterNames = array_pop($parts);
-  	$parts = preg_match_all('/,?(\$([^,\)]+))+/', $parameterNames, $matches);
-  	return $matches[2];
-  }
-  
   public static function getView()
   {
     if (!static::$initialized) static::initialize();
     return static::$view;
   }
-  
+
   public static function getTemplateView()
   {
     if (!static::$initialized) static::initialize();
+    if (!static::$template) return false;
     $filename = static::$template.'.phtml';
     return file_exists($filename)?$filename:false;
   }
@@ -260,18 +334,19 @@ class Router
   public static function getTemplateAction()
   {
   	if (!static::$initialized) static::initialize();
+    if (!static::$template) return false;
     $filename = static::$template.'.php';
     return file_exists($filename)?$filename:false;
   }
-  
-  
+
+
   public static function getParameters()
   {
   	if (!static::$initialized) static::initialize();
     if (!static::$parameters) return array();
   	else return static::$parameters;
   }
-  
+
   public static function getBaseUrl()
   {
   	$url = static::$baseUrl;

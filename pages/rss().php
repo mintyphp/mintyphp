@@ -1,0 +1,2 @@
+<?php
+Router::json('test');

@@ -8,16 +8,16 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     static protected $path      = false;
     static protected $pages     = false;
     static protected $templates = false;
-    
+
     public static function setUpBeforeClass()
-    {    
+    {
         self::$path = sys_get_temp_dir().'/mindaphp_test';
-        
+
         Router::$baseUrl         = '/';
         Router::$pageRoot        = self::$path.'/pages/';
         Router::$templateRoot    = self::$path.'/templates/';
         Router::$executeRedirect = false;
-        
+
         self::$pages = array(
             'admin/posts/index().php',
             'admin/posts/index(admin).phtml',
@@ -30,6 +30,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             'error/forbidden(error).phtml',
             'error/method_not_allowed(error).phtml',
             'error/not_found(error).phtml',
+            'rss().php',
             'home().php',
             'home(default).phtml',
             'index($slug).php',
@@ -42,7 +43,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             'error.phtml',
             'login.phtml',
         );
-        
+
         foreach (self::$pages as $file) {
             $path = Router::$pageRoot.$file;
             if (!file_exists(dirname($path))) {
@@ -57,17 +58,17 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             }
             file_put_contents($path, '');
         }
-        
+
         $_SERVER['SCRIPT_NAME'] = self::$path.'/web/index.php';
     }
-    
+
     protected function request($method, $uri)
     {
         $_SERVER['REQUEST_METHOD'] = $method;
         $_SERVER['REQUEST_URI'] = $uri;
         Router::$initialized = false;
     }
-    
+
     public function testAdmin()
     {
         $this->request('GET','/admin');
@@ -84,39 +85,39 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Router::$pageRoot.'home().php', Router::getAction());
         $this->assertEquals(Router::$pageRoot.'home(default).phtml', Router::getView());
     }
-    
+
     public function testTrailingSlashOnIndex()
     {
     	$this->request('GET','/admin/posts/');
-    	
+
     	$this->assertEquals('/admin/posts', Router::getRedirect());
     }
-    
+
     public function testExplicitIndexRedirect()
     {
     	$this->request('GET','/admin/posts/index');
-    	
+
     	$this->assertEquals('/admin/posts', Router::getRedirect());
     	$this->assertEquals(Router::$templateRoot.'admin.php', Router::getTemplateAction());
     	$this->assertEquals(Router::$templateRoot.'admin.phtml', Router::getTemplateView());
     	$this->assertEquals(Router::$pageRoot.'admin/posts/index().php', Router::getAction());
     	$this->assertEquals(Router::$pageRoot.'admin/posts/index(admin).phtml', Router::getView());
     }
-    
+
     public function testTrailingSlash()
     {
     	$this->request('GET','/admin/posts/view/12/');
-   	 
+
     	$this->assertEquals('/admin/posts/view/12', Router::getRedirect());
     }
-    
+
     public function testPageNotFoundOnIndex()
     {
     	$this->request('GET','/admin/posts/asdada');
-    	
+
     	$this->assertEquals('/admin/posts', Router::getRedirect());
     }
-    
+
     public function testPageNotFoundOnNoIndex()
     {
     	$this->request('GET','/error/this-page-does-not-exist');
@@ -127,16 +128,25 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, Router::getAction());
         $this->assertEquals(Router::$pageRoot.'error/not_found(error).phtml', Router::getView());
     }
-    
+
     public function testRootParameters()
-    {    
+    {
         $this->request('GET','/2014-some-blog-title');
         $this->assertEquals(array('slug'=>'2014-some-blog-title'), Router::getParameters());
+    }
+
+    public function testActionWithoutView()
+    {
+        $this->request('GET','/rss');
+        $this->assertEquals(false, Router::getTemplateAction());
+        $this->assertEquals(false, Router::getTemplateView());
+        $this->assertEquals(Router::$pageRoot.'rss().php', Router::getAction());
+        $this->assertEquals(false, Router::getView());
     }
 
     public static function tearDownAfterClass()
     {
         system('rm -Rf '.self::$path);
     }
-    
+
 }

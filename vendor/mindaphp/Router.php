@@ -238,6 +238,7 @@ class Router
     $root = static::$pageRoot;
     $dir = '';
     $redirect = false;
+    $status = false;
 
     $request = static::removePrefix(static::$request,static::$script?:'');
     $request = static::removePrefix($request,static::$baseUrl);

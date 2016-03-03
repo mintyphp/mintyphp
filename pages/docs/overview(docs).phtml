@@ -37,7 +37,7 @@ can optionally have an "action" file that holds its logic.</p>
 
 <p>All URL's hit the "web/index.php" file. This is achieved using URL rewriting (with
 "mod_rewrite" in Apache). The paradigm of routing every request through one file is called
-"front controller". The file loads all configuration from the files in the config directory 
+"front controller". The file loads all configuration from the files in the config directory
 and these are thus the first files you will edit.</p>
 
 <h2>Default routing</h2>
@@ -95,8 +95,8 @@ secured with a salt using "password_hash" and "password_verify".</p>
 <h2>Security</h2>
 
 <p>Protection mechanisms against SQL injection, Cross-Site-Scripting (XSS) and
-Cross-Site-Request-Forgery (CSRF) are provided. In the views one should use the "e()" or "j()" 
-function to escape output (strings or JSON) to protect against XSS. The forms should use the "post"
+Cross-Site-Request-Forgery (CSRF) are provided. In the views one should use the "e()" function
+for escaping output in order to protect against XSS. The forms should use the "post"
 method and must call the "Session::getCsrfInput()" function to protect against CSRF.</p>
 
 <h2>Firewall</h2>

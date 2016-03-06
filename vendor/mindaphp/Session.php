@@ -79,6 +79,9 @@ class Session
   	if (!static::$initialized) static::initialize();
   	if (static::$started) return;
     if (static::$enabled || Debugger::$enabled) {
+      if (!ini_get('session.cookie_httponly')) {
+        ini_set('session.cookie_httponly',1);
+      }
       session_name(static::$sessionName);
     	session_start();
       if (!static::$enabled) {

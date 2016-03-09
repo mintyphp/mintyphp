@@ -73,7 +73,7 @@ class Token {
 			$ttl = static::$ttl;
 			$algorithm = static::$algorithm;
 			$secret = static::$secret;
-			static::$cache = static::getVerifiedClaims($headers,$time,$leeway,$ttl,$algorithm,$secret);
+			static::$cache = static::getVerifiedClaims($token,$time,$leeway,$ttl,$algorithm,$secret);
 		}
 		return static::$cache;
 	}

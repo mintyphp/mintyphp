@@ -5,8 +5,8 @@ class Token {
 
 	public static $algorithm = 'HS256';
 	public static $secret = false;
-	public static $leeway = 60;
-	public static $ttl = 60; // 1 minute
+	public static $leeway = 5; // 5 seconds
+	public static $ttl = 30; // 1/2 minute
 
 	protected static $cache = null;
 
@@ -29,7 +29,7 @@ class Token {
 		return explode('.',$parts[1],3);
 	}
 
-	protected static function verifyToken($token,$algorithm,$secret) {
+	protected static function getVerifiedClaims($token,$time,$leeway,$ttl,$algorithm,$secret) {
 		$algorithms = array(
 			'HS256'=>'sha256',
 			'HS384'=>'sha384',
@@ -38,27 +38,18 @@ class Token {
 		if (!isset($algorithms[$algorithm])) return false;
 		$hmac = $algorithms[$algorithm];
 		if (count($token)<3) return false;
-		$header = json_decode(base64_decode($token[0]),true);
-		$signature = bin2hex(base64_decode($token[2]));
+		$header = json_decode(base64_decode(strtr($token[0],'-_','+/')),true);
 		if (!$secret) return false;
 		if ($header['typ']!='JWT') return false;
 		if ($header['alg']!=$algorithm) return false;
-		return $signature==hash_hmac($hmac,"$token[0].$token[1]",$secret);
-	}
-
-	protected static function verifyClaims($claims,$time,$leeway,$ttl) {
+		$signature = bin2hex(base64_decode(strtr($token[2],'-_','+/')));
+		if ($signature!=hash_hmac($hmac,"$token[0].$token[1]",$secret)) return false;
+		$claims = json_decode(base64_decode(strtr($token[1],'-_','+/')),true);
+		if (!$claims) return false;
 		if (isset($claims['nbf']) && $time+$leeway<$claims['nbf']) return false;
 		if (isset($claims['iat']) && $time+$leeway<$claims['iat']) return false;
 		if (isset($claims['iat']) && !isset($claims['exp']) && $time-$leeway>$claims['iat']+$ttl) return false;
 		if (isset($claims['exp']) && $time-$leeway>$claims['exp']) return false;
-		return true;
-	}
-
-	protected static function getVerifiedClaims($token,$time,$leeway,$ttl,$algorithm,$secret) {
-		if (!static::verifyToken($token,$algorithm,$secret)) return false;
-		$claims = json_decode(base64_decode($token[1]),true);
-		if (!$claims) return false;
-		if (!static::verifyClaims($claims,$time,$leeway,$ttl)) return false;
 		return $claims;
 	}
 
@@ -79,16 +70,12 @@ class Token {
 		return static::$cache;
 	}
 
-	protected static function base64url_encode($data) {
-  	return rtrim(strtr(base64_encode($data),'+/','-_'),'=');
-	}
-
 	protected static function generateToken($claims,$time,$ttl,$algorithm,$secret) {
 		$header = array();
 		$header['typ']='JWT';
 		$header['alg']=$algorithm;
 		$token = array();
-		$token[0] = static::base64url_encode(json_encode((object)$header));
+		$token[0] = rtrim(strtr(base64_encode(json_encode((object)$header)),'+/','-_'),'=');
 		$claims['iat'] = $time;
 		$claims['exp'] = $time + $ttl;
 		$algorithms = array(
@@ -96,11 +83,11 @@ class Token {
 			'HS384'=>'sha384',
 			'HS512'=>'sha512',
 		);
-		$token[1] = static::base64url_encode(json_encode((object)$claims));
+		$token[1] = rtrim(strtr(base64_encode(json_encode((object)$claims)),'+/','-_'),'=');
 		if (!isset($algorithms[$algorithm])) return false;
 		$hmac = $algorithms[$algorithm];
 		$signature = hash_hmac($hmac,"$token[0].$token[1]",$secret,true);
-		$token[2] = static::base64url_encode($signature);
+		$token[2] = rtrim(strtr(base64_encode($signature),'+/','-_'),'=');
 		return implode('.',$token);
 	}
 

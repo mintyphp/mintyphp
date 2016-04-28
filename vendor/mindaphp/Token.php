@@ -30,14 +30,11 @@ class Token {
 	}
 
 	protected static function getVerifiedClaims($token,$time,$leeway,$ttl,$algorithm,$secret) {
-		$algorithms = array(
-			'HS256'=>'sha256',
-			'HS384'=>'sha384',
-			'HS512'=>'sha512',
-		);
+		$algorithms = array('HS256'=>'sha256','HS384'=>'sha384','HS512'=>'sha512');
 		if (!isset($algorithms[$algorithm])) return false;
 		$hmac = $algorithms[$algorithm];
-		if (count($token)<3) return false;
+		$token = explode('.',$token);
+    if (count($token)<3) return false;
 		$header = json_decode(base64_decode(strtr($token[0],'-_','+/')),true);
 		if (!$secret) return false;
 		if ($header['typ']!='JWT') return false;
@@ -48,8 +45,10 @@ class Token {
 		if (!$claims) return false;
 		if (isset($claims['nbf']) && $time+$leeway<$claims['nbf']) return false;
 		if (isset($claims['iat']) && $time+$leeway<$claims['iat']) return false;
-		if (isset($claims['iat']) && !isset($claims['exp']) && $time-$leeway>$claims['iat']+$ttl) return false;
 		if (isset($claims['exp']) && $time-$leeway>$claims['exp']) return false;
+		if (isset($claims['iat']) && !isset($claims['exp'])) {
+			if ($time-$leeway>$claims['iat']+$ttl) return false;
+		}
 		return $claims;
 	}
 
@@ -71,6 +70,7 @@ class Token {
 	}
 
 	protected static function generateToken($claims,$time,$ttl,$algorithm,$secret) {
+		$algorithms = array('HS256'=>'sha256','HS384'=>'sha384','HS512'=>'sha512');
 		$header = array();
 		$header['typ']='JWT';
 		$header['alg']=$algorithm;
@@ -78,11 +78,6 @@ class Token {
 		$token[0] = rtrim(strtr(base64_encode(json_encode((object)$header)),'+/','-_'),'=');
 		$claims['iat'] = $time;
 		$claims['exp'] = $time + $ttl;
-		$algorithms = array(
-			'HS256'=>'sha256',
-			'HS384'=>'sha384',
-			'HS512'=>'sha512',
-		);
 		$token[1] = rtrim(strtr(base64_encode(json_encode((object)$claims)),'+/','-_'),'=');
 		if (!isset($algorithms[$algorithm])) return false;
 		$hmac = $algorithms[$algorithm];

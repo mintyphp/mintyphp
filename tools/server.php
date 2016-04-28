@@ -1,6 +1,8 @@
 <?php
 // Change directory to project root
+
 chdir(__DIR__.'/..');
+session_save_path(realpath('sessions'));
 $dir = $_SERVER['DOCUMENT_ROOT'];
 $file = realpath($dir.$_SERVER['SCRIPT_NAME']);
 if (!file_exists('config/config.php')) {

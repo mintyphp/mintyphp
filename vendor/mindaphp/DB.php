@@ -11,10 +11,10 @@ class DB
   public static $database=null;
   public static $port=null;
   public static $socket=null;
-   
+
   protected static $mysqli = null;
   protected static $closed = false;
-  
+
   protected static function connect()
   {
     if (static::$closed) {
@@ -29,12 +29,12 @@ class DB
       if (!static::$mysqli->set_charset('utf8')) static::error(mysqli_error());
     }
   }
-    
+
   protected static function error($message)
   {
   	throw new DBError($message);
   }
-   
+
   public static function selectValue($query)
   {
     $record = forward_static_call_array('DB::selectOne', func_get_args());
@@ -44,7 +44,7 @@ class DB
     return array_shift($firstTable);
   }
 
-  
+
   public static function selectValues($query)
   {
     $result = forward_static_call_array('DB::select', func_get_args());
@@ -58,7 +58,7 @@ class DB
     }
     return $list;
   }
-  
+
   public static function selectPairs($query)
   {
     $result = forward_static_call_array('DB::select', func_get_args());
@@ -70,7 +70,7 @@ class DB
     }
     return $list;
   }
-    
+
   public static function selectOne($query)
   {
     $args = func_get_args();
@@ -79,7 +79,7 @@ class DB
     }
     return forward_static_call_array('DB::selectOneTyped', $args);
   }
-    
+
   private static function selectOneTyped($query)
   {
     $result = forward_static_call_array('DB::selectTyped', func_get_args());
@@ -87,7 +87,7 @@ class DB
     if (isset($result[0])) return $result[0];
     return $result;
   }
-    
+
   public static function select($query)
   {
     $args = func_get_args();
@@ -98,7 +98,7 @@ class DB
     if (!is_array($result)) return false;
     return $result;
   }
-   
+
   private static function selectTyped($query)
   {
     if (!Debugger::$enabled) {
@@ -119,7 +119,7 @@ class DB
     Debugger::add('queries',compact('duration','query','equery','arguments','result','explain'));
     return $result;
   }
-    
+
   private static function selectTypedInternal($query)
   {
     static::connect();
@@ -132,7 +132,10 @@ class DB
       foreach (array_keys($args) as $i) {
         if ($i>0) $args[$i] = & $args[$i];
       }
-      call_user_func_array(array($query, 'bind_param'),$args);
+      $ref    = new \ReflectionClass('mysqli_stmt');
+      $method = $ref->getMethod("bind_param");
+      $method->invokeArgs($query,$args);
+      //call_user_func_array(array($query, 'bind_param'),$args);
     }
     $query->execute();
     if ($query->errno) {
@@ -157,18 +160,21 @@ class DB
         $params[] = &$row[$field->table][$field->name];
       }
     }
-    call_user_func_array(array($query, 'bind_result'), $params);
+    $ref    = new \ReflectionClass('mysqli_stmt');
+    $method = $ref->getMethod("bind_result");
+    $method->invokeArgs($query,$params);
+    //call_user_func_array(array($query, 'bind_result'), $params);
 
     $result = array();
     while ($query->fetch()) {
       $result[] = json_decode(json_encode($row),true);
     }
 
-    $query->close(); 
+    $query->close();
 
     return $result;
   }
- 
+
   public static function insert($query)
   {
     $args = func_get_args();
@@ -180,7 +186,7 @@ class DB
     if (!$result) return false;
     return static::$mysqli->insert_id;
   }
-  
+
   public static function update($query)
   {
     $args = func_get_args();
@@ -191,7 +197,7 @@ class DB
     if (!is_int($result)) return false;
     return $result;
   }
-  
+
   public static function delete($query)
   {
     return forward_static_call_array('DB::update', func_get_args());
@@ -207,7 +213,7 @@ class DB
     if ($result!==false) return true;
     return $result;
   }
-  
+
   public static function close()
   {
   	if (static::$mysqli) {
@@ -216,12 +222,12 @@ class DB
   	}
   	static::$closed = true;
   }
-  
+
   // Undocumented
   public static function handle()
   {
     static::connect();
     return static::$mysqli;
   }
-  
+
 }

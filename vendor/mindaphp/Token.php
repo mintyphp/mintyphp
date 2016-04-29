@@ -26,7 +26,7 @@ class Token {
 		$parts = explode(' ',trim($headers['Authorization']),2);
 		if (count($parts)!=2) return false;
 		if ($parts[0]!='Bearer') return false;
-		return explode('.',$parts[1],3);
+		return $parts[1];
 	}
 
 	protected static function getVerifiedClaims($token,$time,$leeway,$ttl,$algorithm,$secret) {

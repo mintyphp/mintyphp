@@ -149,8 +149,10 @@ class Router
       if (substr(static::$original,-6)=='/index') $redirect = substr($url,0,-6);
       if (count($parameters)>count($parameterNames)) {
         if (substr($url,-6)=='/index') $url = substr($url,0,-6);
+        if ($url=='index') $url = '';
         if (count($parameterNames)) {
-          $redirect = $url.'/'.implode('/',array_slice($parameters, 0, count($parameterNames)));
+          $redirect = ($url?$url.'/':'');
+          $redirect .= implode('/',array_slice($parameters, 0, count($parameterNames)));
         } else {
           $redirect = $url;
         }

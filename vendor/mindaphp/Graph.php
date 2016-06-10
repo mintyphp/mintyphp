@@ -43,5 +43,50 @@ class Graph
 		$html.= '</div>';
 		return $html;
 	}
+	
+	public static function horizontalBar($values,$height,$title='') {
+		$real_max = max($values);
+		$max = pow(10,ceil(log10($real_max)));
+		while ($max/2>$real_max) $max/=2;
+		$html = '<div>';
+		$html.= '<div style="position: relative; clear: both; text-align: center;">';
+		$html.= $title.'</div>';
+		$html.= '<div style="position: relative; height: '.$height.'px; background-color: #eee;">';
+		for ($i=0;$i<11;$i++) {
+			if ($i%2==0) {
+				$html.= '<div style="position: absolute; left: '.($i*10).'%; height: 100%; text-align: left; border-left: 1px solid #aaa;">';
+				$html.= '</div>';
+				if ($i==10) continue;
+				$html.= '<div style="position: absolute; left: '.($i*10).'%; top: 100%;">';
+				$html.= '&nbsp;'.(($i/10)*$max);
+				$html.= '</div>';
+			} else {
+				$html.= '<div style="position: absolute; left: '.($i*10).'%; height: 100%; text-align: left; border-left: 1px solid #ccc;">';
+				$html.= '</div>';
+			}
+		}
+		$html.= '</div>';
+		$html.= '<div style="position: relative; margin-top: -'.$height.'px; height: '.$height.'px;">';
+		$c = count($values);
+		foreach ($values as $key=>$value) {
+				$p = round(100*($value/$max));
+				$row = ($height/$c);
+				$margin = .1*$row;
+				$line = $row-2*$margin;
+				$html.= '<div style="position: relative; height: '.$row.'px">';
+				$html.= '<div style="width: 100%; height: 100%; padding:'.$margin.'px 0">';
+				$html.= '<div style="display: block; float: left; position: relative; background-color: #aaa; width: '.$p.'%; height: 100%; line-height: '.$line.'px; overflow: hidden;">';
+				$html.= '&nbsp;'.(is_string($key)?$key:'').'</div>';
+				$html.= '<div style="display: block; float: left; position: relative; width: '.(100-$p).'%; height: 100%; line-height: '.$line.'px; overflow: hidden;">';
+				$html.= '&nbsp;'.$value.'</div>';
+				$html.= '</div>';
+				$html.= '</div>';
+		}
+		$html.= '</div>';
+		$html.= '<div style="position: relative;">';
+		$html.= '&nbsp;</div>';
+		$html.= '</div>';
+		return $html;
+	}
 
 }

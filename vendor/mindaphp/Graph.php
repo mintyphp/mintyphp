@@ -52,16 +52,16 @@ class Graph
 		$html.= '<div style="position: relative; clear: both; text-align: center;">';
 		$html.= $title.'</div>';
 		$html.= '<div style="position: relative; height: '.$height.'px; background-color: #eee;">';
-		for ($i=0;$i<11;$i++) {
+		for ($i=0;$i<10;$i++) {
 			if ($i%2==0) {
 				$html.= '<div style="position: absolute; left: '.($i*10).'%; height: 100%; text-align: left; border-left: 1px solid #aaa;">';
 				$html.= '</div>';
-				if ($i==10) continue;
 				$html.= '<div style="position: absolute; left: '.($i*10).'%; top: 100%;">';
 				$html.= '&nbsp;'.(($i/10)*$max);
 				$html.= '</div>';
 			} else {
-				$html.= '<div style="position: absolute; left: '.($i*10).'%; height: 100%; text-align: left; border-left: 1px solid #ccc;">';
+				$extra = $i==9?' border-right: 1px solid #aaa; width: 10%;':'';
+				$html.= '<div style="position: absolute; left: '.($i*10).'%; height: 100%; text-align: left; border-left: 1px solid #ccc;'.$extra.'">';
 				$html.= '</div>';
 			}
 		}

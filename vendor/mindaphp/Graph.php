@@ -66,19 +66,20 @@ class Graph
 			}
 		}
 		$html.= '</div>';
-		$html.= '<div style="position: relative; margin-top: -'.$height.'px; height: '.$height.'px;">';
 		$c = count($values);
+		$row = ($height/$c);
+		$margin = .1*$row;
+		$line = $row-2*$margin;
+		$html.= '<div style="position: relative; margin-top: -'.$height.'px; height: '.$height.'px;">';
 		foreach ($values as $key=>$value) {
 				$p = round(100*($value/$max));
-				$row = ($height/$c);
-				$margin = .1*$row;
-				$line = $row-2*$margin;
+				$title = is_string($key)?$key.': '.$value:$value;
 				$html.= '<div style="position: relative; height: '.$row.'px">';
 				$html.= '<div style="width: 100%; height: 100%; padding:'.$margin.'px 0">';
-				$html.= '<div style="display: block; float: left; position: relative; background-color: #aaa; width: '.$p.'%; height: 100%; line-height: '.$line.'px; overflow: hidden;">';
+				$html.= '<a style="display: block; float: left; position: relative; background-color: #aaa; width: '.$p.'%; height: 100%;" title="'.$title.'">';
+				$html.= '</a>';
+				$html.= '<div style="float: left; position: relative; width: '.(100-$p).'%; height: 100%; line-height: '.$line.'px; overflow: hidden;">';
 				$html.= '&nbsp;'.(is_string($key)?$key:'').'</div>';
-				$html.= '<div style="display: block; float: left; position: relative; width: '.(100-$p).'%; height: 100%; line-height: '.$line.'px; overflow: hidden;">';
-				$html.= '&nbsp;'.$value.'</div>';
 				$html.= '</div>';
 				$html.= '</div>';
 		}

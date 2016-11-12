@@ -96,7 +96,7 @@ class NoPassAuth
     
 }
 
-// for compatibility in PHP 5.3
-if (!function_exists('password_verify')) {
-    include __DIR__."/password_compat.inc";
+// for compatibility in PHP 5
+if (!function_exists('random_bytes')) {
+    include __DIR__."/random_bytes_mcrypt.php";
 }

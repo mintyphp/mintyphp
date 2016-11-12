@@ -8,6 +8,7 @@ class Session
   public static $sessionName        = 'mindaphp';
   public static $csrfSessionKey     = 'csrf_token';
   public static $enabled            = true;
+	public static $csrfLength         = 16;
 
   protected static $initialized = false;
   protected static $started = false;
@@ -26,50 +27,7 @@ class Session
     if (!static::$enabled) return;
     if (isset($_SESSION[static::$csrfSessionKey])) return;
 
-  	$strlen = function($binary_string) {
-  		if (function_exists('mb_strlen')) {
-  			return mb_strlen($binary_string, '8bit');
-  		}
-  		return strlen($binary_string);
-  	};
-
-  	$raw_csrf_len = 16;
-  	$buffer = '';
-  	$buffer_valid = false;
-  	if (function_exists('mcrypt_create_iv') && !defined('PHALANGER')) {
-  		$buffer = mcrypt_create_iv($raw_csrf_len, MCRYPT_DEV_URANDOM);
-  		if ($buffer) {
-  			$buffer_valid = true;
-  		}
-  	}
-  	if (!$buffer_valid && function_exists('openssl_random_pseudo_bytes')) {
-  		$buffer = openssl_random_pseudo_bytes($raw_csrf_len);
-  		if ($buffer) {
-  			$buffer_valid = true;
-  		}
-  	}
-  	if (!$buffer_valid && @is_readable('/dev/urandom')) {
-  		$f = fopen('/dev/urandom', 'r');
-  		$read = $strlen($buffer);
-  		while ($read < $raw_csrf_len) {
-  			$buffer .= fread($f, $raw_csrf_len - $read);
-  			$read = $strlen($buffer);
-  		}
-  		fclose($f);
-  		if ($read >= $raw_csrf_len) {
-  			$buffer_valid = true;
-  		}
-  	}
-  	if (!$buffer_valid || $strlen($buffer) < $raw_csrf_len) {
-  		$bl = $strlen($buffer);
-  		for ($i = 0; $i < $raw_csrf_len; $i++) {
-  			if ($i < $bl) {
-  				$buffer[$i] = $buffer[$i] ^ chr(mt_rand(0, 255));
-  			} else {
-  				$buffer .= chr(mt_rand(0, 255));
-  			}
-  		}
-  	}
+    $buffer = random_bytes(static::$csrfLength);
 
   	$_SESSION[static::$csrfSessionKey] = bin2hex($buffer);
   }
@@ -133,4 +91,9 @@ class Session
   	echo '<input type="hidden" name="'.static::$csrfSessionKey.'" value="'.$_SESSION[static::$csrfSessionKey].'"/>';
   }
 
+}
+
+// for compatibility in PHP 5.3
+if (!function_exists('random_bytes')) {
+    include __DIR__."/random_compat.inc";
 }

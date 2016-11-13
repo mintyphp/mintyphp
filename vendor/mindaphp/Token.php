@@ -34,7 +34,7 @@ class Token {
 		if (!isset($algorithms[$algorithm])) return false;
 		$hmac = $algorithms[$algorithm];
 		$token = explode('.',$token);
-    if (count($token)<3) return false;
+		if (count($token)<3) return false;
 		$header = json_decode(base64_decode(strtr($token[0],'-_','+/')),true);
 		if (!$secret) return false;
 		if ($header['typ']!='JWT') return false;

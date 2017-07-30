@@ -32,6 +32,7 @@ class Firewall
   
   public static function start()
   {
+  	header_remove('X-Powered-By');
   	$key = static::getKey();
   	$start = microtime(true);
   	Cache::add($key,0,static::$intervalSeconds);

@@ -40,6 +40,9 @@ class Session
       if (!ini_get('session.cookie_httponly')) {
         ini_set('session.cookie_httponly',1);
       }
+      if (!ini_get('session.cookie_secure') && isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']!='off') {
+        ini_set('session.cookie_secure',1);
+      }
       session_name(static::$sessionName);
     	session_start();
       if (!static::$enabled) {

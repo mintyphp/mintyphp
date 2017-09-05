@@ -58,7 +58,7 @@ class Auth
     
     static function exists($username)
     {
-    	$query = sprintf('select `id` from `%s` where `%s`=?',
+    	$query = sprintf('select 1 from `%s` where `%s`=?',
     			static::$usersTable,
     			static::$usernameField);
     	return DB::selectValue($query,$username);

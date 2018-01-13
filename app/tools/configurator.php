@@ -2,7 +2,7 @@
 // Change directory to project root
 chdir(__DIR__.'/..');
 // Use default autoload implementation
-require 'vendor/mindaphp/Loader.php';
+require 'vendor/mevdschee/mindaphp/lib/Loader.php';
 // Load the libraries
 require 'config/loader.php';
 // Load the config parameters
@@ -40,13 +40,13 @@ class Configurator
 		if (!file_exists($filename)) throw new \Exception("Could not read: $filename");
 		return file_get_contents($filename);
 	}
-	
+
 	public static function writeCode($filename, $code)
 	{
 		file_put_contents($filename, $code);
 		if (!file_exists($filename)) throw new \Exception("Could not write: $filename");
 	}
-	
+
 	public static function mergePost($config, $post)
 	{
 		$store = function($class,$name,$value) use (&$config) {
@@ -64,7 +64,7 @@ class Configurator
 				}
 			}
 		};
-		
+
 		foreach ($config as $class=>$variables) {
 			foreach ($variables as $v) {
 				$name = $v['name'];
@@ -73,10 +73,10 @@ class Configurator
 				}
 			}
 		}
-		
+
 		return $config;
 	}
-	
+
 	public static function generateForm($config)
 	{
 		$str = "<h1>Configurator</h1>\n";
@@ -102,10 +102,10 @@ class Configurator
 		}
 		$str.= "<br/>\n";
 		$str.= '<input type="submit" value="Test and Save"><br/>';
-		$str.= "</form>\n";		
+		$str.= "</form>\n";
 		return $str;
 	}
-	
+
 	public static function parseConfig($code)
 	{
 		$config = array();
@@ -126,7 +126,7 @@ class Configurator
 				} else {
 					$value = trim($value,'\'"');
 				}
-				
+
 				if (isset($matches[4])) $comment = trim($matches[4]);
 				else $comment = false;
 				$config[$class][] = compact('name','value','comment');
@@ -134,7 +134,7 @@ class Configurator
 		}
 		return $config;
 	}
-	
+
 	public static function generateCode($config)
 	{
 		$export = function($v) {
@@ -161,7 +161,7 @@ class Configurator
 		}
 		return $code;
 	}
-	
+
 	public function testConfig(&$config)
 	{
 		$parameters = array();
@@ -170,7 +170,7 @@ class Configurator
 				$parameters[$class.'_'.$v['name']] = &$v['value'];
 			}
 		}
-		
+
 		$mysqli = new mysqli($parameters['DB_host'], $parameters['DB_username'], $parameters['DB_password']);
 		if ($mysqli->connect_error) {
 			echo "ERROR: MySQL connect: ($mysqli->connect_errno) $mysqli->connect_error\n";
@@ -235,8 +235,8 @@ class Configurator
 		if ($mysqli->close()) {
 			echo "INFO: MySQL disconnected\n";
 		}
-		
-		
+
+
 		return true;
-	}	
+	}
 }

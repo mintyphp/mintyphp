@@ -2,7 +2,7 @@
 // Change directory to project root
 chdir(__DIR__.'/..');
 // Use default autoload implementation
-require 'vendor/mindaphp/Loader.php';
+require 'vendor/mevdschee/mindaphp/lib/Loader.php';
 // Load the config parameters
 require 'config/config.php';
 
@@ -26,9 +26,9 @@ function adminer_object() {
 
 		public function navigation($missing) {
 			parent::navigation($missing);
-			echo '<p class="links"><a href="/conventionist.php">Conventionist</a></p>';			
+			echo '<p class="links"><a href="/conventionist.php">Conventionist</a></p>';
 		}
-		
+
 	}
 
 	return new AdminerSoftware;

@@ -1,2 +1,2 @@
 #!/bin/bash
-php phpunit.phar --bootstrap lib/Loader.php lib/Tests
+php phpunit.phar --bootstrap src/Loader.php src/Tests

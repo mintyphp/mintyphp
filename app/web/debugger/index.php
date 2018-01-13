@@ -2,7 +2,7 @@
 // Change directory to project root
 chdir(__DIR__.'/../..');
 // Use default autoload implementation
-require 'vendor/mevdschee/mindaphp/lib/Loader.php';
+require 'vendor/mevdschee/mindaphp/src/Loader.php';
 // Load the config parameters
 require 'config/config.php';
 // Debugview class

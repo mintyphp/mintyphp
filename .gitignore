@@ -4,8 +4,8 @@
 project.geany
 composer.phar
 phpunit.phar
-tools/latest.php
-tools/master.zip
-config/config.php
+app/tools/latest.php
+app/tools/master.zip
+app/config/config.php
 /vendor/
 /sessions/

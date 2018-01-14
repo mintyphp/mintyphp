@@ -2,7 +2,6 @@
 .project
 .settings
 project.geany
-tools/latest.php
-tools/master.zip
+config/config.php
 /vendor/
 /sessions/

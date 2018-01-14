@@ -36,4 +36,4 @@ function adminer_object() {
 }
 
 
-include 'tools/latest.php';
+include 'vendor/mevdschee/mindaphp/tools/latest.php';

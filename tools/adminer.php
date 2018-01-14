@@ -1,6 +1,6 @@
 <?php
 // Change directory to project root
-chdir(__DIR__.'/..');
+chdir(__DIR__.'/../../../..');
 // Use default autoload implementation
 require 'vendor/mevdschee/mindaphp/src/Loader.php';
 // Load the config parameters

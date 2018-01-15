@@ -17,7 +17,7 @@ function adminer_object() {
 	class AdminerSoftware extends Adminer {
 
 		public function credentials() {
-			return array(\MindaPHP\Config\DB::$host, \MindaPHP\Config\DB::$username, \MindaPHP\Config\DB::$password);
+			return array(\MindaPHP\Config\DB::$host . ':' .\MindaPHP\Config\DB::$port, \MindaPHP\Config\DB::$username, \MindaPHP\Config\DB::$password);
 		}
 
 		public function database() {

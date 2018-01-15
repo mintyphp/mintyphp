@@ -4,7 +4,7 @@ chdir(__DIR__.'/../..');
 // Use default autoload implementation
 require 'vendor/mevdschee/mindaphp/src/Loader.php';
 // Load the config parameters
-require 'config/config.php';
+require 'config/app.php';
 // Debugview class
 class DebugView
 {

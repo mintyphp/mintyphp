@@ -5,7 +5,7 @@ chdir(__DIR__.'/../../../..');
 session_save_path(sys_get_temp_dir());
 $dir = $_SERVER['DOCUMENT_ROOT'];
 $file = realpath($dir.$_SERVER['SCRIPT_NAME']);
-if (!file_exists('config/config.php')) {
+if (!file_exists('config/app.php')) {
 	require 'vendor/mevdschee/mindaphp/tools/configurator.php'; die();
 }
 if (file_exists($file) && (strpos($file,$dir)===0)) return false;

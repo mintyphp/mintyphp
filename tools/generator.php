@@ -6,7 +6,7 @@ require 'vendor/mevdschee/mindaphp/src/Loader.php';
 // Load the libraries
 require 'config/loader.php';
 // Load the config parameters
-require 'config/config.php';
+require 'config/app.php';
 
 use MindaPHP\DB;
 

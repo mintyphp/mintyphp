@@ -6,7 +6,7 @@ require 'vendor/mevdschee/mindaphp/src/Loader.php';
 // Load the libraries
 require 'config/loader.php';
 // Load the config parameters
-$filename = 'config/config.php';
+$filename = 'config/app.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$code = Configurator::loadCode($filename);

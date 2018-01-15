@@ -6,8 +6,8 @@
         ServerAdmin webmaster@localhost
         ServerName mindaphp.dev
 
-        DocumentRoot /home/maurits/public_html/mindaphp/web
-        &lt;Directory /home/maurits/public_html/mindaphp/web&gt;
+        DocumentRoot /home/maurits/public_html/mindaphp/webroot
+        &lt;Directory /home/maurits/public_html/mindaphp/webroot&gt;
                 AllowOverride All
         &lt;/Directory&gt;
 
@@ -38,12 +38,12 @@ sudo apt-get install hhvm
 <p>from: https://github.com/facebook/hhvm/wiki/Prebuilt-packages-on-ubuntu-12.04</p>
 <p>Configure Nginx:</p>
 <pre>
-$ cat /etc/nginx/sites-enabled/mindaphp 
+$ cat /etc/nginx/sites-enabled/mindaphp
 server {
     listen 80;
     server_name mindaphp.dev;
-    
-    root /home/maurits/public_html/mindaphp/web;
+
+    root /home/maurits/public_html/mindaphp/webroot;
     try_files $uri @proxy;
 
     location ~ \.php$ {

@@ -59,7 +59,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             file_put_contents($path, '');
         }
 
-        $_SERVER['SCRIPT_NAME'] = self::$path.'/web/index.php';
+        $_SERVER['SCRIPT_NAME'] = self::$path.'/webroot/index.php';
     }
 
     protected function request($method, $uri)

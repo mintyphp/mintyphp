@@ -13,6 +13,6 @@ if (in_array($_SERVER['SCRIPT_NAME'],array('/adminer.php','/conventionist.php','
   require 'vendor/mevdschee/mindaphp/tools'.$_SERVER['SCRIPT_NAME'];
 } else {
   $_SERVER['SCRIPT_NAME'] = '/index.php';
-  chdir('web');
+  chdir('webroot');
   require 'index.php';
 }

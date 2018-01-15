@@ -5,4 +5,4 @@ php tools/requirements.php
 if [[ $? != 0 ]] ; then
     exit
 fi
-php -t ../../../web/ -S localhost:8000 "$DIR/tools/server.php"
+php -t ../../../webroot/ -S localhost:8000 "$DIR/tools/server.php"

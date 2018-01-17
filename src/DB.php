@@ -1,9 +1,7 @@
 <?php
 namespace MindaPHP;
 
-class DBError extends \Exception
-{
-};
+require 'DBError.php';
 
 class DB
 {

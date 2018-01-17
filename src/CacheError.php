@@ -3,4 +3,4 @@ namespace MindaPHP;
 
 class CacheError extends \Exception
 {
-};
+}

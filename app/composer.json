@@ -1,0 +1,8 @@
+{
+    "require": {
+        "mindaphp/mindaphp": "dev-2.x"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}

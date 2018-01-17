@@ -7,9 +7,10 @@ namespace {
 
     if (!function_exists('random_bytes')) {
 
-        function random_bytes($length) {
+        function random_bytes($length)
+        {
 
-            $strlen = function($binary_string) {
+            $strlen = function ($binary_string) {
                 if (function_exists('mb_strlen')) {
                     return mb_strlen($binary_string, '8bit');
                 }
@@ -58,4 +59,3 @@ namespace {
 
     }
 }
-

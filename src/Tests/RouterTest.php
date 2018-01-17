@@ -71,7 +71,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testAdmin()
     {
-        $this->request('GET','/admin');
+        $this->request('GET', '/admin');
         $this->assertEquals(Router::$templateRoot.'admin.php', Router::getTemplateAction());
         $this->assertEquals(Router::$templateRoot.'admin.phtml', Router::getTemplateView());
         $this->assertEquals(Router::$pageRoot.'admin/index().php', Router::getAction());
@@ -80,49 +80,49 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRootRoute()
     {
-        $this->request('GET','/');
-        Router::addRoute('','home');
+        $this->request('GET', '/');
+        Router::addRoute('', 'home');
         $this->assertEquals(Router::$pageRoot.'home().php', Router::getAction());
         $this->assertEquals(Router::$pageRoot.'home(default).phtml', Router::getView());
     }
 
     public function testTrailingSlashOnIndex()
     {
-    	$this->request('GET','/admin/posts/');
+        $this->request('GET', '/admin/posts/');
 
-    	$this->assertEquals('/admin/posts', Router::getRedirect());
+        $this->assertEquals('/admin/posts', Router::getRedirect());
     }
 
     public function testExplicitIndexRedirect()
     {
-    	$this->request('GET','/admin/posts/index');
+        $this->request('GET', '/admin/posts/index');
 
-    	$this->assertEquals('/admin/posts', Router::getRedirect());
-    	$this->assertEquals(Router::$templateRoot.'admin.php', Router::getTemplateAction());
-    	$this->assertEquals(Router::$templateRoot.'admin.phtml', Router::getTemplateView());
-    	$this->assertEquals(Router::$pageRoot.'admin/posts/index().php', Router::getAction());
-    	$this->assertEquals(Router::$pageRoot.'admin/posts/index(admin).phtml', Router::getView());
+        $this->assertEquals('/admin/posts', Router::getRedirect());
+        $this->assertEquals(Router::$templateRoot.'admin.php', Router::getTemplateAction());
+        $this->assertEquals(Router::$templateRoot.'admin.phtml', Router::getTemplateView());
+        $this->assertEquals(Router::$pageRoot.'admin/posts/index().php', Router::getAction());
+        $this->assertEquals(Router::$pageRoot.'admin/posts/index(admin).phtml', Router::getView());
     }
 
     public function testTrailingSlash()
     {
-    	$this->request('GET','/admin/posts/view/12/');
+        $this->request('GET', '/admin/posts/view/12/');
 
-    	$this->assertEquals('/admin/posts/view/12', Router::getRedirect());
+        $this->assertEquals('/admin/posts/view/12', Router::getRedirect());
     }
 
     public function testPageNotFoundOnIndex()
     {
-    	$this->request('GET','/admin/posts/asdada');
+        $this->request('GET', '/admin/posts/asdada');
 
-    	$this->assertEquals('/admin/posts', Router::getRedirect());
+        $this->assertEquals('/admin/posts', Router::getRedirect());
     }
 
     public function testPageNotFoundOnNoIndex()
     {
-    	$this->request('GET','/error/this-page-does-not-exist');
+        $this->request('GET', '/error/this-page-does-not-exist');
 
-    	$this->assertEquals(null, Router::getRedirect());
+        $this->assertEquals(null, Router::getRedirect());
         $this->assertEquals(false, Router::getTemplateAction());
         $this->assertEquals(Router::$templateRoot.'error.phtml', Router::getTemplateView());
         $this->assertEquals(false, Router::getAction());
@@ -131,13 +131,13 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRootParameters()
     {
-        $this->request('GET','/2014-some-blog-title');
+        $this->request('GET', '/2014-some-blog-title');
         $this->assertEquals(array('slug'=>'2014-some-blog-title'), Router::getParameters());
     }
 
     public function testActionWithoutView()
     {
-        $this->request('GET','/rss');
+        $this->request('GET', '/rss');
         $this->assertEquals(false, Router::getTemplateAction());
         $this->assertEquals(false, Router::getTemplateView());
         $this->assertEquals(Router::$pageRoot.'rss().php', Router::getAction());
@@ -148,5 +148,4 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         system('rm -Rf '.self::$path);
     }
-
 }

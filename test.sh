@@ -1,2 +1,3 @@
 #!/bin/bash
-php phpunit.phar --bootstrap vendor/mindaphp/Loader.php vendor/mindaphp/Tests
+cd "$(dirname "$(readlink -f "$0")")"
+php phpunit.phar --bootstrap src/Loader.php src/Tests

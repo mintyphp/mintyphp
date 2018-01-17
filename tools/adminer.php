@@ -1,10 +1,10 @@
 <?php
 // Change directory to project root
-chdir(__DIR__.'/..');
+chdir(__DIR__.'/../../../..');
 // Use default autoload implementation
-require 'vendor/mindaphp/Loader.php';
+require 'vendor/mindaphp/mindaphp/src/Loader.php';
 // Load the config parameters
-require 'config/config.php';
+require 'config/app.php';
 
 // database auto-login credentials
 $_GET["username"] = "";
@@ -17,7 +17,7 @@ function adminer_object() {
 	class AdminerSoftware extends Adminer {
 
 		public function credentials() {
-			return array(\MindaPHP\Config\DB::$host, \MindaPHP\Config\DB::$username, \MindaPHP\Config\DB::$password);
+			return array(\MindaPHP\Config\DB::$host . ':' .\MindaPHP\Config\DB::$port, \MindaPHP\Config\DB::$username, \MindaPHP\Config\DB::$password);
 		}
 
 		public function database() {
@@ -26,9 +26,9 @@ function adminer_object() {
 
 		public function navigation($missing) {
 			parent::navigation($missing);
-			echo '<p class="links"><a href="/conventionist.php">Conventionist</a></p>';			
+			echo '<p class="links"><a href="/conventionist.php">Conventionist</a></p>';
 		}
-		
+
 	}
 
 	return new AdminerSoftware;
@@ -36,4 +36,4 @@ function adminer_object() {
 }
 
 
-include 'tools/latest.php';
+include 'vendor/mindaphp/mindaphp/tools/latest.php';

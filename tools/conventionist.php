@@ -1,14 +1,14 @@
 <?php
 // Change directory to project root
-chdir(__DIR__.'/..');
+chdir(__DIR__.'/../../../..');
 // Use default autoload implementation
-require 'vendor/mindaphp/Loader.php';
+require 'vendor/mindaphp/mindaphp/src/Loader.php';
 // Load the libraries
 require 'config/loader.php';
 // Load the config parameters
-require 'config/config.php';
+require 'config/app.php';
 
-echo Conventionist::html(); 
+echo Conventionist::html();
 
 class Conventionist
 {
@@ -20,7 +20,7 @@ class Conventionist
     $str.= "</table>";
     return $str;
   }
-  
+
   public static function text()
   { $errors = static::check();
   	$str = "";
@@ -110,10 +110,10 @@ END_OF_STR;
     }
     return $errors;
   }
-  
+
   //code from Paul Osman: http://blog.eval.ca/2007/03/03/php-pluralize-method/
   //who translated it from Ruby from the Rails Inflector class
-  private static function pluralize( $string ) 
+  private static function pluralize( $string )
   { $plural = array(
       array( '/(quiz)$/i',               "$1zes"   ),
       array( '/^(ox)$/i',                "$1en"    ),
@@ -141,8 +141,8 @@ END_OF_STR;
       array( 'man',    'men'      ),
       array( 'person', 'people'   )
     );
-    $uncountable = array( 
-      'sheep', 
+    $uncountable = array(
+      'sheep',
       'fish',
       'series',
       'species',

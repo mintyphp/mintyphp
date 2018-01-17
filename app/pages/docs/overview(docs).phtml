@@ -29,13 +29,13 @@
 <h2>Presentation/logic separation</h2>
 
 <p>The "pages" folder holds both the HTML for dynamic pages (view) and the PHP part (action)
-of these pages (if it has one). The "web" and the "templates" folder hold the static files
+of these pages (if it has one). The "webroot" and the "templates" folder hold the static files
 and the templates that are used by the views. Note that every pages must have a "view" file and
 can optionally have an "action" file that holds its logic.</p>
 
 <h2>Front controller</h2>
 
-<p>All URL's hit the "web/index.php" file. This is achieved using URL rewriting (with
+<p>All URL's hit the "webroot/index.php" file. This is achieved using URL rewriting (with
 "mod_rewrite" in Apache). The paradigm of routing every request through one file is called
 "front controller". The file loads all configuration from the files in the config directory
 and these are thus the first files you will edit.</p>

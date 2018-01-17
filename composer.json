@@ -1,13 +1,25 @@
 {
-    "name": "mevdschee/mindaphp",
+    "name": "mindaphp/mindaphp",
     "license": "MIT",
     "authors": [
-    {
-        "name": "Maurits van der Schee",
-        "email": "maurits@vdschee.nl",
-        "homepage": "https://www.tqdev.com"
-    }
+        {
+            "name": "Maurits van der Schee",
+            "email": "maurits@vdschee.nl",
+            "homepage": "https://www.tqdev.com"
+        }
     ],
     "require": {
+        "php": ">=5.3.0",
+        "ext-memcache": "*",
+        "ext-mysqli": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "scripts": {
+        "check": [
+            "@test"
+        ],
+        "test": "phpunit --bootstrap src/Loader.php src/Tests"
     }
 }

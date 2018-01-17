@@ -2,9 +2,6 @@
 .project
 .settings
 project.geany
-composer.phar
-phpunit.phar
-tools/latest.php
-tools/master.zip
+config/app.php
 /vendor/
 /sessions/

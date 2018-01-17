@@ -2,7 +2,7 @@
 // Change directory to project root
 chdir(__DIR__.'/../../../..');
 // Use default autoload implementation
-require 'vendor/mevdschee/mindaphp/src/Loader.php';
+require 'vendor/mindaphp/mindaphp/src/Loader.php';
 // Load the config parameters
 require 'config/app.php';
 
@@ -36,4 +36,4 @@ function adminer_object() {
 }
 
 
-include 'vendor/mevdschee/mindaphp/tools/latest.php';
+include 'vendor/mindaphp/mindaphp/tools/latest.php';

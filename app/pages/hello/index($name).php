@@ -1,2 +1,4 @@
-<?php 
-if (!$name) Router::redirect('hello/form');
+<?php
+if (!$name) {
+    Router::redirect('hello/form');
+}

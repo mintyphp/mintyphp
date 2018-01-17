@@ -7,7 +7,7 @@ Search<br/>
 <?php Session::getCsrfInput(); ?>
 </form>
 <ol>
-<?php foreach ($results as $result): ?>
+<?php foreach ($results as $result) : ?>
 <li><a href="<?php e($result['link']); ?>"><?php e($result['text']); ?></a></li>
 <?php endforeach; ?>
 </ol>

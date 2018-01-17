@@ -1,29 +1,41 @@
 <h2><?php echo ucfirst($humanize($table)); ?></h2>
 <table class="table">
-  <thead>
-    <tr>
-<?php foreach ($fields as $field): 
-      if ($relation = $findBelongsTo($field['COLUMNS']['COLUMN_NAME'])): ?>
-      <th><?php echo ucfirst($singularize($humanize($relation['KEY_COLUMN_USAGE']['REFERENCED_TABLE_NAME']))); ?></th>
-<?php else: ?>
-      <th><?php echo ucfirst($humanize($field['COLUMNS']['COLUMN_NAME'])); ?></th>
-<?php endif;
-      endforeach; ?>
-    </tr>
-  </thead>
-  <tbody>
-    <?php echo '<?php' ?> foreach ($data as $row): ?>
-    <tr>
-<?php foreach ($fields as $field):  
-      if ($relation = $findBelongsTo($field['COLUMNS']['COLUMN_NAME'])): ?>
-      <td><?php echo '<?php' ?> e($<?php echo $relation['KEY_COLUMN_USAGE']['REFERENCED_TABLE_NAME']; ?>[$row['<?php echo $table; ?>']['<?php echo $field['COLUMNS']['COLUMN_NAME']; ?>']]);?></td>
-<?php else: ?>
-      <td><?php echo '<?php' ?> e($row['<?php echo $table; ?>']['<?php echo $field['COLUMNS']['COLUMN_NAME']; ?>']);?></td>
-<?php endif; 
-      endforeach; ?>
-    </tr>
-    <?php echo '<?php' ?> endforeach; ?>
-  </tbody>
+    <thead>
+        <tr>
+          <?php
+          foreach ($fields as $field) :
+              if ($relation = $findBelongsTo($field['COLUMNS']['COLUMN_NAME'])) :
+              ?>
+              <th><?php echo ucfirst($singularize($humanize($relation['KEY_COLUMN_USAGE']['REFERENCED_TABLE_NAME']))); ?></th>
+              <?php
+              else :
+              ?>
+              <th><?php echo ucfirst($humanize($field['COLUMNS']['COLUMN_NAME'])); ?></th>
+              <?php
+              endif;
+          endforeach;
+          ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php echo '<?php' ?> foreach ($data as $row) : ?>
+            <tr>
+                <?php
+                foreach ($fields as $field) :
+                    if ($relation = $findBelongsTo($field['COLUMNS']['COLUMN_NAME'])) :
+                    ?>
+                    <td><?php echo '<?php' ?> e($<?php echo $relation['KEY_COLUMN_USAGE']['REFERENCED_TABLE_NAME']; ?>[$row['<?php echo $table; ?>']['<?php echo $field['COLUMNS']['COLUMN_NAME']; ?>']]);?></td>
+                    <?php
+                    else :
+                    ?>
+                    <td><?php echo '<?php' ?> e($row['<?php echo $table; ?>']['<?php echo $field['COLUMNS']['COLUMN_NAME']; ?>']);?></td>
+                    <?php
+                    endif;
+                endforeach;
+                ?>
+            </tr>
+        <?php echo '<?php' ?> endforeach; ?>
+    </tbody>
 </table>
 
 <p><a href="<?php echo $path; ?>/<?php echo $table; ?>/add">Add <?php echo $singularize($humanize($table)); ?></a></p>

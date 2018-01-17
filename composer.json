@@ -14,12 +14,15 @@
         "ext-mysqli": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "squizlabs/php_codesniffer": "*"
     },
     "scripts": {
         "check": [
+            "@cs-check",
             "@test"
         ],
+        "cs-check": "phpcs --colors --extensions=inc,phtml,php --standard=PSR2 -p ./app ./src ./tools",
         "test": "phpunit --bootstrap src/Loader.php src/Tests"
     }
 }

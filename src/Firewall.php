@@ -3,14 +3,14 @@ namespace MindaPHP;
 
 class Firewall
 {
-    public static $concurrency=10;
-    public static $spinLockSeconds=0.15;
-    public static $intervalSeconds=300;
-    public static $cachePrefix='fw_concurrency_';
-    public static $reverseProxy=false;
-  
-    protected static $key=false;
-  
+    public static $concurrency = 10;
+    public static $spinLockSeconds = 0.15;
+    public static $intervalSeconds = 300;
+    public static $cachePrefix = 'fw_concurrency_';
+    public static $reverseProxy = false;
+
+    protected static $key = false;
+
     protected static function getClientIp()
     {
         if (static::$reverseProxy && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -20,7 +20,7 @@ class Firewall
         }
         return $ip;
     }
-  
+
     protected static function getKey()
     {
         if (!static::$key) {
@@ -28,7 +28,7 @@ class Firewall
         }
         return static::$key;
     }
-  
+
     public static function start()
     {
         header_remove('X-Powered-By');
@@ -45,7 +45,7 @@ class Firewall
             usleep(static::$spinLockSeconds*1000000);
         }
     }
-  
+
     public static function end()
     {
         Cache::decrement(static::getKey());

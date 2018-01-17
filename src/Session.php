@@ -1,14 +1,14 @@
 <?php
 namespace MindaPHP;
 
-require 'SessionError.php';
+use MindaPHP\SessionError;
 
 class Session
 {
-    public static $sessionName        = 'mindaphp';
-    public static $csrfSessionKey     = 'csrf_token';
-    public static $enabled            = true;
-    public static $csrfLength         = 16;
+    public static $sessionName = 'mindaphp';
+    public static $csrfSessionKey = 'csrf_token';
+    public static $enabled = true;
+    public static $csrfLength = 16;
 
     protected static $initialized = false;
     protected static $started = false;

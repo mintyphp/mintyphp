@@ -1,16 +1,16 @@
 <?php
 namespace MindaPHP;
 
-require 'DBError.php';
+use MindaPHP\DBError;
 
 class DB
 {
-    public static $host=null;
-    public static $username=null;
-    public static $password=null;
-    public static $database=null;
-    public static $port=null;
-    public static $socket=null;
+    public static $host = null;
+    public static $username = null;
+    public static $password = null;
+    public static $database = null;
+    public static $port = null;
+    public static $socket = null;
 
     protected static $mysqli = null;
     protected static $closed = false;

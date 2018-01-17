@@ -35,7 +35,7 @@ class AuthTest extends \PHPUnit_Framework_TestCase
 
     public function testLogout()
     {
-        $_SESSION['user'] = array('id'=>1,'username'=>'test');
+        $_SESSION['user'] = array('id' => 1, 'username' => 'test');
         $_SESSION['csrf_token'] = md5(time());
         try {
             Auth::logout();

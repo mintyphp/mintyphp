@@ -3,8 +3,8 @@ namespace MindaPHP;
 
 class Analyzer
 {
-    public static $tokens    = array('T_ECHO','T_PRINT','T_EXIT','T_STRING','T_EVAL','T_OPEN_TAG_WITH_ECHO');
-    public static $functions = array('echo','print','die','exit','var_dump','eval','<?=');
+    public static $tokens = array('T_ECHO', 'T_PRINT', 'T_EXIT', 'T_STRING', 'T_EVAL', 'T_OPEN_TAG_WITH_ECHO');
+    public static $functions = array('echo', 'print', 'die', 'exit', 'var_dump', 'eval', '<?=');
 
     public static function execute()
     {

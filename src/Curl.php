@@ -1,7 +1,7 @@
 <?php
 namespace MindaPHP;
 
-require 'CurlError.php';
+use MindaPHP\CurlError;
 
 class Curl
 {

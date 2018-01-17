@@ -3,12 +3,12 @@
 <p>These functions can be statically accessed from the global "DB" class.</p>
 <h2>Select</h2>
 <pre>DB::select($sql,$arg1,$arg2,...)</pre>
-<p>Executes SQL containing "?" symbols. Every questionmark must be matched by an extra argument. 
+<p>Executes SQL containing "?" symbols. Every questionmark must be matched by an extra argument.
 The following query retrieves all users that have an username starting with a 'M':</p>
 <pre>
 $users = DB::select('select * from users where username LIKE ?','M%');
 </pre>
-<p>In the view (.phtml) file we can iterate over records and print the usernames in a HTML list using:</p>  
+<p>In the view (.phtml) file we can iterate over records and print the usernames in a HTML list using:</p>
 <pre>
 &lt;?php foreach ($users as $user): ?&gt;
 &lt;li&gt;&lt;?php e($user['username']); ?&gt;&lt;/li&gt;

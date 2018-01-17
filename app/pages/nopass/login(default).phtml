@@ -1,11 +1,10 @@
-<?php Buffer::set('title','Login'); ?>
+<?php Buffer::set('title', 'Login'); ?>
 <h1>Login</h1>
 <form method="post">
-<p style="color: red;"><?php e($error); ?></p>
-<p>Email<br/>
-<input name="username"/></p>
-<p><input type="submit"/></p>
-<?php Session::getCsrfInput(); ?>
+  <p style="color: red;"><?php e($error); ?></p>
+  <p>Email<br/><input name="username"/></p>
+  <p><input type="submit"/></p>
+    <?php Session::getCsrfInput(); ?>
 </form>
 
 <p><a href="nopass/register">Register</a></p>

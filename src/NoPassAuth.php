@@ -3,10 +3,10 @@ namespace MindaPHP;
 
 class NoPassAuth
 {
-    public static $usersTable    = 'users';
+    public static $usersTable = 'users';
     public static $usernameField = 'username';
     public static $passwordField = 'password';
-    public static $createdField  = 'created';
+    public static $createdField = 'created';
     public static $tokenValidity = 300;
 
     public static function token($username)

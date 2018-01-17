@@ -1,7 +1,7 @@
 <?php
 namespace MindaPHP;
 
-require 'RouterError.php';
+use MindaPHP\RouterError;
 
 class Router
 {

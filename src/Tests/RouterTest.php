@@ -5,13 +5,13 @@ use MindaPHP\Router;
 
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
-    static protected $path      = false;
-    static protected $pages     = false;
+    static protected $path = false;
+    static protected $pages = false;
     static protected $templates = false;
 
     public static function setUpBeforeClass()
     {
-        self::$path = sys_get_temp_dir().'/mindaphp_test';
+        self::$path = sys_get_temp_dir() . '/mindaphp_test';
 
         Router::$baseUrl         = '/';
         Router::$pageRoot        = self::$path.'/pages/';
@@ -72,18 +72,18 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     public function testAdmin()
     {
         $this->request('GET', '/admin');
-        $this->assertEquals(Router::$templateRoot.'admin.php', Router::getTemplateAction());
-        $this->assertEquals(Router::$templateRoot.'admin.phtml', Router::getTemplateView());
-        $this->assertEquals(Router::$pageRoot.'admin/index().php', Router::getAction());
-        $this->assertEquals(Router::$pageRoot.'admin/index(admin).phtml', Router::getView());
+        $this->assertEquals(Router::$templateRoot . 'admin.php', Router::getTemplateAction());
+        $this->assertEquals(Router::$templateRoot . 'admin.phtml', Router::getTemplateView());
+        $this->assertEquals(Router::$pageRoot . 'admin/index().php', Router::getAction());
+        $this->assertEquals(Router::$pageRoot . 'admin/index(admin).phtml', Router::getView());
     }
 
     public function testRootRoute()
     {
         $this->request('GET', '/');
         Router::addRoute('', 'home');
-        $this->assertEquals(Router::$pageRoot.'home().php', Router::getAction());
-        $this->assertEquals(Router::$pageRoot.'home(default).phtml', Router::getView());
+        $this->assertEquals(Router::$pageRoot . 'home().php', Router::getAction());
+        $this->assertEquals(Router::$pageRoot . 'home(default).phtml', Router::getView());
     }
 
     public function testTrailingSlashOnIndex()
@@ -98,10 +98,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->request('GET', '/admin/posts/index');
 
         $this->assertEquals('/admin/posts', Router::getRedirect());
-        $this->assertEquals(Router::$templateRoot.'admin.php', Router::getTemplateAction());
-        $this->assertEquals(Router::$templateRoot.'admin.phtml', Router::getTemplateView());
-        $this->assertEquals(Router::$pageRoot.'admin/posts/index().php', Router::getAction());
-        $this->assertEquals(Router::$pageRoot.'admin/posts/index(admin).phtml', Router::getView());
+        $this->assertEquals(Router::$templateRoot . 'admin.php', Router::getTemplateAction());
+        $this->assertEquals(Router::$templateRoot . 'admin.phtml', Router::getTemplateView());
+        $this->assertEquals(Router::$pageRoot . 'admin/posts/index().php', Router::getAction());
+        $this->assertEquals(Router::$pageRoot . 'admin/posts/index(admin).phtml', Router::getView());
     }
 
     public function testTrailingSlash()
@@ -124,15 +124,15 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(null, Router::getRedirect());
         $this->assertEquals(false, Router::getTemplateAction());
-        $this->assertEquals(Router::$templateRoot.'error.phtml', Router::getTemplateView());
+        $this->assertEquals(Router::$templateRoot . 'error.phtml', Router::getTemplateView());
         $this->assertEquals(false, Router::getAction());
-        $this->assertEquals(Router::$pageRoot.'error/not_found(error).phtml', Router::getView());
+        $this->assertEquals(Router::$pageRoot . 'error/not_found(error).phtml', Router::getView());
     }
 
     public function testRootParameters()
     {
         $this->request('GET', '/2014-some-blog-title');
-        $this->assertEquals(array('slug'=>'2014-some-blog-title'), Router::getParameters());
+        $this->assertEquals(array('slug' => '2014-some-blog-title'), Router::getParameters());
     }
 
     public function testActionWithoutView()
@@ -140,12 +140,12 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->request('GET', '/rss');
         $this->assertEquals(false, Router::getTemplateAction());
         $this->assertEquals(false, Router::getTemplateView());
-        $this->assertEquals(Router::$pageRoot.'rss().php', Router::getAction());
+        $this->assertEquals(Router::$pageRoot . 'rss().php', Router::getAction());
         $this->assertEquals(false, Router::getView());
     }
 
     public static function tearDownAfterClass()
     {
-        system('rm -Rf '.self::$path);
+        system('rm -Rf ' . self::$path);
     }
 }

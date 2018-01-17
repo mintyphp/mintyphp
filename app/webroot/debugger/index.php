@@ -1,6 +1,6 @@
 <?php
 // Change directory to project root
-chdir(__DIR__.'/../..');
+chdir(__DIR__ . '/../..');
 // Use default autoload implementation
 require 'vendor/mindaphp/mindaphp/src/Loader.php';
 // Load the config parameters
@@ -59,7 +59,7 @@ class DebugView
         $result = array();
         foreach ($array as $key => $value) {
             if ($prefix) {
-                $key = '['.$key.']';
+                $key = '[' . $key . ']';
             }
             if (is_array($value)) {
                 $result = $result + static::flattenParameters($value, $prefix . $key);
@@ -94,38 +94,38 @@ class DebugView
             $html[] = '<tr><td colspan="2"><em>None</em></td></tr>';
         } else {
             foreach ($request['router']['parameters']['url'] as $k => $v) {
-                $html[] = '<tr><th>'.htmlspecialchars($k).'</th><td>'.htmlspecialchars($v).'</td></tr>';
+                $html[] = '<tr><th>' . htmlspecialchars($k) . '</th><td>' . htmlspecialchars($v) . '</td></tr>';
             }
         }
-        $html[] ='</tbody></table>';
+        $html[] = '</tbody></table>';
         if (count($request['router']['parameters']['get'])) {
-            $html[] ='<h4>$_GET</h4>';
-            $html[] ='<table class="table"><tbody>';
+            $html[] = '<h4>$_GET</h4>';
+            $html[] = '<table class="table"><tbody>';
             $request['router']['parameters']['get'] = static::flattenParameters($request['router']['parameters']['get']);
             foreach ($request['router']['parameters']['get'] as $k => $v) {
-                $html[] ='<tr><th>'.htmlspecialchars($k).'</th><td>'.htmlspecialchars($v).'</td></tr>';
+                $html[] = '<tr><th>' . htmlspecialchars($k) . '</th><td>' . htmlspecialchars($v) . '</td></tr>';
             }
-            $html[] ='</tbody></table>';
+            $html[] = '</tbody></table>';
         }
         if (count($request['router']['parameters']['post'])) {
-            $html[] ='<h4>$_POST</h4>';
-            $html[] ='<table class="table"><tbody>';
+            $html[] = '<h4>$_POST</h4>';
+            $html[] = '<table class="table"><tbody>';
             $request['router']['parameters']['post'] = static::flattenParameters($request['router']['parameters']['post']);
             foreach ($request['router']['parameters']['post'] as $k => $v) {
-                $html[] ='<tr><th>'.htmlspecialchars($k).'</th><td>'.htmlspecialchars($v).'</td></tr>';
+                $html[] = '<tr><th>'.htmlspecialchars($k).'</th><td>'.htmlspecialchars($v).'</td></tr>';
             }
-            $html[] ='</tbody></table>';
+            $html[] = '</tbody></table>';
         }
-        $html[] ='</div>';
+        $html[] = '</div>';
         return implode("\n", $html);
     }
 
     public static function getExecutionTabPane($requestId, $request)
     {
         $html = array();
-        $html[] ='<div class="tab-pane" id="debug-request-'.$requestId.'-execution">';
-        $html[] ='<div class="row"><div class="col-md-10"><h4>Result</h4>';
-        $html[] ='<div class="well well-sm">';
+        $html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-execution">';
+        $html[] = '<div class="row"><div class="col-md-10"><h4>Result</h4>';
+        $html[] = '<div class="well well-sm">';
         if (!isset($request['type'])) {
             $html[] = '???';
         } elseif ($request['type']=='abort') {

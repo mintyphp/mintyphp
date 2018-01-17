@@ -3,10 +3,10 @@ namespace MindaPHP;
 
 class Auth
 {
-    public static $usersTable    = 'users';
+    public static $usersTable = 'users';
     public static $usernameField = 'username';
     public static $passwordField = 'password';
-    public static $createdField  = 'created';
+    public static $createdField = 'created';
 
     public static function login($username, $password)
     {
@@ -31,7 +31,7 @@ class Auth
     public static function logout()
     {
         foreach ($_SESSION as $key => $value) {
-            if ($key!='debugger') {
+            if ($key != 'debugger') {
                 unset($_SESSION[$key]);
             }
         }
@@ -77,5 +77,5 @@ class Auth
 
 // for compatibility in PHP 5.3
 if (!function_exists('password_verify')) {
-    include __DIR__."/password_compat.inc";
+    include __DIR__ . "/password_compat.inc";
 }

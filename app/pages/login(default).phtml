@@ -1,14 +1,15 @@
-<?php Buffer::set('title','Login'); ?>
+<?php Buffer::set('title', 'Login'); ?>
 <h1>Login</h1>
 <form method="post">
-Username<br/>
-<input name="username"/><br/>
-Password<br/>
-<input type="password" name="password"/> <a href="nopass/login">No password</a><br/>
-<br/>
-<input type="submit"/><br/>
-<?php e($error); ?>
-<?php Session::getCsrfInput(); ?>
+  Username<br/>
+  <input name="username"/><br/>
+  Password<br/>
+  <input type="password" name="password"/>
+  <a href="nopass/login">No password</a><br/>
+  <br/>
+  <input type="submit"/><br/>
+    <?php e($error); ?>
+    <?php Session::getCsrfInput(); ?>
 </form>
 
 <p><a href="register">Register</a></p>

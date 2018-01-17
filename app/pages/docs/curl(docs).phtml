@@ -7,7 +7,7 @@
 $status = Curl::call('GET','http://www.bing.com/search',array('q'=>$query),$result);
 </pre>
 <p>Note that the $data parameter can either be an array (normally) or a string (for raw POST).
-In the view (.phtml) file we can show the return status (200 for success):</p>  
+In the view (.phtml) file we can show the return status (200 for success):</p>
 <pre>
 &lt;?php e($status); ?&gt;
 </pre>

@@ -1,7 +1,7 @@
 <?php
 namespace MindaPHP;
 
-require 'BufferError.php';
+use MindaPHP\BufferError;
 
 class Buffer
 {
@@ -22,7 +22,7 @@ class Buffer
     public static function end($name)
     {
         $top = array_pop(static::$stack);
-        if ($top!=$name) {
+        if ($top != $name) {
             static::error("Buffer::end('$name') called, but Buffer::end('$top') expected.");
         }
         static::$data[$name] = ob_get_contents();
@@ -31,7 +31,7 @@ class Buffer
 
     public static function set($name, $string)
     {
-        static::$data[$name]=$string;
+        static::$data[$name] = $string;
     }
 
     public static function get($name)

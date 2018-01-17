@@ -1,10 +1,10 @@
-<?php echo '<?php' ?> 
-<?php foreach ($belongsTo as $relation): ?>
+<?php echo '<?php' ?>
+<?php foreach ($belongsTo as $relation) : ?>
 $<?php echo $relation['KEY_COLUMN_USAGE']['REFERENCED_TABLE_NAME']; ?> = DB::selectPairs('select `<?php echo $relation['KEY_COLUMN_USAGE']['REFERENCED_COLUMN_NAME']; ?>`,`<?php echo $findDisplayField($relation['KEY_COLUMN_USAGE']['REFERENCED_TABLE_NAME']); ?>` from `<?php echo $relation['KEY_COLUMN_USAGE']['REFERENCED_TABLE_NAME']; ?>`');
 <?php endforeach; ?>
 if ($_SERVER['REQUEST_METHOD']=='POST') {
 	$data = $_POST;
-<?php foreach ($belongsTo as $relation): ?>
+<?php foreach ($belongsTo as $relation) : ?>
 	if (!isset($<?php echo $relation['KEY_COLUMN_USAGE']['REFERENCED_TABLE_NAME']; ?>[$data['<?php echo $table; ?>']['<?php echo $relation['KEY_COLUMN_USAGE']['COLUMN_NAME']; ?>']])) $errors['<?php echo $table; ?>[<?php echo $relation['KEY_COLUMN_USAGE']['COLUMN_NAME']; ?>]']='<?php echo ucfirst($singularize($humanize($relation['KEY_COLUMN_USAGE']['REFERENCED_TABLE_NAME']))); ?> not found';
 <?php endforeach; ?>
 	if (!isset($errors)) {

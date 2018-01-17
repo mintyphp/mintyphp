@@ -10,7 +10,7 @@ $users = DB::select('select * from users where username LIKE ?','M%');
 </pre>
 <p>In the view (.phtml) file we can iterate over records and print the usernames in a HTML list using:</p>
 <pre>
-&lt;?php foreach ($users as $user): ?&gt;
+&lt;?php foreach ($users as $user) : ?&gt;
 &lt;li&gt;&lt;?php e($user['username']); ?&gt;&lt;/li&gt;
 &lt;?php endforeach; ?&gt;
 </pre>

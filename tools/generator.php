@@ -59,14 +59,16 @@ if (!$tables) {
                 return $field;
             }
             $field = DB::selectValue("SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE table_schema=DATABASE() and extra != 'auto_increment' and table_name = ? limit 1", $table);
+
             return $field;
         };
         $findBelongsTo = function ($name) use ($belongsTo) {
             foreach ($belongsTo as $relation) {
-                if ($relation['KEY_COLUMN_USAGE']['COLUMN_NAME']==$name) {
+                if ($relation['KEY_COLUMN_USAGE']['COLUMN_NAME'] == $name) {
                     return $relation;
                 }
             }
+
             return false;
         };
 

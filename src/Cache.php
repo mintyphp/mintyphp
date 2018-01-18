@@ -22,6 +22,7 @@ class Cache
                 if (count($server) == 1) {
                     $server[1] = '11211';
                 }
+
                 return $server;
             }, $servers);
             foreach ($servers as $server) {
@@ -53,6 +54,7 @@ class Cache
             default:
                 $result = '(' . $type . ')';
         }
+
         return $result;
     }
 
@@ -75,6 +77,7 @@ class Cache
             $result = static::variable($res);
             Debugger::add('cache', compact('duration', 'command', 'arguments', 'result'));
         }
+
         return $res;
     }
 
@@ -97,6 +100,7 @@ class Cache
             $result = static::variable($res);
             Debugger::add('cache', compact('duration', 'command', 'arguments', 'result'));
         }
+
         return $res;
     }
 
@@ -116,6 +120,7 @@ class Cache
             $result = static::variable($res);
             Debugger::add('cache', compact('duration', 'command', 'arguments', 'result'));
         }
+
         return $res;
     }
 
@@ -135,6 +140,7 @@ class Cache
             $result = static::variable($res);
             Debugger::add('cache', compact('duration', 'command', 'arguments', 'result'));
         }
+
         return $res;
     }
 
@@ -157,6 +163,7 @@ class Cache
             $result = static::variable($res);
             Debugger::add('cache', compact('duration', 'command', 'arguments', 'result'));
         }
+
         return $res;
     }
 
@@ -179,6 +186,7 @@ class Cache
             $result = static::variable($res);
             Debugger::add('cache', compact('duration', 'command', 'arguments', 'result'));
         }
+
         return $res;
     }
 
@@ -201,6 +209,7 @@ class Cache
             $result = static::variable($res);
             Debugger::add('cache', compact('duration', 'command', 'arguments', 'result'));
         }
+
         return $res;
     }
 }

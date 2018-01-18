@@ -22,8 +22,15 @@ class DB
         }
         if (!static::$mysqli) {
             $reflect = new \ReflectionClass('mysqli');
-            $args = array(static::$host,static::$username,static::$password,static::$database,static::$port,static::$socket);
-            while (isset($args[count($args)-1]) && $args[count($args)-1] !== null) {
+            $args = array(
+                static::$host,
+                static::$username,
+                static::$password,
+                static::$database,
+                static::$port,
+                static::$socket
+            );
+            while (isset($args[count($args) - 1]) && $args[count($args) - 1] !== null) {
                 array_pop($args);
             }
             static::$mysqli = $reflect->newInstanceArgs($args);
@@ -51,9 +58,9 @@ class DB
         if (!is_array($firstTable)) {
             return false;
         }
+
         return array_shift($firstTable);
     }
-
 
     public static function selectValues($query)
     {
@@ -72,6 +79,7 @@ class DB
             }
             $list[] = array_shift($firstTable);
         }
+
         return $list;
     }
 
@@ -86,6 +94,7 @@ class DB
             $firstTable = array_shift($record);
             $list[array_shift($firstTable)] = array_shift($firstTable);
         }
+
         return $list;
     }
 
@@ -93,8 +102,9 @@ class DB
     {
         $args = func_get_args();
         if (func_num_args() > 1) {
-            array_splice($args, 1, 0, array(str_repeat('s', count($args)-1)));
+            array_splice($args, 1, 0, array(str_repeat('s', count($args) - 1)));
         }
+
         return forward_static_call_array('DB::selectOneTyped', $args);
     }
 
@@ -107,6 +117,7 @@ class DB
         if (isset($result[0])) {
             return $result[0];
         }
+
         return $result;
     }
 
@@ -114,12 +125,13 @@ class DB
     {
         $args = func_get_args();
         if (func_num_args() > 1) {
-            array_splice($args, 1, 0, array(str_repeat('s', count($args)-1)));
+            array_splice($args, 1, 0, array(str_repeat('s', count($args) - 1)));
         }
         $result = forward_static_call_array('DB::selectTyped', $args);
         if (!is_array($result)) {
             return false;
         }
+
         return $result;
     }
 
@@ -130,9 +142,9 @@ class DB
         }
         $time = microtime(true);
         $result = forward_static_call_array('DB::selectTypedInternal', func_get_args());
-        $duration = microtime(true)-$time;
+        $duration = microtime(true) - $time;
         $arguments = func_get_args();
-        if (strtoupper(substr(trim($query), 0, 6))=='SELECT') {
+        if (strtoupper(substr(trim($query), 0, 6)) == 'SELECT') {
             $arguments[0] = 'explain '.$query;
             $explain = forward_static_call_array('DB::selectTypedInternal', $arguments);
         } else {
@@ -141,6 +153,7 @@ class DB
         $arguments = array_slice(func_get_args(), 2);
         $equery = static::$mysqli->real_escape_string($query);
         Debugger::add('queries', compact('duration', 'query', 'equery', 'arguments', 'result', 'explain'));
+
         return $result;
     }
 
@@ -154,7 +167,7 @@ class DB
         if (func_num_args() > 1) {
             $args = array_slice(func_get_args(), 1);
             foreach (array_keys($args) as $i) {
-                if ($i>0) {
+                if ($i > 0) {
                     $args[$i] = & $args[$i];
                 }
             }
@@ -167,11 +180,13 @@ class DB
         if ($query->errno) {
             $error = static::$mysqli->error;
             $query->close();
+
             return static::error($error);
         }
         if ($query->affected_rows > -1) {
             $result = $query->affected_rows;
             $query->close();
+
             return $result;
         }
         $query->store_result();
@@ -191,7 +206,7 @@ class DB
         $ref    = new \ReflectionClass('mysqli_stmt');
         $method = $ref->getMethod("bind_result");
         $method->invokeArgs($query, $params);
-      //call_user_func_array(array($query, 'bind_result'), $params);
+        //call_user_func_array(array($query, 'bind_result'), $params);
 
         $result = array();
         while ($query->fetch()) {
@@ -207,7 +222,7 @@ class DB
     {
         $args = func_get_args();
         if (func_num_args() > 1) {
-            array_splice($args, 1, 0, array(str_repeat('s', count($args)-1)));
+            array_splice($args, 1, 0, array(str_repeat('s', count($args) - 1)));
         }
         $result = forward_static_call_array('DB::selectTyped', $args);
         if (!is_int($result)) {
@@ -216,6 +231,7 @@ class DB
         if (!$result) {
             return false;
         }
+
         return static::$mysqli->insert_id;
     }
 
@@ -223,12 +239,13 @@ class DB
     {
         $args = func_get_args();
         if (func_num_args() > 1) {
-            array_splice($args, 1, 0, array(str_repeat('s', count($args)-1)));
+            array_splice($args, 1, 0, array(str_repeat('s', count($args) - 1)));
         }
         $result = forward_static_call_array('DB::selectTyped', $args);
         if (!is_int($result)) {
             return false;
         }
+
         return $result;
     }
 
@@ -241,12 +258,13 @@ class DB
     {
         $args = func_get_args();
         if (func_num_args() > 1) {
-            array_splice($args, 1, 0, array(str_repeat('s', count($args)-1)));
+            array_splice($args, 1, 0, array(str_repeat('s', count($args) - 1)));
         }
         $result = forward_static_call_array('DB::selectTyped', $args);
-        if ($result!==false) {
+        if ($result !== false) {
             return true;
         }
+
         return $result;
     }
 
@@ -259,10 +277,11 @@ class DB
         static::$closed = true;
     }
 
-  // Undocumented
+    // Undocumented
     public static function handle()
     {
         static::connect();
+
         return static::$mysqli;
     }
 }

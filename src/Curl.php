@@ -17,9 +17,10 @@ class Curl
             return 200;
         }
         $status = static::call($method, $url, $data, $result);
-        if ($status==200) {
+        if ($status == 200) {
             Cache::set($key, $result, $expire);
         }
+
         return $status;
     }
 
@@ -66,7 +67,7 @@ class Curl
         }
 
         if (Debugger::$enabled) {
-            $duration = microtime(true)-$time;
+            $duration = microtime(true) - $time;
             $options = static::$options;
             $headers = static::$headers;
             Debugger::add('api_calls', compact('duration', 'method', 'url', 'data', 'options', 'headers', 'status', 'timing', 'result'));

@@ -28,70 +28,73 @@ class Token
                 }
             }
         }
+
         return $headers;
     }
 
     protected static function getTokenFromHeaders($headers)
     {
         $parts = explode(' ', trim($headers['Authorization']), 2);
-        if (count($parts)!=2) {
+        if (count($parts) != 2) {
             return false;
         }
-        if ($parts[0]!='Bearer') {
+        if ($parts[0] != 'Bearer') {
             return false;
         }
+
         return $parts[1];
     }
 
     protected static function getVerifiedClaims($token, $time, $leeway, $ttl, $algorithm, $secret)
     {
-        $algorithms = array('HS256'=>'sha256','HS384'=>'sha384','HS512'=>'sha512');
+        $algorithms = array('HS256' => 'sha256', 'HS384' => 'sha384', 'HS512' => 'sha512');
         if (!isset($algorithms[$algorithm])) {
             return false;
         }
         $hmac = $algorithms[$algorithm];
         $token = explode('.', $token);
-        if (count($token)<3) {
+        if (count($token) < 3) {
             return false;
         }
         $header = json_decode(base64_decode(strtr($token[0], '-_', '+/')), true);
         if (!$secret) {
             return false;
         }
-        if ($header['typ']!='JWT') {
+        if ($header['typ'] != 'JWT') {
             return false;
         }
-        if ($header['alg']!=$algorithm) {
+        if ($header['alg'] != $algorithm) {
             return false;
         }
         $signature = bin2hex(base64_decode(strtr($token[2], '-_', '+/')));
-        if ($signature!=hash_hmac($hmac, "$token[0].$token[1]", $secret)) {
+        if ($signature != hash_hmac($hmac, "$token[0].$token[1]", $secret)) {
             return false;
         }
         $claims = json_decode(base64_decode(strtr($token[1], '-_', '+/')), true);
         if (!$claims) {
             return false;
         }
-        if (isset($claims['nbf']) && $time+$leeway<$claims['nbf']) {
+        if (isset($claims['nbf']) && $time + $leeway < $claims['nbf']) {
             return false;
         }
-        if (isset($claims['iat']) && $time+$leeway<$claims['iat']) {
+        if (isset($claims['iat']) && $time + $leeway < $claims['iat']) {
             return false;
         }
-        if (isset($claims['exp']) && $time-$leeway>$claims['exp']) {
+        if (isset($claims['exp']) && $time - $leeway > $claims['exp']) {
             return false;
         }
         if (isset($claims['iat']) && !isset($claims['exp'])) {
-            if ($time-$leeway>$claims['iat']+$ttl) {
+            if ($time - $leeway > $claims['iat'] + $ttl) {
                 return false;
             }
         }
+
         return $claims;
     }
 
     public static function getClaims($headers = false)
     {
-        if ($headers || static::$cache===null) {
+        if ($headers || static::$cache === null) {
             // get from httponly cookie?
             if (!$headers) {
                 $headers = static::getHeaders();
@@ -110,15 +113,16 @@ class Token
             $secret = static::$secret;
             static::$cache = static::getVerifiedClaims($token, $time, $leeway, $ttl, $algorithm, $secret);
         }
+
         return static::$cache;
     }
 
     protected static function generateToken($claims, $time, $ttl, $algorithm, $secret)
     {
-        $algorithms = array('HS256'=>'sha256','HS384'=>'sha384','HS512'=>'sha512');
+        $algorithms = array('HS256' => 'sha256', 'HS384' => 'sha384', 'HS512' => 'sha512');
         $header = array();
-        $header['typ']='JWT';
-        $header['alg']=$algorithm;
+        $header['typ'] = 'JWT';
+        $header['alg'] = $algorithm;
         $token = array();
         $token[0] = rtrim(strtr(base64_encode(json_encode((object)$header)), '+/', '-_'), '=');
         $claims['iat'] = $time;
@@ -130,6 +134,7 @@ class Token
         $hmac = $algorithms[$algorithm];
         $signature = hash_hmac($hmac, "$token[0].$token[1]", $secret, true);
         $token[2] = rtrim(strtr(base64_encode($signature), '+/', '-_'), '=');
+
         return implode('.', $token);
     }
 
@@ -140,6 +145,7 @@ class Token
         $algorithm = static::$algorithm;
         $secret = static::$secret;
         $token = static::generateToken($claims, $time, $ttl, $algorithm, $secret);
+
         return $token;
     }
 }

@@ -8,7 +8,7 @@ if (isset($_POST['username'])) {
         $error = "Username cannot be empty";
     } elseif (!$password) {
         $error = "Password cannot be empty";
-    } elseif ($password!=$password2) {
+    } elseif ($password != $password2) {
         $error = "Passwords must match";
     } elseif (!Auth::register($username, $password)) {
         $error = "User can not be registered";

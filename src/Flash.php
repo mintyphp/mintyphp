@@ -21,6 +21,7 @@ class Flash
         } else {
             $flash = array();
         }
+
         return $flash;
     }
 }

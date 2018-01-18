@@ -45,6 +45,7 @@ class Configurator
         if (!file_exists($filename)) {
             throw new \Exception("Could not read: $filename");
         }
+
         return file_get_contents($filename);
     }
 
@@ -61,11 +62,11 @@ class Configurator
         $store = function ($class, $name, $value) use (&$config) {
             foreach ($config[$class] as $i => $v) {
                 if ($name == $v['name']) {
-                    if (gettype($v['value'])=='boolean') {
+                    if (gettype($v['value']) == 'boolean') {
                         $config[$class][$i]['value'] = (bool)$value;
-                    } elseif (gettype($v['value'])=='integer') {
+                    } elseif (gettype($v['value']) == 'integer') {
                         $config[$class][$i]['value'] = (int)$value;
-                    } elseif (gettype($v['value'])=='double') {
+                    } elseif (gettype($v['value']) == 'double') {
                         $config[$class][$i]['value'] = (float)$value;
                     } else {
                         $config[$class][$i]['value'] = $value;
@@ -114,6 +115,7 @@ class Configurator
         $str .= "<br/>\n";
         $str .= '<input type="submit" value="Test and Save"><br/>';
         $str .= "</form>\n";
+
         return $str;
     }
 
@@ -128,11 +130,11 @@ class Configurator
             } elseif (preg_match('/^\s*public static \$([a-z]+)\s*=(.*);\s*(\/\/(.*))?$/i', $line, $matches)) {
                 $name = $matches[1];
                 $value = trim($matches[2]);
-                if (is_numeric($value) && strpos($value, '.')!==false) {
+                if (is_numeric($value) && strpos($value, '.') !== false) {
                     $value = (float)$value;
                 } elseif (is_numeric($value)) {
                     $value = (int)$value;
-                } elseif (in_array($value, array('true','false'))) {
+                } elseif (in_array($value, array('true', 'false'))) {
                     $value = $value == 'true'?:false;
                 } else {
                     $value = trim($value, '\'"');
@@ -146,6 +148,7 @@ class Configurator
                 $config[$class][] = compact('name', 'value', 'comment');
             }
         }
+
         return $config;
     }
 
@@ -178,6 +181,7 @@ class Configurator
             }
             $code .= "}\n";
         }
+
         return $code;
     }
 
@@ -193,37 +197,43 @@ class Configurator
         $mysqli = new mysqli($parameters['DB_host'], $parameters['DB_username'], $parameters['DB_password']);
         if ($mysqli->connect_error) {
             echo "ERROR: MySQL connect: ($mysqli->connect_errno) $mysqli->connect_error\n";
+
             return false;
         }
         echo "INFO: MySQL connected\n";
         $sql = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$parameters[DB_database]';";
         if (!$result = $mysqli->query($sql)) {
             echo "ERROR: MySQL database check: $mysqli->error\n";
+
             return false;
         } elseif ($result->num_rows) {
             echo "INFO: MySQL database exists\n";
         } else {
             if ($parameters['DB_username'] != 'root') {
                 echo "ERROR: MySQL database not found: $parameters[DB_database]\n";
+
                 return false;
             }
             $sql = "CREATE DATABASE `$parameters[DB_database]` COLLATE 'utf8_bin';";
             if (!$result = $mysqli->query($sql)) {
                 echo "ERROR: MySQL database create: $mysqli->error\n";
+
                 return false;
             }
             echo "INFO: MySQL database created\n";
-            $host = $parameters['DB_host']=='localhost'?'localhost':'%';
+            $host = $parameters['DB_host'] == 'localhost'?'localhost':'%';
             $pass = base64_encode(sha1(rand() . time(true) . $parameters['DB_database'], true));
             $sql = "CREATE USER '$parameters[DB_database]'@'$host' IDENTIFIED BY '$pass';";
             if (!$result = $mysqli->query($sql)) {
                 echo "ERROR: MySQL user create: $mysqli->error\n";
+
                 return false;
             }
             echo "INFO: MySQL user created\n";
             $sql = "GRANT ALL PRIVILEGES ON `$parameters[DB_database]`.* TO '$parameters[DB_database]'@'$host';";
             if (!$result = $mysqli->query($sql)) {
                 echo "ERROR: MySQL grant user: $mysqli->error\n";
+
                 return false;
             }
             echo "INFO: MySQL user granted\n";
@@ -233,18 +243,20 @@ class Configurator
         $sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$parameters[DB_database]' AND TABLE_NAME = 'users';";
         if (!$result = $mysqli->query($sql)) {
             echo "ERROR: MySQL users table check: $mysqli->error\n";
+
             return false;
         } elseif (!$result->num_rows) {
             $sql = "CREATE TABLE `$parameters[DB_database]`.`users` (";
-            $sql.= "`id` int(11) NOT NULL AUTO_INCREMENT,";
-            $sql.= "`username` varchar(255) COLLATE utf8_bin NOT NULL,";
-            $sql.= "`password` varchar(255) COLLATE utf8_bin NOT NULL,";
-            $sql.= "`created` datetime NOT NULL,";
-            $sql.= "PRIMARY KEY (`id`),";
-            $sql.= "UNIQUE KEY `username` (`username`)";
-            $sql.= ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;";
+            $sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
+            $sql .= "`username` varchar(255) COLLATE utf8_bin NOT NULL,";
+            $sql .= "`password` varchar(255) COLLATE utf8_bin NOT NULL,";
+            $sql .= "`created` datetime NOT NULL,";
+            $sql .= "PRIMARY KEY (`id`),";
+            $sql .= "UNIQUE KEY `username` (`username`)";
+            $sql .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;";
             if (!$mysqli->query($sql)) {
                 echo "ERROR: MySQL create users table: $mysqli->error\n";
+
                 return false;
             }
             echo "INFO: MySQL users table created\n";

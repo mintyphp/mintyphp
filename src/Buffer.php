@@ -40,6 +40,7 @@ class Buffer
             return false;
         }
         echo static::$data[$name];
+
         return true;
     }
 }

@@ -21,13 +21,14 @@ class DebugView
             $shortUrl = $url;
         }
         $parts[] = '<small>' . htmlentities($request['router']['method'] . ' ' . $shortUrl) . '</small>';
+
         return implode(' ', $parts);
     }
 
     public static function getRequestList()
     {
         $html = array();
-        $html[] ='<ul class="nav nav-pills nav-stacked">';
+        $html[] = '<ul class="nav nav-pills nav-stacked">';
         $last = count($_SESSION[Debugger::$sessionKey]) - 1;
         foreach ($_SESSION[Debugger::$sessionKey] as $i => $request) {
             $active = ($i == $last?'active':'');
@@ -35,7 +36,8 @@ class DebugView
             $html[] = static::getRequestCaption($request);
             $html[] = '</a></li>';
         }
-        $html[] ='</ul>';
+        $html[] = '</ul>';
+
         return implode("\n", $html);
     }
 
@@ -51,6 +53,7 @@ class DebugView
         $html[] = '<li><a class="debug-request-cache" href="#debug-request-' . $i . '-cache" data-toggle="tab">Cache</a></li>';
         $html[] = '<li><a class="debug-request-logging" href="#debug-request-' . $i . '-logging" data-toggle="tab">Logging</a></li>';
         $html[] = '</ul>';
+
         return implode("\n", $html);
     }
 
@@ -67,17 +70,18 @@ class DebugView
                 $result[$prefix . $key] = $value;
             }
         }
+
         return $result;
     }
 
     public static function getRoutingTabPane($requestId, $request)
     {
         $html = array();
-        $html[] ='<div class="tab-pane active" id="debug-request-' . $requestId . '-routing">';
+        $html[] = '<div class="tab-pane active" id="debug-request-' . $requestId . '-routing">';
         if ($request['router']['method'] == 'GET' && count($request['router']['parameters']['get'])) {
             $html[] = '<div class="alert alert-warning"><strong>Warning:</strong> GET parameters should not be used</div>';
         }
-        if ($request['router']['method']=='POST' && !$request['router']['csrfOk']) {
+        if ($request['router']['method'] == 'POST' && !$request['router']['csrfOk']) {
             $html[] = '<div class="alert alert-danger"><strong>Error:</strong> CSRF token validation failed</div>';
         }
         $html[] = '<h4>Request</h4>';
@@ -117,6 +121,7 @@ class DebugView
             $html[] = '</tbody></table>';
         }
         $html[] = '</div>';
+
         return implode("\n", $html);
     }
 
@@ -128,32 +133,32 @@ class DebugView
         $html[] = '<div class="well well-sm">';
         if (!isset($request['type'])) {
             $html[] = '???';
-        } elseif ($request['type']=='abort') {
+        } elseif ($request['type'] == 'abort') {
             $html[] = htmlspecialchars('Aborted: Exception, "die()" or "exit" encountered');
-        } elseif ($request['type']=='ok') {
+        } elseif ($request['type'] == 'ok') {
             $html[] = htmlspecialchars('Rendered page: '.$request['router']['url']);
-        } elseif ($request['type']=='redirect') {
+        } elseif ($request['type'] == 'redirect') {
             $html[] = htmlspecialchars('Redirected to: '.$request['redirect']);
         }
-        $html[] ='</div>';
-        $html[] ='</div>';
-        $html[] ='<div class="col-md-2"><h4>Code</h4>';
-        $html[] ='<div class="well well-sm">';
-        $html[] =htmlspecialchars($request['status']);
-        $html[] ='</div>';
-        $html[] ='</div>';
-        $html[] ='</div>';
-        list($time,$micro) = explode('.', $request['start']);
+        $html[] = '</div>';
+        $html[] = '</div>';
+        $html[] = '<div class="col-md-2"><h4>Code</h4>';
+        $html[] = '<div class="well well-sm">';
+        $html[] = htmlspecialchars($request['status']);
+        $html[] = '</div>';
+        $html[] = '</div>';
+        $html[] = '</div>';
+        list($time, $micro) = explode('.', $request['start']);
         $time = date('H:i:s', $time).'.'.substr($micro, 0, 3);
-        $duration = isset($request['duration'])?sprintf('%.2f ms', $request['duration']*1000):'???';
-        $memory = isset($request['memory'])?sprintf('%.2f MB', $request['memory']/1000000):'???';
-        $html[] ='<table class="table"><thead>';
-        $html[] ='<tr><th>Time</th><th>Duration</th><th>Peak memory</th><th>Run as</th></tr>';
-        $html[] ='</thead><tbody><tr>';
-        $html[] ='<td>'.$time.'</td><td>'.$duration.'</td><td>'.$memory.'</td><td>'.$request['user'].'</td>';
-        $html[] ='</tr></tbody></table>';
-        $html[] ='<h4>Classes</h4>';
-        $html[] ='<table class="table"><tbody>';
+        $duration = isset($request['duration'])?sprintf('%.2f ms', $request['duration'] * 1000):'???';
+        $memory = isset($request['memory'])?sprintf('%.2f MB', $request['memory'] / 1000000):'???';
+        $html[] = '<table class="table"><thead>';
+        $html[] = '<tr><th>Time</th><th>Duration</th><th>Peak memory</th><th>Run as</th></tr>';
+        $html[] = '</thead><tbody><tr>';
+        $html[] = '<td>'.$time.'</td><td>'.$duration.'</td><td>'.$memory.'</td><td>'.$request['user'].'</td>';
+        $html[] = '</tr></tbody></table>';
+        $html[] = '<h4>Classes</h4>';
+        $html[] = '<table class="table"><tbody>';
         $total = 0;
         $count = 0;
         foreach ($request['classes'] as $filename) {
@@ -161,14 +166,15 @@ class DebugView
             $path = str_replace(realpath(getcwd()).'/', '', $filename);
             $path = htmlspecialchars($path);
             $size = filesize($filename);
-            $total+= $size;
-            $size = sprintf('%.2f kB', $size/1000);
-            $html[] ='<tr><td>'.$count.'.</td><td>'.$path.'</td><td>'.$size.'</td></tr>';
+            $total += $size;
+            $size = sprintf('%.2f kB', $size / 1000);
+            $html[] = '<tr><td>'.$count.'.</td><td>'.$path.'</td><td>'.$size.'</td></tr>';
         }
-        $total = sprintf('%.2f kB', $total/1000);
-        $html[] ='<tr><td colspan="2"><strong>Total</strong></td><td><strong>'.$total.'</strong></td></tr>';
-        $html[] ='</tbody></table>';
-        $html[] ='</div>';
+        $total = sprintf('%.2f kB', $total / 1000);
+        $html[] = '<tr><td colspan="2"><strong>Total</strong></td><td><strong>'.$total.'</strong></td></tr>';
+        $html[] = '</tbody></table>';
+        $html[] = '</div>';
+
         return implode("\n", $html);
     }
 
@@ -183,26 +189,28 @@ class DebugView
             $html[] = '</pre>';
         }
         $html[] = '</div>';
+
         return implode("\n", $html);
     }
 
     protected static function getQueriesTabPaneTabList($requestId, $i, $args, $rows)
     {
         $html = array();
-        $html[] ='<ul class="nav nav-pills">';
+        $html[] = '<ul class="nav nav-pills">';
         $args = $args?'<span class="badge pull-right">'.$args.'</span>':'';
-        $html[] ='<li class="active"><a href="#debug-request-'.$requestId.'-query-'.$i.'-arguments" data-toggle="tab">Arguments'.$args.'</a></li>';
-        $html[] ='<li><a href="#debug-request-'.$requestId.'-query-'.$i.'-explain" data-toggle="tab">Explain</a></li>';
+        $html[] = '<li class="active"><a href="#debug-request-'.$requestId.'-query-'.$i.'-arguments" data-toggle="tab">Arguments'.$args.'</a></li>';
+        $html[] = '<li><a href="#debug-request-'.$requestId.'-query-'.$i.'-explain" data-toggle="tab">Explain</a></li>';
         $rows = $rows?'<span class="badge pull-right">'.$rows.'</span>':'';
-        $html[] ='<li><a href="#debug-request-'.$requestId.'-query-'.$i.'-result" data-toggle="tab">Result'.$rows.'</a></li>';
-        $html[] ='</ul>';
+        $html[] = '<li><a href="#debug-request-'.$requestId.'-query-'.$i.'-result" data-toggle="tab">Result'.$rows.'</a></li>';
+        $html[] = '</ul>';
+
         return implode("\n", $html);
     }
 
     protected static function getQueriesTabPaneTabPane($requestId, $query, $queryId, $type)
     {
         $html = array();
-        if ($type=='arguments') {
+        if ($type == 'arguments') {
             $html[] = '<div class="tab-pane active" id="debug-request-'.$requestId.'-query-'.$queryId.'-'.$type.'">';
             $html[] = '<pre style="margin-top:10px;">';
             $html[] = 'PREPARE `query` FROM \''.$query['equery'].'\';';
@@ -212,8 +220,8 @@ class DebugView
                     $html[] = '';
                     $params = ' USING ';
                 }
-                $params.= '@argument'.($i+1).',';
-                $html[] = 'SET @argument'.($i+1).' = '.var_export($argument, true).';';
+                $params .= '@argument'.($i + 1).',';
+                $html[] = 'SET @argument'.($i + 1).' = '.var_export($argument, true).';';
             }
             $params = rtrim($params, ',');
             $html[] = '';
@@ -231,13 +239,13 @@ class DebugView
                 $html[] = '<tr><th>#</th><th>Table</th><th>Field</th><th>Value</th></tr>';
                 $html[] = '</thead><tbody>';
                 foreach ($query[$type] as $i => $tables) {
-                    $f=0;
-                    $fc=array_sum(array_map("count", $tables));
+                    $f = 0;
+                    $fc = array_sum(array_map("count", $tables));
                     foreach ($tables as $table => $fields) {
-                        $t=0;
-                        $tc=count($fields);
+                        $t = 0;
+                        $tc = count($fields);
                         foreach ($fields as $field => $value) {
-                            $rowCell = $f?'':'<td rowspan="'.$fc.'">'.($i+1).'</td>';
+                            $rowCell = $f?'':'<td rowspan="'.$fc.'">'.($i + 1).'</td>';
                             $tableCell = $t?'':'<td rowspan="'.$tc.'">'.$table.'</td>';
                             $html[] = '<tr>'.$rowCell.$tableCell.'<td>'.$field.'</td><td>'.htmlspecialchars(var_export($value, true)).'</td></tr>';
                             $t++;
@@ -251,6 +259,7 @@ class DebugView
             $html[] = '</tbody>';
             $html[] = '</table></div>';
         }
+
         return implode("\n", $html);
     }
 
@@ -265,10 +274,10 @@ class DebugView
         $total = 0;
         foreach ($request['queries'] as $i => $query) {
             $count++;
-            $total+= $query['duration'];
+            $total += $query['duration'];
             $html[] = '<tr>';
             $html[] = '<td><a href="#" onclick="$(\'#debug-request-'.$requestId.'-query-'.$i.'\').toggle(); return false;">'.$query['query'].'</a></td>';
-            $html[] = '<td>'.sprintf('%.2f ms', $query['duration']*1000).'</td>';
+            $html[] = '<td>'.sprintf('%.2f ms', $query['duration'] * 1000).'</td>';
             $html[] = '</tr>';
             $html[] = '<tr style="display:none;" id="debug-request-'.$requestId.'-query-'.$i.'"><td colspan="5">';
 
@@ -282,9 +291,10 @@ class DebugView
             $html[] = '</td></tr>';
         }
         $html[] = '<tr><td><strong>'.$count.' queries</strong></td>';
-        $html[] = '<td>'.sprintf('%.2f ms', $total*1000).'</td></tr>';
+        $html[] = '<td>'.sprintf('%.2f ms', $total * 1000).'</td></tr>';
         $html[] = '</tbody></table>';
         $html[] = '</div>';
+
         return implode("\n", $html);
     }
 
@@ -299,16 +309,16 @@ class DebugView
         $total = 0;
         foreach ($request['api_calls'] as $i => $call) {
             $count++;
-            $total+= $call['duration'];
+            $total += $call['duration'];
             $url = $call['url'];
-            if (strlen($url)>40) {
+            if (strlen($url) > 40) {
                 $shortUrl = substr($url, 0, 40).'...';
             } else {
                 $shortUrl = $url;
             }
             $html[] = '<tr>';
             $html[] = '<td><a href="#" onclick="$(\'#debug-request-'.$requestId.'-api_call-'.$i.'\').toggle(); return false;">'.$call['method'].' '.$shortUrl.'<span class="badge pull-right">'.$call['status'].'</span></a></td>';
-            $html[] = '<td>'.sprintf('%.2f ms', $call['duration']*1000).'</td>';
+            $html[] = '<td>'.sprintf('%.2f ms', $call['duration'] * 1000).'</td>';
             $html[] = '</tr>';
             $html[] = '<tr style="display:none;" id="debug-request-'.$requestId.'-api_call-'.$i.'"><td colspan="5">';
 
@@ -316,21 +326,21 @@ class DebugView
             $html[] = '<tr><th>Category</th><th>Key</th><th>Value</th></tr>';
             $html[] = '</thead><tbody>';
             $tables = array();
-            $tables['details']=array();
-            $tables['details']['method']=$call['method'];
-            $tables['details']['url']='<a href="'.$url.'" target="_blank">Visit</a>';
-            $tables['details']['status']=$call['status'];
-            $tables['details']['data_sent']=$call['data']?'<a href="data:text/plain;base64,'.base64_encode($call['data']).'" target="_blank">'.strlen($call['data']).' bytes</a>':'-';
-            $tables['details']['data_received']=$call['result']?'<a href="data:text/plain;base64,'.base64_encode($call['result']).'" target="_blank">View ('.strlen($call['result']).' bytes)</a>':'-';
+            $tables['details'] = [];
+            $tables['details']['method'] = $call['method'];
+            $tables['details']['url'] = '<a href="'.$url.'" target="_blank">Visit</a>';
+            $tables['details']['status'] = $call['status'];
+            $tables['details']['data_sent'] = $call['data']?'<a href="data:text/plain;base64,'.base64_encode($call['data']).'" target="_blank">'.strlen($call['data']).' bytes</a>':'-';
+            $tables['details']['data_received'] = $call['result']?'<a href="data:text/plain;base64,'.base64_encode($call['result']).'" target="_blank">View ('.strlen($call['result']).' bytes)</a>':'-';
             $tables['timing'] = array_map(function ($v) {
-                return sprintf('%.2f ms', $v*1000);
+                return sprintf('%.2f ms', $v * 1000);
             }, $call['timing']);
 
-            $tables['options']=$call['options'];
-            $tables['headers']=$call['headers'];
+            $tables['options'] = $call['options'];
+            $tables['headers'] = $call['headers'];
             foreach ($tables as $table => $fields) {
-                $t=0;
-                $tc=count($fields);
+                $t = 0;
+                $tc = count($fields);
                 foreach ($fields as $field => $value) {
                     $tableCell = $t?'':'<td rowspan="'.$tc.'">'.$table.'</td>';
                     $html[] = '<tr>'.$tableCell.'<td>'.$field.'</td><td>'.$value.'</td></tr>';
@@ -343,9 +353,10 @@ class DebugView
             $html[] = '</td></tr>';
         }
         $html[] = '<tr><td><strong>'.$count.' API calls</strong></td>';
-        $html[] = '<td>'.sprintf('%.2f ms', $total*1000).'</td></tr>';
+        $html[] = '<td>'.sprintf('%.2f ms', $total * 1000).'</td></tr>';
         $html[] = '</tbody></table>';
         $html[] = '</div>';
+
         return implode("\n", $html);
     }
 
@@ -360,31 +371,33 @@ class DebugView
         $total = 0;
         foreach ($request['cache'] as $i => $call) {
             $count++;
-            $total+= $call['duration'];
+            $total += $call['duration'];
 
             $html[] = '<tr>';
             $html[] = '<td>'.strtoupper($call['command']).' '.implode(' ', $call['arguments']).'</td>';
             $html[] = '<td>'.$call['result'].'</td>';
-            $html[] = '<td>'.sprintf('%.2f ms', $call['duration']*1000).'</td>';
+            $html[] = '<td>'.sprintf('%.2f ms', $call['duration'] * 1000).'</td>';
             $html[] = '</tr>';
         }
         $html[] = '<tr><td colspan="2"><strong>'.$count.' commands</strong></td>';
-        $html[] = '<td>'.sprintf('%.2f ms', $total*1000).'</td></tr>';
+        $html[] = '<td>'.sprintf('%.2f ms', $total * 1000).'</td></tr>';
         $html[] = '</tbody></table>';
         $html[] = '</div>';
+
         return implode("\n", $html);
     }
 
     public static function getLoggingTabPane($requestId, $request)
     {
         $html = array();
-        $html[] ='<div class="tab-pane" id="debug-request-'.$requestId.'-logging">';
-        $html[] ='<br/><pre>';
+        $html[] = '<div class="tab-pane" id="debug-request-'.$requestId.'-logging">';
+        $html[] = '<br/><pre>';
         foreach ($request['log'] as $log) {
-            $html[] =htmlspecialchars($log)."\n";
+            $html[] = htmlspecialchars($log)."\n";
         }
-        $html[] ='</pre>';
-        $html[] ='</div>';
+        $html[] = '</pre>';
+        $html[] = '</div>';
+
         return implode("\n", $html);
     }
 }
@@ -429,9 +442,9 @@ Session::start();
       </div>
       <div class="col-md-8">
         <div class="tab-content">
-            <?php $last = count($_SESSION[Debugger::$sessionKey])-1; ?>
+            <?php $last = count($_SESSION[Debugger::$sessionKey]) - 1; ?>
             <?php foreach ($_SESSION[Debugger::$sessionKey] as $i => $request) : ?>
-          <div class="tab-pane <?php echo $i==$last?'active':''; ?>" id="debug-request-<?php echo $i ?>">
+          <div class="tab-pane <?php echo $i == $last?'active':''; ?>" id="debug-request-<?php echo $i ?>">
             <?php echo DebugView::getTabList($i); ?>
             <div class="tab-content">
                 <?php echo DebugView::getRoutingTabPane($i, $request); ?>

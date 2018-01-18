@@ -36,13 +36,15 @@ namespace {
         {
             if (!function_exists('crypt')) {
                 trigger_error("Crypt must be loaded for password_hash to function", E_USER_WARNING);
+
                 return null;
             }
             if (is_null($password) || is_int($password)) {
-                $password = (string) $password;
+                $password = (string)$password;
             }
             if (!is_string($password)) {
                 trigger_error("password_hash(): Password must be a string", E_USER_WARNING);
+
                 return null;
             }
             if (!is_int($algo)) {
@@ -50,6 +52,7 @@ namespace {
                     "password_hash() expects parameter 2 to be long, " . gettype($algo) . " given",
                     E_USER_WARNING
                 );
+
                 return null;
             }
             $resultLength = 0;
@@ -66,6 +69,7 @@ namespace {
                                 ),
                                 E_USER_WARNING
                             );
+
                             return null;
                         }
                     }
@@ -85,6 +89,7 @@ namespace {
                         ),
                         E_USER_WARNING
                     );
+
                     return null;
             }
             $salt_requires_encoding = false;
@@ -95,11 +100,11 @@ namespace {
                     case 'integer':
                     case 'double':
                     case 'string':
-                        $salt = (string) $options['salt'];
+                        $salt = (string)$options['salt'];
                         break;
                     case 'object':
                         if (method_exists($options['salt'], '__tostring')) {
-                            $salt = (string) $options['salt'];
+                            $salt = (string)$options['salt'];
                             break;
                         }
                         // no break
@@ -107,6 +112,7 @@ namespace {
                     case 'resource':
                     default:
                         trigger_error('password_hash(): Non-string salt parameter supplied', E_USER_WARNING);
+
                         return null;
                 }
                 if (PasswordCompat\binary\_strlen($salt) < $required_salt_len) {
@@ -118,6 +124,7 @@ namespace {
                         ),
                         E_USER_WARNING
                     );
+
                     return null;
                 } elseif (0 == preg_match('#^[a-zA-Z0-9./]+$#D', $salt)) {
                     $salt_requires_encoding = true;
@@ -214,6 +221,7 @@ namespace {
                 list($cost) = sscanf($hash, "$2y$%d$");
                 $return['options']['cost'] = $cost;
             }
+
             return $return;
         }
 
@@ -242,6 +250,7 @@ namespace {
                     }
                     break;
             }
+
             return false;
         }
 
@@ -257,6 +266,7 @@ namespace {
         {
             if (!function_exists('crypt')) {
                 trigger_error("Crypt must be loaded for password_verify to function", E_USER_WARNING);
+
                 return false;
             }
             $ret = crypt($password, $hash);
@@ -298,6 +308,7 @@ namespace PasswordCompat\binary {
             if (function_exists('mb_strlen')) {
                 return mb_strlen($binary_string, '8bit');
             }
+
             return strlen($binary_string);
         }
 
@@ -318,6 +329,7 @@ namespace PasswordCompat\binary {
             if (function_exists('mb_substr')) {
                 return mb_substr($binary_string, $start, $length, '8bit');
             }
+
             return substr($binary_string, $start, $length);
         }
 
@@ -339,6 +351,7 @@ namespace PasswordCompat\binary {
                     $pass = false;
                 }
             }
+
             return $pass;
         }
 

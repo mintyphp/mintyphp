@@ -23,10 +23,11 @@ class NoPassAuth
             $password = $user[$table][static::$passwordField];
             Token::$secret = $password;
             Token::$ttl = static::$tokenValidity;
-            $token = Token::getToken(array('user'=>$username,'ip'=>$_SERVER['REMOTE_ADDR']));
+            $token = Token::getToken(array('user' => $username, 'ip' => $_SERVER['REMOTE_ADDR']));
         } else {
             $token = '';
         }
+
         return $token;
     }
 
@@ -47,25 +48,27 @@ class NoPassAuth
             $password = $user[$table][static::$passwordField];
             Token::$secret = $password;
             Token::$ttl = static::$tokenValidity;
-            $claims = Token::getClaims(array('Authorization'=>'Bearer '.$token));
-            if ($claims && $claims['user']==$username && $claims['ip']==$_SERVER['REMOTE_ADDR']) {
+            $claims = Token::getClaims(array('Authorization' => 'Bearer '.$token));
+            if ($claims && $claims['user'] == $username && $claims['ip'] == $_SERVER['REMOTE_ADDR']) {
                 session_regenerate_id(true);
                 $_SESSION['user'] = $user[$table];
             } else {
                 $user = array();
             }
         }
+
         return $user;
     }
 
     public static function logout()
     {
         foreach ($_SESSION as $key => $value) {
-            if ($key!='debugger') {
+            if ($key != 'debugger') {
                 unset($_SESSION[$key]);
             }
         }
         session_regenerate_id(true);
+
         return true;
     }
 
@@ -80,6 +83,7 @@ class NoPassAuth
         );
         $password = bin2hex(random_bytes(16));
         $password = password_hash($password, PASSWORD_DEFAULT);
+
         return DB::insert($query, $username, $password);
     }
 
@@ -93,6 +97,7 @@ class NoPassAuth
         );
         $password = bin2hex(random_bytes(16));
         $password = password_hash($password, PASSWORD_DEFAULT);
+
         return DB::update($query, $password, $username);
     }
 
@@ -103,6 +108,7 @@ class NoPassAuth
             static::$usersTable,
             static::$usernameField
         );
+
         return DB::selectValue($query, $username);
     }
 }

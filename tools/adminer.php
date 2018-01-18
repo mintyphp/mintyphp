@@ -38,5 +38,4 @@ function adminer_object()
     return new AdminerSoftware;
 }
 
-
 include 'vendor/mindaphp/mindaphp/tools/latest.php';

@@ -18,6 +18,7 @@ class Firewall
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
+
         return $ip;
     }
 
@@ -26,6 +27,7 @@ class Firewall
         if (!static::$key) {
             static::$key = static::$cachePrefix.'_'.static::getClientIp();
         }
+
         return static::$key;
     }
 
@@ -36,13 +38,13 @@ class Firewall
         $start = microtime(true);
         Cache::add($key, 0, static::$intervalSeconds);
         register_shutdown_function('Firewall::end');
-        while (Cache::increment($key)>static::$concurrency) {
+        while (Cache::increment($key) > static::$concurrency) {
             Cache::decrement($key);
-            if (!static::$spinLockSeconds || microtime(true)-$start>static::$intervalSeconds) {
+            if (!static::$spinLockSeconds || microtime(true) - $start > static::$intervalSeconds) {
                 http_response_code(429);
                 die('429: Too Many Requests');
             }
-            usleep(static::$spinLockSeconds*1000000);
+            usleep(static::$spinLockSeconds * 1000000);
         }
     }
 

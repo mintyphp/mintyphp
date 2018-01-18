@@ -19,16 +19,17 @@ class Debugger
         static::$initialized = true;
         if (!static::$enabled) {
             error_reporting(0);
+
             return;
         }
         error_reporting(-1);
-        static::$request = array(
-            'log' => array(),
-            'queries' => array(),
-            'api_calls' => array(),
-            'session' => array(),
-            'cache' => array()
-        );
+        static::$request = [
+            'log' => [],
+            'queries' => [],
+            'api_calls' => [],
+            'session' => [],
+            'cache' => []
+        ];
         Session::start();
         $_SESSION[static::$sessionKey][] = &static::$request;
         while (count($_SESSION[static::$sessionKey]) > static::$history) {
@@ -81,6 +82,7 @@ class Debugger
         if (!static::$initialized) {
             static::initialize();
         }
+
         return isset(static::$request[$key])?static::$request[$key]:false;
     }
 
@@ -91,7 +93,7 @@ class Debugger
         }
         Session::end();
         static::set('type', $type);
-        static::set('duration', microtime(true)-static::get('start'));
+        static::set('duration', microtime(true) - static::get('start'));
         static::set('memory', memory_get_peak_usage(true));
         static::set('classes', Loader::getFiles());
     }
@@ -109,12 +111,12 @@ class Debugger
         $parts[] = date('H:i:s', $request['start']);
         $parts[] = strtolower($request['router']['method']) . ' ' . htmlentities($request['router']['url']);
         if (!isset($request['type'])) {
-            $parts[] ='???';
+            $parts[] = '???';
         } else {
             $parts[] = round($request['duration'] * 1000) . ' ms ';
             $parts[] = round($request['memory'] / 1000000) . ' MB';
         }
-        $html.= implode(' - ', $parts) . ' - <a href="debugger/">debugger</a>';
+        $html .= implode(' - ', $parts) . ' - <a href="debugger/">debugger</a>';
         if (substr($_SERVER['SERVER_SOFTWARE'], 0, 4) == 'PHP ') {
             $html .= ' - <a href="/adminer.php">adminer</a>';
         }
@@ -159,7 +161,7 @@ class Debugger
                 if ($len < $strlen) {
                     $string .= '"' . $variable . '"';
                 } else {
-                    $string.= 'string(' . $len . '): "' . $variable . '"...';
+                    $string .= 'string(' . $len . '): "' . $variable . '"...';
                 }
                 break;
             case 'array':
@@ -193,7 +195,7 @@ class Debugger
                     $string .= get_class($variable) . ' {...}';
                 } else {
                     $id = array_push($objects, $variable);
-                    $array = (array) $variable;
+                    $array = (array)$variable;
                     $spaces = str_repeat(' ', $i * 2);
                     $string .= get_class($variable) . "#$id\n" . $spaces . '{';
                     $properties = array_keys($array);
@@ -221,6 +223,7 @@ class Debugger
         if (static::$enabled) {
             static::add('log', $string);
         }
+
         return $string;
     }
 }

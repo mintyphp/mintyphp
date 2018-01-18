@@ -25,6 +25,7 @@ class Auth
                 $user = array();
             }
         }
+
         return $user;
     }
 
@@ -36,6 +37,7 @@ class Auth
             }
         }
         session_regenerate_id(true);
+
         return true;
     }
 
@@ -49,6 +51,7 @@ class Auth
             static::$createdField
         );
         $password = password_hash($password, PASSWORD_DEFAULT);
+
         return DB::insert($query, $username, $password);
     }
 
@@ -61,6 +64,7 @@ class Auth
             static::$usernameField
         );
         $password = password_hash($password, PASSWORD_DEFAULT);
+
         return DB::update($query, $password, $username);
     }
 
@@ -71,6 +75,7 @@ class Auth
             static::$usersTable,
             static::$usernameField
         );
+
         return DB::selectValue($query, $username);
     }
 }

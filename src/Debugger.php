@@ -23,13 +23,13 @@ class Debugger
             return;
         }
         error_reporting(-1);
-        static::$request = [
-            'log' => [],
-            'queries' => [],
-            'api_calls' => [],
-            'session' => [],
-            'cache' => []
-        ];
+        static::$request = array(
+            'log' => array(),
+            'queries' => array(),
+            'api_calls' => array(),
+            'session' => array(),
+            'cache' => array()
+        );
         Session::start();
         $_SESSION[static::$sessionKey][] = &static::$request;
         while (count($_SESSION[static::$sessionKey]) > static::$history) {

@@ -14,5 +14,7 @@ if (in_array($_SERVER['SCRIPT_NAME'],array('/adminer.php','/conventionist.php','
 } else {
   $_SERVER['SCRIPT_NAME'] = '/index.php';
   chdir('web');
+  header('X-Content-Type-Options: nosniff');
+  header('X-Frame-Options: DENY');
   require 'index.php';
 }

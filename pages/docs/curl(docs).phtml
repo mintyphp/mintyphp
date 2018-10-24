@@ -11,5 +11,5 @@ In the view (.phtml) file we can show the returned status ('200' on success), th
 <pre>
 &lt;?php e($result['status']); ?&gt;
 &lt;?php e($result['data']); ?&gt;
-&lt;?php e(var_export($result['data'],true)); ?&gt;
+&lt;?php e(var_export($result['headers'],true)); ?&gt;
 </pre>

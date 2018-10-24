@@ -3,7 +3,7 @@ namespace MindaPHP\Tests;
 
 use MindaPHP\DB;
 
-class DBTest extends \PHPUnit_Framework_TestCase
+class DBTest extends \PHPUnit\Framework\TestCase
 {
     public static function setUpBeforeClass()
     {
@@ -85,7 +85,7 @@ class DBTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('id', array_keys($result[0]['posts'])[0]);
         $result = DB::select("SELECT * FROM `posts`, `users` WHERE posts.user_id = users.id and users.username = 'test1';");
         $this->assertEquals(2, count($result));
-        $this->assertEquals(array('posts','users'), array_keys($result[0]));
+        $this->assertEquals(array('posts', 'users'), array_keys($result[0]));
         $this->assertEquals('id', array_keys($result[0]['posts'])[0]);
         $this->assertEquals('test1', $result[0]['users']['username']);
         $this->setExpectedException('MindaPHP\DBError');
@@ -106,7 +106,7 @@ class DBTest extends \PHPUnit_Framework_TestCase
     public function testSelectValues()
     {
         $result = DB::selectValues("SELECT username FROM `users`;");
-        $this->assertEquals(array('test1','test2'), $result);
+        $this->assertEquals(array('test1', 'test2'), $result);
         $result = DB::selectValues("SELECT username FROM `users` WHERE username like 'm%' limit 1;");
         $this->assertEquals(array(), $result);
         $this->setExpectedException('MindaPHP\DBError');
@@ -130,7 +130,6 @@ class DBTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('MindaPHP\DBError');
         $result = DB::query("some bogus query;");
     }
-
 
     public function testDeletePosts()
     {

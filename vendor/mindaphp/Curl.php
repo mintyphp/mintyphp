@@ -11,7 +11,7 @@ class Curl
     public static $headers = array();
     public static $cookies = false;
 
-    public static function callCached($expire, $method, $url, $data, &$result)
+    public static function callCached($expire, $method, $url, $data, $headers)
     {
         $key = $method . '_' . $url . '_' . json_encode($data);
         $result = Cache::get($key);
@@ -25,9 +25,8 @@ class Curl
         return $status;
     }
 
-    public static function call($method, $url, $data)
+    public static function call($method, $url, $data = '', $headers = array(), $options = array())
     {
-
         if (Debugger::$enabled) {
             $time = microtime(true);
         }
@@ -43,7 +42,9 @@ class Curl
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieJar);
         }
 
-        static::setOptions($ch, $method, $url, $data);
+        $headers = array_merge(static::$headers, $headers);
+        $options = array_merge(static::$options, $options);
+        static::setOptions($ch, $method, $url, $data, $headers, $options);
 
         $result = curl_exec($ch);
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -67,36 +68,38 @@ class Curl
             unset($_SESSION['curl_cookies']);
         }
 
+        list($head, $body) = explode("\r\n\r\n", $result, 2);
+        $result = array('status' => $status);
+        $result['headers'] = array();
+        $result['data'] = $body;
+        foreach (explode("\r\n", $head) as $i => $header) {
+            if ($i == 0) {
+                continue;
+            }
+            list($key, $value) = explode(': ', $header);
+            $result['headers'][$key] = $value;
+        }
+
         if (Debugger::$enabled) {
             $duration = microtime(true) - $time;
-            $options = static::$options;
-            $headers = static::$headers;
             Debugger::add('api_calls', compact('duration', 'method', 'url', 'data', 'options', 'headers', 'status', 'timing', 'result'));
         }
 
-        list($head, $body) = explode("\r\n\r\n", $result, 2);
-        $headers = array();
-        foreach (explode("\r\n", $head) as $header) {
-            list($key, $value) = explode(': ', $header);
-            $headers[$key] = $value;
-        }
-
-        return $status;
+        return $result;
     }
 
-    protected static function setOptions($ch, $method, &$url, &$data)
+    protected static function setOptions($ch, $method, &$url, &$data, $headers, $options)
     {
-
         // Set default options
-        foreach (static::$options as $option => $value) {
+        foreach ($options as $option => $value) {
             curl_setopt($ch, constant(strtoupper($option)), $value);
         }
 
-        $headers = array();
-        foreach (static::$headers as $key => $value) {
-            $headers[] = $key . ': ' . $value;
+        $head = array();
+        foreach ($headers as $key => $value) {
+            $head[] = $key . ': ' . $value;
         }
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
         curl_setopt($ch, CURLOPT_HEADER, true);
 
         if (is_array($data)) {

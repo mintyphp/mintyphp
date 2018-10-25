@@ -2,7 +2,7 @@
 // Change directory to project root
 chdir(__DIR__ . '/../..');
 // Use default autoload implementation
-require 'vendor/mindaphp/Loader.php';
+require 'vendor/mindaphp/core/Loader.php';
 // Load the config parameters
 require 'config/config.php';
 // Debugview class

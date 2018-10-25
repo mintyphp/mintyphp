@@ -11,7 +11,7 @@ $path = realpath('.');
 $prefixes = array(
   'web/index.php',
   'web/debugger/',
-  'vendor/mindaphp/',
+  'vendor/mindaphp/core/',
   'tools/'
 );
 

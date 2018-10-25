@@ -21,7 +21,7 @@ if (!file_exists('tools/latest.php')) {
 }
 if (!file_exists('composer.phar')) {
 	echo "INFO: Composer not found, downloading...\n";
-	file_put_contents('composer.phar',file_get_contents('https://getcomposer.org/installer'));
+	file_put_contents('composer.phar',file_get_contents('https://getcomposer.org/composer.phar'));
 }
 if (!file_exists('composer.phar')) {
 	echo "ERROR: Could not write 'composer.phar'\n";

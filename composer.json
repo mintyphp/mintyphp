@@ -9,6 +9,6 @@
     }
     ],
     "require": {
-        "mindaphp/core": "~1.1"
+        "mindaphp/core": "*"
     }
 }

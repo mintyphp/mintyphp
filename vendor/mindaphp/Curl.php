@@ -25,6 +25,11 @@ class Curl
         return $status;
     }
 
+    public static function navigate($method, $url, $data = '', $headers = array(), $options = array())
+    {
+        return static::call($method, $url, $data, $headers, array_merge($options, array('CURLOPT_FOLLOWLOCATION' => true)));
+    }
+
     public static function call($method, $url, $data = '', $headers = array(), $options = array())
     {
         if (Debugger::$enabled) {
@@ -48,6 +53,7 @@ class Curl
 
         $result = curl_exec($ch);
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $location = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 
         if (Debugger::$enabled) {
             $timing = array();
@@ -72,6 +78,8 @@ class Curl
         $result = array('status' => $status);
         $result['headers'] = array();
         $result['data'] = $body;
+        $result['url'] = $location;
+
         foreach (explode("\r\n", $head) as $i => $header) {
             if ($i == 0) {
                 continue;

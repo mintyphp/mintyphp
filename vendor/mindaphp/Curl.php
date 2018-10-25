@@ -11,18 +11,23 @@ class Curl
     public static $headers = array();
     public static $cookies = false;
 
-    public static function callCached($expire, $method, $url, $data, $headers)
+    public static function navigateCached($expire, $method, $url, $data, $headers, $options)
     {
-        $key = $method . '_' . $url . '_' . json_encode($data);
+        return static::callCached($expire, $method, $url, $data, $headers, array_merge($options, array('CURLOPT_FOLLOWLOCATION' => true)));
+    }
+
+    public static function callCached($expire, $method, $url, $data, $headers, $options)
+    {
+        $key = $method . '_' . $url . '_' . json_encode($data) . '_' . json_encode($headers) . '_' . json_encode($options);
         $result = Cache::get($key);
         if ($result) {
-            return 200;
+            return $result;
         }
-        $status = static::call($method, $url, $data, $result);
-        if ($status == 200) {
+        $result = static::call($method, $url, $data, $headers, $options);
+        if ($result['status'] == 200) {
             Cache::set($key, $result, $expire);
         }
-        return $status;
+        return $result;
     }
 
     public static function navigate($method, $url, $data = '', $headers = array(), $options = array())

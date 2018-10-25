@@ -1,0 +1,46 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "d2b89c7332a176d1124967e741a9de98",
+    "packages": [
+        {
+            "name": "mindaphp/core",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mindaphp/core.git",
+                "reference": "0afae46a0b970d946130fe5b837e9e390909f352"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mindaphp/core/zipball/0afae46a0b970d946130fe5b837e9e390909f352",
+                "reference": "0afae46a0b970d946130fe5b837e9e390909f352",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maurits van der Schee",
+                    "email": "maurits@vdschee.nl",
+                    "homepage": "https://www.tqdev.com"
+                }
+            ],
+            "time": "2018-10-25T15:00:49+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

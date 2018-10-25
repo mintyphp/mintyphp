@@ -9,5 +9,6 @@
     }
     ],
     "require": {
+        "mindaphp/core": "*"
     }
 }

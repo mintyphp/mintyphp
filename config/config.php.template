@@ -43,3 +43,8 @@ class Debugger
 {
   public static $enabled = true; // enable during development
 }
+
+class Hello
+{
+  public static $name = 'world'; // class from "lib" folder
+}

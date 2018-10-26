@@ -7,6 +7,6 @@ php vendor/mindaphp/tools/requirements.php
 if [[ $? != 0 ]]; then
     exit
 fi
-rsync -aqr vendor/mindaphp/debugger/ web/debugger/ --delete
+cp -r vendor/mindaphp/debugger web/
 php -t web/ -S localhost:8000 vendor/mindaphp/tools/server.php
 rm -Rf web/debugger

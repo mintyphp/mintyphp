@@ -1,8 +1,8 @@
 <?php
 // Change directory to project root
-chdir(__DIR__.'/..');
+chdir(__DIR__ . '/..');
 // Use default autoload implementation
-require 'vendor/mindaphp/core/Loader.php';
+require 'vendor/mindaphp/core/src/Loader.php';
 // Load the libraries
 require 'config/loader.php';
 // Load the config parameters
@@ -10,8 +10,10 @@ require 'config/config.php';
 // Load the routes
 require 'config/router.php';
 // Register shortcut functions
-function e($string) { echo htmlspecialchars($string,ENT_QUOTES,'UTF-8'); }
-function d() { return call_user_func_array('Debugger::debug',func_get_args()); }
+function e($string)
+{echo htmlspecialchars($string, ENT_QUOTES, 'UTF-8');}
+function d()
+{return call_user_func_array('Debugger::debug', func_get_args());}
 
 // Start the firewall
 Firewall::start();
@@ -20,32 +22,32 @@ Firewall::start();
 Session::start();
 
 // Analyze the PHP code
-if (Debugger::$enabled) Analyzer::execute();
+if (Debugger::$enabled) {
+    Analyzer::execute();
+}
 
 // Load the action into body
 ob_start();
 if (Router::getTemplateAction()) {
-	require Router::getTemplateAction();
+    require Router::getTemplateAction();
 }
 if (ob_get_contents()) {
-	ob_end_flush();
-	trigger_error('MindaPHP template action"'.Router::getTemplateAction().'" should not send output. Error raised ', E_USER_WARNING);
-}
-else {
-	ob_end_clean();
+    ob_end_flush();
+    trigger_error('MindaPHP template action"' . Router::getTemplateAction() . '" should not send output. Error raised ', E_USER_WARNING);
+} else {
+    ob_end_clean();
 }
 
 ob_start();
 if (Router::getAction()) {
-  extract(Router::getParameters());
-  require Router::getAction();
+    extract(Router::getParameters());
+    require Router::getAction();
 }
 if (ob_get_contents()) {
-  ob_end_flush();
-  trigger_error('MindaPHP action "'.Router::getAction().'" should not send output. Error raised ', E_USER_WARNING);
-}
-else {
-  ob_end_clean();
+    ob_end_flush();
+    trigger_error('MindaPHP action "' . Router::getAction() . '" should not send output. Error raised ', E_USER_WARNING);
+} else {
+    ob_end_clean();
 }
 
 // End the session
@@ -55,13 +57,22 @@ Session::end();
 DB::close();
 
 if (Router::getTemplateView()) {
-  Buffer::start('html');
-  if (Router::getView()) require Router::getView();
-  // Show developer toolbar
-  if (Debugger::$enabled) Debugger::toolbar();
-  Buffer::end('html');
-  // Load body into template
-  require Router::getTemplateView();
+    Buffer::start('html');
+    if (Router::getView()) {
+        require Router::getView();
+    }
+
+    // Show developer toolbar
+    if (Debugger::$enabled) {
+        Debugger::toolbar();
+    }
+
+    Buffer::end('html');
+    // Load body into template
+    require Router::getTemplateView();
 } else { // Handle the 'none' template case
-	if (Router::getView()) require Router::getView();
+    if (Router::getView()) {
+        require Router::getView();
+    }
+
 }

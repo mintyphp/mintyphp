@@ -9,3 +9,4 @@ tools/master.zip
 config/config.php
 /vendor/
 /sessions/
+/web/debugger/

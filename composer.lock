@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "mindaphp/core",
-            "version": "v1.1.4",
+            "version": "v1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mindaphp/core.git",
-                "reference": "7442e1ad20c90990884c8ee964737aace9f78ae6"
+                "reference": "1b7d28394b73f7405f52bcab834efbb1d5ca7690"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mindaphp/core/zipball/7442e1ad20c90990884c8ee964737aace9f78ae6",
-                "reference": "7442e1ad20c90990884c8ee964737aace9f78ae6",
+                "url": "https://api.github.com/repos/mindaphp/core/zipball/1b7d28394b73f7405f52bcab834efbb1d5ca7690",
+                "reference": "1b7d28394b73f7405f52bcab834efbb1d5ca7690",
                 "shasum": ""
             },
             "require": {
@@ -37,7 +37,7 @@
                     "homepage": "https://www.tqdev.com"
                 }
             ],
-            "time": "2018-10-25T22:05:17+00:00"
+            "time": "2018-10-26T08:36:22+00:00"
         }
     ],
     "packages-dev": [],

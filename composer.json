@@ -10,5 +10,9 @@
     ],
     "require": {
         "mindaphp/core": "*"
+    },
+    "require-dev": {
+        "mindaphp/tools": "*",
+        "mindaphp/debugger": "*"
     }
 }

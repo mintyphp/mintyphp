@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "14d0948c6d4545e5dd7c6c0e6656d766",
+    "content-hash": "b2baa09af8d00eb8c0e9e6dfd801fa10",
     "packages": [
         {
             "name": "mindaphp/core",
@@ -40,7 +40,71 @@
             "time": "2018-10-26T08:36:22+00:00"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "mindaphp/debugger",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mindaphp/debugger.git",
+                "reference": "663c7a297a1b6954a70468db7d78e200247bf0d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mindaphp/debugger/zipball/663c7a297a1b6954a70468db7d78e200247bf0d0",
+                "reference": "663c7a297a1b6954a70468db7d78e200247bf0d0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maurits van der Schee",
+                    "email": "maurits@vdschee.nl",
+                    "homepage": "https://www.tqdev.com"
+                }
+            ],
+            "time": "2018-10-26T08:57:29+00:00"
+        },
+        {
+            "name": "mindaphp/tools",
+            "version": "v1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mindaphp/tools.git",
+                "reference": "a22157721f0c1c74e32a8874fb6b7d8293c3af8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mindaphp/tools/zipball/a22157721f0c1c74e32a8874fb6b7d8293c3af8b",
+                "reference": "a22157721f0c1c74e32a8874fb6b7d8293c3af8b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zip": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maurits van der Schee",
+                    "email": "maurits@vdschee.nl",
+                    "homepage": "https://www.tqdev.com"
+                }
+            ],
+            "time": "2018-10-26T14:26:54+00:00"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],

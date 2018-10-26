@@ -144,8 +144,8 @@ class DebugView
         $html[] = '</div>';
         $html[] = '</div>';
         $html[] = '</div>';
-        list($time, $micro) = explode('.', $request['start']);
-        $time = date('H:i:s', $time) . '.' . substr($micro, 0, 3);
+        $time = (int) trim($request['start']);
+        $time = date('H:i:s', $time) . sprintf('%.3f', $request['start'] - $time);
         $duration = isset($request['duration']) ? sprintf('%.2f ms', $request['duration'] * 1000) : '???';
         $memory = isset($request['memory']) ? sprintf('%.2f MB', $request['memory'] / 1000000) : '???';
         $html[] = '<table class="table"><thead>';

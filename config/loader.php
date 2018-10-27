@@ -1,2 +1,2 @@
 <?php
-//Loader::register('mindaphp/core/src', 'MindaPHP');
+//Loader::register('mintyphp/core/src', 'MintyPHP');

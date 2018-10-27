@@ -1,7 +1,7 @@
-MindaPHP
+MintyPHP
 ========
 
-MindaPHP aims to be a full-stack framework that is:
+MintyPHP aims to be a full-stack framework that is:
 
   - Easy to learn
   - Secure by design
@@ -15,7 +15,7 @@ By design, it does:
 
 Mainly to make it easy to learn for PHP developers.
 
-Blog: http://www.leaseweblabs.com/2013/10/mindaphp-new-php-framework-optimized-learning/
+Blog: http://www.leaseweblabs.com/2013/10/mintyphp-new-php-framework-optimized-learning/
 
 Demo: http://maurits.server.nlware.com/
 

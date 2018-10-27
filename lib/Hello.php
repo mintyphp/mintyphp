@@ -1,9 +1,9 @@
 <?php
-namespace MindaPHP;
+namespace MintyPHP;
 
 class Hello
 {
-    public static $name = 'MindaPHP';
+    public static $name = 'MintyPHP';
 
     public static function getGreeting()
     {

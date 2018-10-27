@@ -1,5 +1,5 @@
 <?php
-namespace MindaPHP\Config;
+namespace MintyPHP\Config;
 
 class Router
 {
@@ -10,7 +10,7 @@ class Router
 
 class Session
 {
-  public static $sessionName = 'mindaphp'; // default: 'mindaphp'
+  public static $sessionName = 'mintyphp'; // default: 'mintyphp'
 }
 
 class Firewall
@@ -27,7 +27,7 @@ class DB
   public static $host     = 'localhost'; // default: 'localhost'
   public static $username = 'root';      // set to 'root' to initialize
   public static $password = '';          // overwritten during initialization
-  public static $database = 'mindaphp';  // set to project name
+  public static $database = 'mintyphp';  // set to project name
   public static $port     = 3306;        // default: 3306
 }
 

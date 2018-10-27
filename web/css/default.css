@@ -1,5 +1,5 @@
 @CHARSET "UTF-8";
 .menu  { float: left; padding: 20px; width: 160px; }
 .body  { margin-left: 200px; padding: 20px; border-left: 1px solid silver;}
-.title { background-color: silver; padding: 20px;}
+.title { border-bottom: 1px solid silver; padding: 20px;}
 td,th  { padding-right: 15px;}

@@ -18,4 +18,4 @@ Blog: http://www.leaseweblabs.com/2013/10/mindaphp-new-php-framework-optimized-l
 
 Demo: http://maurits.server.nlware.com/
 
-Docs: http://maurits.server.nlware.com/docs
+Docs: https://github.com/mintyphp/docs

@@ -1,4 +1,4 @@
-<img height="150" src="web/img/mintyphp_logo.png">
+<h1><img alt="MintyPHP" height="150" src="web/img/mintyphp_logo.png"></h1>
 
 MintyPHP (formerly known as MindaPHP) aims to be a full-stack PHP 7 framework that is:
 

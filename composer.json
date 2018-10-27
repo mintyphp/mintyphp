@@ -1,10 +1,6 @@
 {
     "name": "mintyphp/mintyphp",
-<<<<<<< HEAD
-    "description": "A light-weight PHP web framework that is easy to learn",
-=======
     "description": "A fresh PHP web framework that is easy to learn",
->>>>>>> 36bfd6f6d06c9f4d4d0bf68ed4efc5705afb6734
     "license": "MIT",
     "authors": [
     {

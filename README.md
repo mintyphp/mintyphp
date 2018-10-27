@@ -1,7 +1,7 @@
 MintyPHP
 ========
 
-MintyPHP aims to be a full-stack framework that is:
+MintyPHP (formerly known as MindaPHP) aims to be a full-stack framework that is:
 
   - Easy to learn
   - Secure by design

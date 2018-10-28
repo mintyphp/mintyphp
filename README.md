@@ -20,4 +20,4 @@ Blog 2: https://tqdev.com/2018-mindaphp-now-on-packagist
 
 Demo: http://maurits.server.nlware.com/
 
-Docs: https://github.com/mintyphp/docs
+Docs: https://mintyphp.github.io/

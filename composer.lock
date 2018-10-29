@@ -43,16 +43,16 @@
     "packages-dev": [
         {
             "name": "mintyphp/debugger",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mintyphp/debugger.git",
-                "reference": "f5c02dc807f65020d87632b139083d943cf2c73a"
+                "reference": "df05515ee9feecf3ea9ab200d9fc7dff64ebd3d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mintyphp/debugger/zipball/f5c02dc807f65020d87632b139083d943cf2c73a",
-                "reference": "f5c02dc807f65020d87632b139083d943cf2c73a",
+                "url": "https://api.github.com/repos/mintyphp/debugger/zipball/df05515ee9feecf3ea9ab200d9fc7dff64ebd3d0",
+                "reference": "df05515ee9feecf3ea9ab200d9fc7dff64ebd3d0",
                 "shasum": ""
             },
             "require": {
@@ -70,7 +70,7 @@
                     "homepage": "https://www.tqdev.com"
                 }
             ],
-            "time": "2018-10-29T18:20:00+00:00"
+            "time": "2018-10-29T18:25:11+00:00"
         },
         {
             "name": "mintyphp/tools",

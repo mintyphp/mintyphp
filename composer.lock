@@ -1,0 +1,114 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "efe5805744d5e9c5e1253495bf0a28ab",
+    "packages": [
+        {
+            "name": "mintyphp/core",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mintyphp/core.git",
+                "reference": "39c8e350ceb4947f3a557152c4f3de4510fcdded"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mintyphp/core/zipball/39c8e350ceb4947f3a557152c4f3de4510fcdded",
+                "reference": "39c8e350ceb4947f3a557152c4f3de4510fcdded",
+                "shasum": ""
+            },
+            "require": {
+                "ext-memcache": "*",
+                "ext-mysqli": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maurits van der Schee",
+                    "email": "maurits@vdschee.nl",
+                    "homepage": "https://www.tqdev.com"
+                }
+            ],
+            "time": "2018-10-28T22:00:49+00:00"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "mintyphp/debugger",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mintyphp/debugger.git",
+                "reference": "f5c02dc807f65020d87632b139083d943cf2c73a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mintyphp/debugger/zipball/f5c02dc807f65020d87632b139083d943cf2c73a",
+                "reference": "f5c02dc807f65020d87632b139083d943cf2c73a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maurits van der Schee",
+                    "email": "maurits@vdschee.nl",
+                    "homepage": "https://www.tqdev.com"
+                }
+            ],
+            "time": "2018-10-29T18:20:00+00:00"
+        },
+        {
+            "name": "mintyphp/tools",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mintyphp/tools.git",
+                "reference": "d14bd69240a16ab824367edf4b41f2b4a58412fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mintyphp/tools/zipball/d14bd69240a16ab824367edf4b41f2b4a58412fb",
+                "reference": "d14bd69240a16ab824367edf4b41f2b4a58412fb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maurits van der Schee",
+                    "email": "maurits@vdschee.nl",
+                    "homepage": "https://www.tqdev.com"
+                }
+            ],
+            "time": "2018-10-27T08:06:15+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

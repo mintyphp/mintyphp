@@ -14,7 +14,7 @@ By design, it does:
 
 Mainly to make it easy to learn for PHP developers.
 
-Blog 1: http://www.leaseweblabs.com/2013/10/mindaphp-new-php-framework-optimized-learning/
+Blog 1: https://www.leaseweb.com/labs/2013/10/mindaphp-new-php-framework-optimized-learning/
 
 Blog 2: https://tqdev.com/2018-mindaphp-now-on-packagist
 

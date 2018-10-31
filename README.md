@@ -14,10 +14,11 @@ By design, it does:
 
 Mainly to make it easy to learn for PHP developers.
 
-Blog 1: https://www.leaseweb.com/labs/2013/10/mindaphp-new-php-framework-optimized-learning/
+<a href='https://mintyphp.github.io/installation/' style="text-decoration: none; color: white; background-color: #41c917; padding: 10px 20px; margin-right: 30px;">Download</a> / 
+<a href='http://maurits.server.nlware.com/' style="text-decoration: none; color: white; background-color: #41c917; padding: 10px 20px; margin-right: 30px;">Demo</a> / 
+<a href='https://mintyphp.github.io/docs/' style="text-decoration: none; color: white; background-color: #41c917; padding: 10px 20px; margin-right: 30px;">Documentation</a>
 
-Blog 2: https://tqdev.com/2018-mindaphp-now-on-packagist
+## External links
 
-Demo: http://maurits.server.nlware.com/
-
-Docs: https://mintyphp.github.io/
+- [MindaPHP: a new PHP framework optimized for learning](https://www.leaseweb.com/labs/2013/10/mindaphp-new-php-framework-optimized-learning/)
+- [MintyPHP now on packagist!](https://tqdev.com/2018-mindaphp-now-on-packagist)

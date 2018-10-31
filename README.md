@@ -14,9 +14,9 @@ By design, it does:
 
 Mainly to make it easy to learn for PHP developers.
 
-<a href='https://mintyphp.github.io/installation/' style="text-decoration: none; color: white; background-color: #41c917; padding: 10px 20px; margin-right: 30px;">Download</a> / 
-<a href='http://maurits.server.nlware.com/' style="text-decoration: none; color: white; background-color: #41c917; padding: 10px 20px; margin-right: 30px;">Demo</a> / 
-<a href='https://mintyphp.github.io/docs/' style="text-decoration: none; color: white; background-color: #41c917; padding: 10px 20px; margin-right: 30px;">Documentation</a>
+[Download](https://mintyphp.github.io/installation/) / 
+[Demo](http://maurits.server.nlware.com/) / 
+[Documentation](https://mintyphp.github.io/docs/)
 
 ## External links
 

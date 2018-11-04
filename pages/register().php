@@ -12,7 +12,10 @@ if (isset($_POST['username']))
   }
   elseif ($password!=$password2) 
   { $error = "Passwords must match"; 
-  } 
+  }
+  elseif (Auth::exists($username))
+  { $error = "Username is already taken";
+  }
   elseif (!Auth::register($username, $password))
   { $error = "User can not be registered";
   }

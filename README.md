@@ -1,4 +1,4 @@
-<h1><img alt="MintyPHP" height="150" src="web/img/mintyphp_logo.png"></h1>
+<h1><img alt="MintyPHP" height="50" src="web/img/minty_square.png"> MintyPHP</h1>
 
 MintyPHP (formerly known as MindaPHP) aims to be a full-stack PHP 7 framework that is:
 
@@ -14,10 +14,11 @@ By design, it does:
 
 Mainly to make it easy to learn for PHP developers.
 
-Blog 1: http://www.leaseweblabs.com/2013/10/mindaphp-new-php-framework-optimized-learning/
+[Download](https://mintyphp.github.io/installation/) / 
+[Demo](http://maurits.server.nlware.com/) / 
+[Documentation](https://mintyphp.github.io/docs/)
 
-Blog 2: https://tqdev.com/2018-mindaphp-now-on-packagist
+## External links
 
-Demo: http://maurits.server.nlware.com/
-
-Docs: https://mintyphp.github.io/
+- [MindaPHP: a new PHP framework optimized for learning](https://www.leaseweb.com/labs/2013/10/mindaphp-new-php-framework-optimized-learning/)
+- [MintyPHP now on packagist!](https://tqdev.com/2018-mindaphp-now-on-packagist)

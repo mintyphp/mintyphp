@@ -2,7 +2,7 @@
 // Change directory to project root
 chdir(__DIR__ . '/..');
 // Use default autoload implementation
-require 'vendor/mintyphp/core/Loader.php';
+require 'vendor/mintyphp/core/src/Loader.php';
 // Load the libraries
 require 'vendor/autoload.php';
 // Load the config parameters

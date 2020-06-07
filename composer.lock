@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "mintyphp/core",
-            "version": "v2.0.2",
+            "version": "v2.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mintyphp/core.git",
-                "reference": "39c8e350ceb4947f3a557152c4f3de4510fcdded"
+                "reference": "b04fab5a0349121c122ed8bc7914572a24567b49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mintyphp/core/zipball/39c8e350ceb4947f3a557152c4f3de4510fcdded",
-                "reference": "39c8e350ceb4947f3a557152c4f3de4510fcdded",
+                "url": "https://api.github.com/repos/mintyphp/core/zipball/b04fab5a0349121c122ed8bc7914572a24567b49",
+                "reference": "b04fab5a0349121c122ed8bc7914572a24567b49",
                 "shasum": ""
             },
             "require": {
@@ -37,22 +37,22 @@
                     "homepage": "https://www.tqdev.com"
                 }
             ],
-            "time": "2018-10-28T22:00:49+00:00"
+            "time": "2020-06-06T19:04:00+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "mintyphp/debugger",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mintyphp/debugger.git",
-                "reference": "df05515ee9feecf3ea9ab200d9fc7dff64ebd3d0"
+                "reference": "64cafc85cf757dbe863cf545dff77163abdb3cbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mintyphp/debugger/zipball/df05515ee9feecf3ea9ab200d9fc7dff64ebd3d0",
-                "reference": "df05515ee9feecf3ea9ab200d9fc7dff64ebd3d0",
+                "url": "https://api.github.com/repos/mintyphp/debugger/zipball/64cafc85cf757dbe863cf545dff77163abdb3cbe",
+                "reference": "64cafc85cf757dbe863cf545dff77163abdb3cbe",
                 "shasum": ""
             },
             "require": {
@@ -70,20 +70,20 @@
                     "homepage": "https://www.tqdev.com"
                 }
             ],
-            "time": "2018-10-29T18:25:11+00:00"
+            "time": "2018-11-04T00:39:20+00:00"
         },
         {
             "name": "mintyphp/tools",
-            "version": "v2.0.0",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mintyphp/tools.git",
-                "reference": "d14bd69240a16ab824367edf4b41f2b4a58412fb"
+                "reference": "8d51ef4c77df0a94a05b7c4f4a002be9f5017c46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mintyphp/tools/zipball/d14bd69240a16ab824367edf4b41f2b4a58412fb",
-                "reference": "d14bd69240a16ab824367edf4b41f2b4a58412fb",
+                "url": "https://api.github.com/repos/mintyphp/tools/zipball/8d51ef4c77df0a94a05b7c4f4a002be9f5017c46",
+                "reference": "8d51ef4c77df0a94a05b7c4f4a002be9f5017c46",
                 "shasum": ""
             },
             "require": {
@@ -101,7 +101,7 @@
                     "homepage": "https://www.tqdev.com"
                 }
             ],
-            "time": "2018-10-27T08:06:15+00:00"
+            "time": "2020-02-24T12:21:09+00:00"
         }
     ],
     "aliases": [],

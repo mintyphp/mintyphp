@@ -2,7 +2,7 @@
 if [ ! -f composer.phar ]; then
     wget https://getcomposer.org/composer.phar
 fi
-php composer.phar update
+php composer.phar install
 php vendor/mintyphp/tools/requirements.php
 if [[ $? != 0 ]]; then
     exit

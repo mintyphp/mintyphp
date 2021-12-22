@@ -15,7 +15,6 @@ By design, it does:
 Mainly to make it easy to learn for PHP developers.
 
 [Download](https://mintyphp.github.io/installation/) / 
-[Demo](http://maurits.server.nlware.com/) / 
 [Documentation](https://mintyphp.github.io/docs/)
 
 ## External links

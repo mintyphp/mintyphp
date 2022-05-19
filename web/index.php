@@ -11,7 +11,7 @@ require 'config/config.php';
 require 'config/router.php';
 // Register shortcut functions
 function e($string)
-{echo htmlspecialchars($string, ENT_QUOTES, 'UTF-8');}
+{echo htmlspecialchars((string) $string, ENT_QUOTES, 'UTF-8');}
 function d()
 {return call_user_func_array('Debugger::debug', func_get_args());}
 

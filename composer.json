@@ -15,5 +15,10 @@
     "require-dev": {
         "mintyphp/tools": "*",
         "mintyphp/debugger": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "MintyPHP\\": "lib/"
+        }
     }
 }

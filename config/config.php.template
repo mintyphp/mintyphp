@@ -1,50 +1,26 @@
 <?php
-namespace MintyPHP\Config;
 
-class Router
-{
-  public static $baseUrl      = '/';          // default: '/'
-  public static $pageRoot     = 'pages/';     // default: 'pages/'
-  public static $templateRoot = 'templates/'; // default: 'templates/'
-}
+MintyPHP\Router::$baseUrl = '/'; // default: '/'
+MintyPHP\Router::$pageRoot = 'pages/'; // default: 'pages/'
+MintyPHP\Router::$templateRoot = 'templates/'; // default: 'templates/'
 
-class Session
-{
-  public static $sessionName = 'mintyphp'; // default: 'mintyphp'
-}
+MintyPHP\Session::$sessionName = 'MintyPHP'; // default: 'MintyPHP'
 
-class Firewall
-{
-  public static $concurrency     = 10;
-  public static $spinLockSeconds = 0.15;
-  public static $intervalSeconds = 300;
-  public static $cachePrefix     = 'fw_concurrency_';
-  public static $reverseProxy    = false;
-}
+MintyPHP\Firewall::$concurrency = 10;
+MintyPHP\Firewall::$spinLockSeconds = 0.15;
+MintyPHP\Firewall::$intervalSeconds = 300;
+MintyPHP\Firewall::$cachePrefix = 'fw_concurrency_';
+MintyPHP\Firewall::$reverseProxy = false;
 
-class DB
-{
-  public static $host     = 'localhost'; // default: 'localhost'
-  public static $username = 'root';      // set to 'root' to initialize
-  public static $password = '';          // overwritten during initialization
-  public static $database = 'mintyphp';  // set to project name
-  public static $port     = 3306;        // default: 3306
-}
+MintyPHP\DB::$host = 'localhost'; // default: 'localhost'
+MintyPHP\DB::$username = 'mintyphp'; // set to 'root' to initialize
+MintyPHP\DB::$password = 'mintyphp'; // overwritten during initialization
+MintyPHP\DB::$database = 'mintyphp'; // set to project name
+MintyPHP\DB::$port = 3306; // default: 3306
 
-class Auth
-{
-  public static $usersTable    = 'users';    // table that holds the user data
-  public static $usernameField = 'username'; // type varchar(255), has unique index
-  public static $passwordField = 'password'; // type varchar(255), holds sha1 in hex
-  public static $createdField  = 'created';  // type datetime, optional
-}
+MintyPHP\Auth::$usersTable = 'users'; // table that holds the user data
+MintyPHP\Auth::$usernameField = 'username'; // type varchar(255), has unique index
+MintyPHP\Auth::$passwordField = 'password'; // type varchar(255), holds sha1 in hex
+MintyPHP\Auth::$createdField = 'created'; // type datetime, optional
 
-class Debugger
-{
-  public static $enabled = true; // enable during development
-}
-
-class Hello
-{
-  public static $name = 'world'; // class from "lib" folder
-}
+MintyPHP\Debugger::$enabled = true; // enable during development

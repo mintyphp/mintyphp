@@ -3,11 +3,11 @@
     "description": "A refreshingly different PHP web framework that is easy to learn",
     "license": "MIT",
     "authors": [
-    {
-        "name": "Maurits van der Schee",
-        "email": "maurits@vdschee.nl",
-        "homepage": "https://www.tqdev.com"
-    }
+        {
+            "name": "Maurits van der Schee",
+            "email": "maurits@vdschee.nl",
+            "homepage": "https://www.tqdev.com"
+        }
     ],
     "require": {
         "mintyphp/core": "*"
@@ -15,6 +15,11 @@
     "require-dev": {
         "mintyphp/tools": "*",
         "mintyphp/debugger": "*"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MintyPHP\\Tests\\": "tests/"
+        }
     },
     "autoload": {
         "psr-4": {

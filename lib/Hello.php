@@ -1,4 +1,5 @@
 <?php
+
 namespace MintyPHP;
 
 class Hello

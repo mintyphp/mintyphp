@@ -1,8 +1,11 @@
 <?php
+
+use MintyPHP\Auth;
+use MintyPHP\Router;
+
 $error = '';
-if (isset($_POST['username']))
-{ if (Auth::login($_POST['username'],$_POST['password'])) {
+if (isset($_POST['username'])) {
+  if (Auth::login($_POST['username'], $_POST['password'])) {
     Router::redirect("admin");
-  }
-  else $error = "Username/password not valid";
+  } else $error = "Username/password not valid";
 }

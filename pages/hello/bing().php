@@ -1,4 +1,8 @@
 <?php
+
+use MintyPHP\Cache;
+use MintyPHP\Curl;
+
 $query = isset($_POST['q']) ? $_POST['q'] : '';
 
 $results = array();

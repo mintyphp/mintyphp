@@ -1,10 +1,16 @@
-<?php Buffer::set('title','Register'); ?>
+<?php
+
+use MintyPHP\Buffer;
+use MintyPHP\Session;
+
+Buffer::set('title', 'Register');
+?>
 <h1>Register</h1>
 <form method="post">
-Email<br/>
-<input name="username"/><br/>
-<br/>
-<input type="submit"/><br/>
-<?php e($error); ?>
-<?php Session::getCsrfInput(); ?>
+    Email<br />
+    <input name="username" /><br />
+    <br />
+    <input type="submit" /><br />
+    <?php e($error); ?>
+    <?php Session::getCsrfInput(); ?>
 </form>

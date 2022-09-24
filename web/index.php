@@ -1,8 +1,15 @@
 <?php
 // Change directory to project root
+
+use MintyPHP\Analyzer;
+use MintyPHP\Buffer;
+use MintyPHP\DB;
+use MintyPHP\Debugger;
+use MintyPHP\Firewall;
+use MintyPHP\Router;
+use MintyPHP\Session;
+
 chdir(__DIR__ . '/..');
-// Use default autoload implementation
-require 'vendor/mintyphp/core/src/Loader.php';
 // Load the libraries
 require 'vendor/autoload.php';
 // Load the config parameters
@@ -11,9 +18,13 @@ require 'config/config.php';
 require 'config/router.php';
 // Register shortcut functions
 function e($string)
-{echo htmlspecialchars((string) $string, ENT_QUOTES, 'UTF-8');}
+{
+    echo htmlspecialchars((string) $string, ENT_QUOTES, 'UTF-8');
+}
 function d()
-{return call_user_func_array('Debugger::debug', func_get_args());}
+{
+    return call_user_func_array('Debugger::debug', func_get_args());
+}
 
 // Start the firewall
 Firewall::start();
@@ -74,5 +85,4 @@ if (Router::getTemplateView()) {
     if (Router::getView()) {
         require Router::getView();
     }
-
 }

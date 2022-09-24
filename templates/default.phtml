@@ -1,41 +1,50 @@
+<?php
+
+use MintyPHP\Buffer;
+use MintyPHP\Router;
+
+?>
 <!DOCTYPE html>
 <html>
-  <head>
-    <base href="<?php e(Router::getBaseUrl());?>">
-    <title>MintyPHP - <?php Buffer::get('title');?></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="img/favicon.ico">
-    <link href="css/default.css" rel="stylesheet">
-  </head>
-  <body>
-    <a href="https://github.com/MintyPHP/MintyPHP"><img style="position: absolute; top: 0; right: 0; border: 0;" src="img/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
-    <div class="title">
-      <div class="logo">
-        <img src="img/mintyphp_logo.png" alt="MintyPHP" style="max-height: 150px;">
-      </div>
+
+<head>
+  <base href="<?php e(Router::getBaseUrl()); ?>">
+  <title>MintyPHP - <?php Buffer::get('title'); ?></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <link href="css/default.css" rel="stylesheet">
+</head>
+
+<body>
+  <a href="https://github.com/MintyPHP/MintyPHP"><img style="position: absolute; top: 0; right: 0; border: 0;" src="img/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+  <div class="title">
+    <div class="logo">
+      <img src="img/mintyphp_logo.png" alt="MintyPHP" style="max-height: 150px;">
     </div>
-    <div class="menu">
+  </div>
+  <div class="menu">
     <p>
-      <a href="hello/world">Hello world</a><br/>
-      <a href="hello/lib">Hello lib</a><br/>
-      <a href="hello">Hello you</a><br/>
-      <a href="hello/bing">Hello Bing</a><br/>
-      <a href="admin">Admin area</a><br/>
-      <a href="https://mintyphp.github.io/">Documentation</a><br/>
-      <a href="dead_link">Dead link</a><br/>
+      <a href="hello/world">Hello world</a><br />
+      <a href="hello/lib">Hello lib</a><br />
+      <a href="hello">Hello you</a><br />
+      <a href="hello/bing">Hello Bing</a><br />
+      <a href="admin">Admin area</a><br />
+      <a href="https://mintyphp.github.io/">Documentation</a><br />
+      <a href="dead_link">Dead link</a><br />
     </p>
     <p>
-      <?php $username = isset($_SESSION['user']) ? $_SESSION['user']['username'] : false?>
-      <?php if ($username): ?>
-        <a href="logout">Logout "<?php e($username);?>"</a>
-      <?php else: ?>
+      <?php $username = isset($_SESSION['user']) ? $_SESSION['user']['username'] : false ?>
+      <?php if ($username) : ?>
+        <a href="logout">Logout "<?php e($username); ?>"</a>
+      <?php else : ?>
         <a href="login">Login</a>
-      <?php endif;?>
+      <?php endif; ?>
     </p>
   </div>
   <div class="body">
-    <?php Buffer::get('html');?>
+    <?php Buffer::get('html'); ?>
   </div>
 </body>
+
 </html>

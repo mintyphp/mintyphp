@@ -1,11 +1,5 @@
-.idea
-.buildpath
-.project
-.settings
-project.geany
+.vscode/
 composer.phar
-phpunit.phar
 config/config.php
 /vendor/
-/sessions/
 /web/debugger/

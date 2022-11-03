@@ -23,7 +23,7 @@ function e($string)
 }
 function d()
 {
-    return call_user_func_array('Debugger::debug', func_get_args());
+    return call_user_func_array('MintyPHP\\Debugger::debug', func_get_args());
 }
 
 // Start the firewall

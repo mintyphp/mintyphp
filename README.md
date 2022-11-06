@@ -20,5 +20,5 @@ Mainly to make it easy to learn for PHP developers.
 ## External links
 
 - [MintyPHP v3 is released](https://tqdev.com/2022-mintyphp-v3-is-released)
-- [MindaPHP: a new PHP framework optimized for learning](https://www.leaseweb.com/labs/2013/10/mindaphp-new-php-framework-optimized-learning/)
 - [MintyPHP now on packagist!](https://tqdev.com/2018-mindaphp-now-on-packagist)
+- [MindaPHP: a new PHP framework optimized for learning](https://laptrinhx.com/mindaphp-a-new-php-framework-optimized-for-learning-2393710941/)

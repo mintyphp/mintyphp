@@ -21,4 +21,3 @@ Mainly to make it easy to learn for PHP developers.
 
 - [MintyPHP v3 is released](https://tqdev.com/2022-mintyphp-v3-is-released)
 - [MintyPHP now on packagist!](https://tqdev.com/2018-mindaphp-now-on-packagist)
-- [MindaPHP: a new PHP framework optimized for learning](https://laptrinhx.com/mindaphp-a-new-php-framework-optimized-for-learning-2393710941/)

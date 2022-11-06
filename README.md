@@ -1,6 +1,6 @@
 <h1><img alt="MintyPHP" height="50" src="web/img/minty_square.png"> MintyPHP</h1>
 
-MintyPHP aims to be a full-stack PHP 7 framework that is:
+MintyPHP aims to be a full-stack PHP 7 (or 8) framework that is:
 
   - Easy to learn
   - Secure by design

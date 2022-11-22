@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @var string|null $token
+ */
+
 use MintyPHP\NoPassAuth;
 use MintyPHP\Router;
 

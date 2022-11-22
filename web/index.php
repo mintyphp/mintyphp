@@ -1,14 +1,14 @@
 <?php
-// Change directory to project root
 
-use MintyPHP\Analyzer;
-use MintyPHP\Buffer;
-use MintyPHP\DB;
-use MintyPHP\Debugger;
 use MintyPHP\Firewall;
-use MintyPHP\Router;
 use MintyPHP\Session;
+use MintyPHP\Debugger;
+use MintyPHP\Analyzer;
+use MintyPHP\Router;
+use MintyPHP\DB;
+use MintyPHP\Buffer;
 
+// Change directory to project root
 chdir(__DIR__ . '/..');
 // Load the libraries
 require 'vendor/autoload.php';

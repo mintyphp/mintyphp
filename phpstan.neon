@@ -1,0 +1,10 @@
+parameters:
+    level: 5
+    scanFiles:
+        - web/index.php
+    paths:
+        - lib
+        - pages
+    fileExtensions:
+        - php
+        - phtml

@@ -15,7 +15,8 @@
     "require-dev": {
         "mintyphp/tools": "*",
         "mintyphp/debugger": "*",
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "phpstan/phpstan": "^1.9"
     },
     "autoload-dev": {
         "psr-4": {

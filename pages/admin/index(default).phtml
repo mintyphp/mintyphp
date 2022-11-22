@@ -1,7 +1,15 @@
+<?php
+
+/**
+ * @var mixed|null $user
+ * @var mixed|null $users
+ */
+
+?>
 <h1>Admin area</h1>
 <p>You must be logged in to see this.</p>
 <p>The session stored user object is:</p>
-<pre><?php print_r($user);?></pre>
+<pre><?php print_r($user); ?></pre>
 <p>All registered users:</p>
 <table>
   <thead>
@@ -11,8 +19,11 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach ($users as $user): ?>
-      <tr><td><?php e($user['users']['username']);?></td><td><?php e($user['users']['created']);?></td></tr>
+    <?php foreach ($users as $user) : ?>
+      <tr>
+        <td><?php e($user['users']['username']); ?></td>
+        <td><?php e($user['users']['created']); ?></td>
+      </tr>
     <?php endforeach; ?>
   </tbody>
 </table>

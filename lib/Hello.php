@@ -6,7 +6,7 @@ class Hello
 {
     public static $name = 'MintyPHP';
 
-    public static function getGreeting()
+    public static function getGreeting(): string
     {
         return 'Hello ' . static::$name . '!';
     }

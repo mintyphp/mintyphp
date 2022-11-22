@@ -1,7 +1,7 @@
 <?php
 
-use MintyPHP\Cache;
 use MintyPHP\NoPassAuth;
+use MintyPHP\Cache;
 use MintyPHP\Router;
 
 $error = '';

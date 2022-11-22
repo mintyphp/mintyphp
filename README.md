@@ -1,6 +1,6 @@
 <h1><img alt="MintyPHP" height="50" src="web/img/minty_square.png"> MintyPHP</h1>
 
-MintyPHP (formerly known as MindaPHP) aims to be a full-stack PHP 7 framework that is:
+MintyPHP aims to be a full-stack PHP 7 (or 8) framework that is:
 
   - Easy to learn
   - Secure by design
@@ -20,5 +20,4 @@ Mainly to make it easy to learn for PHP developers.
 ## External links
 
 - [MintyPHP v3 is released](https://tqdev.com/2022-mintyphp-v3-is-released)
-- [MindaPHP: a new PHP framework optimized for learning](https://www.leaseweb.com/labs/2013/10/mindaphp-new-php-framework-optimized-learning/)
 - [MintyPHP now on packagist!](https://tqdev.com/2018-mindaphp-now-on-packagist)

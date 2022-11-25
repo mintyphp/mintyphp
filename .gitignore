@@ -3,3 +3,4 @@ composer.phar
 config/config.php
 /vendor/
 /web/debugger/
+/data/

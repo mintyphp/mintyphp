@@ -7,6 +7,7 @@ use MintyPHP\Analyzer;
 use MintyPHP\Router;
 use MintyPHP\DB;
 use MintyPHP\Buffer;
+use MintyPHP\I18n;
 
 // Change directory to project root
 chdir(__DIR__ . '/..');
@@ -24,6 +25,12 @@ function e($string)
 function d()
 {
     return call_user_func_array('MintyPHP\\Debugger::debug', func_get_args());
+}
+function t()
+{
+    $arguments = func_get_args();
+    $arguments[0] = I18n::translate($arguments[0]);
+    return call_user_func_array('sprintf', $arguments);
 }
 
 // Start the firewall

@@ -5,8 +5,11 @@ use MintyPHP\Router;
 
 $error = false;
 if (isset($_POST['username'])) {
+  /** @var string $username */
   $username = $_POST['username'];
+  /** @var string $password */
   $password = $_POST['password'];
+  /** @var string $password2 */
   $password2 = $_POST['password2'];
   if (!$username) {
     $error = "Username cannot be empty";

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var string|null $token
+ * @var string $token
  */
 
 use MintyPHP\NoPassAuth;

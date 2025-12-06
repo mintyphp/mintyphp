@@ -4,7 +4,7 @@ namespace MintyPHP;
 
 class Hello
 {
-    public static $name = 'MintyPHP';
+    public static string $name = 'MintyPHP';
 
     public static function getGreeting(): string
     {

@@ -12,25 +12,34 @@ use MintyPHP\I18n;
 // Change directory to project root
 chdir(__DIR__ . '/..');
 // Load the libraries
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 // Load the config parameters
-require 'config/config.php';
+require_once 'config/config.php';
 // Load the routes
-require 'config/router.php';
-// Register shortcut functions
-function e($string)
-{
-    echo htmlspecialchars((string) $string, ENT_QUOTES, 'UTF-8');
+require_once 'config/router.php';
+
+// Register shortcut function for escaping output
+if (!function_exists('e')) {
+    function e(mixed $string)
+    {
+        echo htmlspecialchars((string) $string, ENT_QUOTES, 'UTF-8');
+    }
 }
-function d()
-{
-    return call_user_func_array('MintyPHP\\Debugger::debug', func_get_args());
+// Register shortcut function for debugging
+if (!function_exists('d')) {
+    function d()
+    {
+        return call_user_func_array('MintyPHP\\Debugger::debug', func_get_args());
+    }
 }
-function t()
-{
-    $arguments = func_get_args();
-    $arguments[0] = I18n::translate($arguments[0]);
-    return call_user_func_array('sprintf', $arguments);
+// Register shortcut function for translations
+if (!function_exists('t')) {
+    function t()
+    {
+        $arguments = func_get_args();
+        $arguments[0] = I18n::translate($arguments[0]);
+        return call_user_func_array('sprintf', $arguments);
+    }
 }
 
 // Start the firewall

@@ -4,6 +4,7 @@ use MintyPHP\NoPassAuth;
 
 $error = false;
 if (isset($_POST['username'])) {
+  /** @var string $username */
   $username = $_POST['username'];
   if (!$username) {
     $error = "Username cannot be empty";

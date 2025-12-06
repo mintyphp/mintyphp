@@ -10,13 +10,14 @@
         }
     ],
     "require": {
-        "mintyphp/core": "*"
+        "mintyphp/core": "*",
+        "mintyphp/forms": "*"
     },
     "require-dev": {
         "mintyphp/tools": "*",
         "mintyphp/debugger": "*",
         "phpunit/phpunit": "*",
-        "phpstan/phpstan": "^1.9"
+        "phpstan/phpstan": "*"
     },
     "autoload-dev": {
         "psr-4": {

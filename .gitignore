@@ -2,5 +2,5 @@
 composer.phar
 config/config.php
 /vendor/
-/web/debugger/
+/web/debugger
 /data/

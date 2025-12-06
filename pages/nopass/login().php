@@ -6,6 +6,7 @@ use MintyPHP\Router;
 
 $error = '';
 if (isset($_POST['username'])) {
+  /** @var string $username */
   $username = $_POST['username'];
   $token = NoPassAuth::token($username);
   if ($token) {

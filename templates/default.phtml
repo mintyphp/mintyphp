@@ -3,6 +3,11 @@
 use MintyPHP\Router;
 use MintyPHP\Buffer;
 
+/** 
+ * // Session variable $_SESSION['user'] is set when user is logged in
+ * @var array{user:?array{username:string}} $_SESSION
+ */
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -34,7 +39,7 @@ use MintyPHP\Buffer;
       <a href="dead_link">Dead link</a><br />
     </p>
     <p>
-      <?php $username = isset($_SESSION['user']) ? $_SESSION['user']['username'] : false ?>
+      <?php $username = $_SESSION['user']['username'] ?? false ?>
       <?php if ($username) : ?>
         <a href="logout">Logout "<?php e($username); ?>"</a>
       <?php else : ?>

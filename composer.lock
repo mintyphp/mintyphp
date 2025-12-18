@@ -136,23 +136,29 @@
         },
         {
             "name": "mintyphp/tools",
-            "version": "v3.1.6",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mintyphp/tools.git",
-                "reference": "0fe28ac6373acfcbc385c4c95d6d202cd6677719"
+                "reference": "dc54d6d5b378616dde24369fea0033849af99b0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mintyphp/tools/zipball/0fe28ac6373acfcbc385c4c95d6d202cd6677719",
-                "reference": "0fe28ac6373acfcbc385c4c95d6d202cd6677719",
+                "url": "https://api.github.com/repos/mintyphp/tools/zipball/dc54d6d5b378616dde24369fea0033849af99b0d",
+                "reference": "dc54d6d5b378616dde24369fea0033849af99b0d",
                 "shasum": ""
             },
             "require": {
+                "mintyphp/core": "^3.2",
                 "nikic/php-parser": "*",
                 "php": ">=7.0"
             },
             "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MintyPHP\\Tools\\": "src/"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -166,9 +172,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mintyphp/tools/issues",
-                "source": "https://github.com/mintyphp/tools/tree/v3.1.6"
+                "source": "https://github.com/mintyphp/tools/tree/v4.0.0"
             },
-            "time": "2025-04-09T08:03:13+00:00"
+            "time": "2025-12-18T06:37:16+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -795,16 +801,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.5.3",
+            "version": "12.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6dc2e076d09960efbb0c1272aa9bc156fc80955e"
+                "reference": "4ba0e923f9d3fc655de22f9547c01d15a41fc93a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6dc2e076d09960efbb0c1272aa9bc156fc80955e",
-                "reference": "6dc2e076d09960efbb0c1272aa9bc156fc80955e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4ba0e923f9d3fc655de22f9547c01d15a41fc93a",
+                "reference": "4ba0e923f9d3fc655de22f9547c01d15a41fc93a",
                 "shasum": ""
             },
             "require": {
@@ -872,7 +878,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.3"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.4"
             },
             "funding": [
                 {
@@ -896,7 +902,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-11T08:52:59+00:00"
+            "time": "2025-12-15T06:05:34+00:00"
         },
         {
             "name": "sebastian/cli-parser",

@@ -4,4 +4,4 @@ if [ ! -f composer.phar ]; then
 fi
 php composer.phar install
 CWD=$(pwd)
-php -t web/ -S localhost:8000 $CWD/vendor/mintyphp/core/src/Tools/Server.php
+php -t web/ -S localhost:8000 $CWD/vendor/mintyphp/tools/src/Server.php
